@@ -1,0 +1,11 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ProductGrid from "../../components/ProductGrid.tsx";
+---
+<BaseLayout title="Men Trousers — Maison MKY">
+  <h1 class="text-3xl font-semibold mb-6">Men · Trousers</h1>
+  <ProductGrid client:load gender="men" collection="trousers" />
+</BaseLayout>
+
+
+

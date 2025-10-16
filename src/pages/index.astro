@@ -1,0 +1,30 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Hero from "../components/Hero.tsx";
+import Marquee from "../components/Marquee.tsx";
+import Reveal from "../components/Reveal.tsx";
+---
+<BaseLayout title="Maison MKY — New Collection">
+  <section class="pb-0 pt-4 -mx-6">
+    <Hero client:load />
+  </section>
+  <Marquee client:load />
+  <section class="py-16">
+    <Reveal client:load>
+      <div class="grid md:grid-cols-2 gap-8">
+        <a href="/men" class="block">
+          <div class="photo-frame aspect-[3/4]">
+            <img src="/images/men-category.jpg" class="w-full h-full object-cover" alt="Men's Collection" />
+          </div>
+          <div class="mt-3 text-lg font-light tracking-wide">MEN'S COLLECTION</div>
+        </a>
+        <a href="/women" class="block">
+          <div class="photo-frame aspect-[3/4]">
+            <img src="/images/women-category.jpg" class="w-full h-full object-cover" alt="Women's Collection" />
+          </div>
+          <div class="mt-3 text-lg font-light tracking-wide">WOMEN'S COLLECTION</div>
+        </a>
+      </div>
+    </Reveal>
+  </section>
+</BaseLayout>

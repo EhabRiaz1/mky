@@ -1,0 +1,12 @@
+---
+import ProductDetail from "../components/ProductDetail.tsx";
+import BaseLayout from "../layouts/BaseLayout.astro";
+const handle = Astro.url.searchParams.get('handle') ?? '';
+---
+<BaseLayout title="Product — Maison MKY">
+  <a href="/products" class="text-sm hover:underline">Back to shop</a>
+  <div class="mt-4">
+    <ProductDetail client:load handle={handle} />
+  </div>
+</BaseLayout>
+

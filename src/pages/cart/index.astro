@@ -1,0 +1,11 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import CartClient from "../../components/CartClient.tsx";
+---
+<BaseLayout title="Cart — Maison MKY">
+  <h1 class="text-3xl font-semibold mb-6">Your Cart</h1>
+  <CartClient client:load />
+</BaseLayout>
+
+
+

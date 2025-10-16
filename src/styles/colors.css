@@ -1,0 +1,5 @@
+/* Exact brand colors */
+:root {
+  --brand-bg-exact: rgb(38, 19, 21);
+  --brand-ink-exact: rgb(243, 231, 223);
+}

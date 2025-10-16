@@ -1,0 +1,167 @@
+---
+import '../styles/globals.css';
+import '../styles/colors.css';
+import LoadingScreen from '../components/LoadingScreen';
+const { title = 'Maison MKY', description = 'Luxury Fashion House' } = Astro.props;
+const isHome = Astro.url.pathname === '/';
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/png" href="/logo.png" />
+    <link rel="preload" href="/logo.png" as="image" type="image/png" />
+    <title>{title}</title>
+  </head>
+  <body class="min-h-screen text-neutral-900" style={{ backgroundColor: 'var(--brand-ink-exact)' }}>
+    <LoadingScreen client:load />
+    <div class="page-content">
+    <!-- Floating logo that animates from hero to navbar (home page only) -->
+    {isHome && (
+      <div id="floating-logo" class="fixed z-50 transition-all duration-300 ease-out pointer-events-none" style="left: 50%; top: 180px; transform: translate(-50%, -50%); width: 280px; height: 280px;">
+        <img 
+          src="/logo.png" 
+          alt="Maison MKY" 
+          class="w-full h-full object-contain"
+        />
+      </div>
+    )}
+    
+    <header id="main-header" class="fixed top-0 left-0 right-0 z-40 transition-all duration-300" style={{ backgroundColor: 'rgba(38, 19, 21, 0.90)' }}>
+      <div class="max-w-7xl mx-auto px-6 h-24 flex items-center justify-between transition-all duration-300">
+        <!-- Logo area / landing target (visible on non-home pages) -->
+        <div id="logo-target" class={isHome ? 'w-12 h-12 opacity-0' : 'w-12 h-12'}>
+          <a href="/" class="block w-full h-full">
+            {!isHome && (
+              <img src="/logo.png" alt="Maison MKY" class="w-full h-full object-contain" />
+            )}
+          </a>
+        </div>
+        <nav class="flex items-center gap-8 text-sm">
+          <a href="/men" class="text-[#F3E7DF] hover:text-[#F3E7DF]/70 transition-colors" style={{ color: 'var(--brand-ink-exact)' }}>MEN</a>
+          <a href="/women" class="text-[#F3E7DF] hover:text-[#F3E7DF]/70 transition-colors" style={{ color: 'var(--brand-ink-exact)' }}>WOMEN</a>
+          <a href="/search" class="text-[#F3E7DF] hover:text-[#F3E7DF]/70 transition-colors" style={{ color: 'var(--brand-ink-exact)' }}>SEARCH</a>
+          <form action="/" method="get" class="inline">
+            <select name="currency" class="border border-[#F3E7DF]/30 rounded-md px-2 py-1 text-sm bg-transparent text-[#F3E7DF]" 
+                    style={{ color: 'var(--brand-ink-exact)', borderColor: 'rgba(243, 231, 223, 0.3)' }}
+                    onChange="document.cookie='mky_currency='+this.value+'; Path=/; Max-Age=31536000'; location.reload()">
+              <option value="GBP">GBP</option>
+              <option value="EUR">EUR</option>
+            </select>
+          </form>
+          <a href="/cart" class="text-[#F3E7DF] hover:text-[#F3E7DF]/70 transition-colors" style={{ color: 'var(--brand-ink-exact)' }}>CART</a>
+        </nav>
+      </div>
+    </header>
+    
+    {isHome && (
+      <script>
+        // Animate logo and header on scroll (home only)
+        document.addEventListener('DOMContentLoaded', () => {
+          const header = document.getElementById('main-header');
+          const headerContent = header?.querySelector('div');
+          const floatingLogo = document.getElementById('floating-logo');
+          const hero = document.getElementById('hero-section');
+          const logoTarget = document.getElementById('logo-target');
+          
+          const handleScroll = () => {
+            const scrollY = window.scrollY;
+            const scrollThreshold = 300; // Distance to complete the animation
+            const progress = Math.min(scrollY / scrollThreshold, 1);
+            
+            // Animate floating logo
+            if (floatingLogo && logoTarget) {
+              const targetRect = logoTarget.getBoundingClientRect();
+              const targetX = targetRect.left + targetRect.width / 2;
+              const targetY = targetRect.top + targetRect.height / 2 - 1.5; // slight upward offset
+
+              // Start from hero center
+              let startX = window.innerWidth / 2;
+              let startY = 180;
+              if (hero) {
+                const heroRect = hero.getBoundingClientRect();
+                startX = heroRect.left + heroRect.width / 2;
+                startY = heroRect.top + heroRect.height * 0.35;
+              }
+
+              // Sizes
+              const startSize = 280;
+              const endSize = 48;
+              const currentSize = startSize - (startSize - endSize) * progress;
+
+              // Interpolate positions
+              const currentX = startX + (targetX - startX) * progress;
+              const currentY = startY + (targetY - startY) * progress;
+
+              floatingLogo.style.width = `${currentSize}px`;
+              floatingLogo.style.height = `${currentSize}px`;
+              floatingLogo.style.left = `${currentX}px`;
+              floatingLogo.style.top = `${currentY}px`;
+            }
+            
+            // Header styling
+            if (scrollY > 50) {
+              header?.classList.add('backdrop-blur-md', 'border-b');
+              header?.style.setProperty('border-color', 'rgba(38, 19, 21, 0.2)');
+              if (header) header.style.backgroundColor = 'rgba(38, 19, 21, 0.98)';
+              headerContent?.classList.remove('h-24');
+              headerContent?.classList.add('h-16');
+            } else {
+              header?.classList.remove('backdrop-blur-md', 'border-b');
+              if (header) header.style.backgroundColor = 'rgba(38, 19, 21, 0.90)';
+              headerContent?.classList.remove('h-16');
+              headerContent?.classList.add('h-24');
+            }
+          };
+          
+          window.addEventListener('scroll', handleScroll);
+          handleScroll();
+        });
+      </script>
+    )}
+    
+    <!-- Add padding to account for fixed header -->
+    <div class="h-24"></div>
+    <main class="max-w-[1920px] mx-auto px-6 py-8">
+      <slot />
+    </main>
+    <footer class="border-t border-neutral-700/10 py-16 mt-24" style={{ backgroundColor: 'var(--brand-bg-exact)' }}>
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-10">
+          <div>
+            <h3 class="font-light tracking-widest mb-4 text-[#F3E7DF]" style={{ color: 'var(--brand-ink-exact)' }}>MAISON MKY</h3>
+            <p class="text-sm text-[#F3E7DF]/70" style={{ color: 'rgba(243, 231, 223, 0.7)' }}>Luxury apparel crafted in Italy with the finest materials.</p>
+          </div>
+          <div>
+            <h4 class="font-medium mb-4 text-sm text-[#F3E7DF]" style={{ color: 'var(--brand-ink-exact)' }}>COLLECTIONS</h4>
+            <ul class="space-y-2 text-sm text-[#F3E7DF]/70" style={{ color: 'rgba(243, 231, 223, 0.7)' }}>
+              <li><a href="/men" class="hover:text-[#F3E7DF] transition-colors" style={{ color: 'rgba(243, 231, 223, 0.7)' }}>Men</a></li>
+              <li><a href="/women" class="hover:text-[#F3E7DF] transition-colors" style={{ color: 'rgba(243, 231, 223, 0.7)' }}>Women</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-medium mb-4 text-sm text-[#F3E7DF]" style={{ color: 'var(--brand-ink-exact)' }}>CUSTOMER CARE</h4>
+            <ul class="space-y-2 text-sm text-[#F3E7DF]/70" style={{ color: 'rgba(243, 231, 223, 0.7)' }}>
+              <li><a href="/contact" class="hover:text-[#F3E7DF] transition-colors" style={{ color: 'rgba(243, 231, 223, 0.7)' }}>Contact</a></li>
+              <li><a href="/shipping" class="hover:text-[#F3E7DF] transition-colors" style={{ color: 'rgba(243, 231, 223, 0.7)' }}>Shipping</a></li>
+              <li><a href="/returns" class="hover:text-[#F3E7DF] transition-colors" style={{ color: 'rgba(243, 231, 223, 0.7)' }}>Returns</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-medium mb-4 text-sm text-[#F3E7DF]" style={{ color: 'var(--brand-ink-exact)' }}>LEGAL</h4>
+            <ul class="space-y-2 text-sm text-[#F3E7DF]/70" style={{ color: 'rgba(243, 231, 223, 0.7)' }}>
+              <li><a href="/privacy" class="hover:text-[#F3E7DF] transition-colors" style={{ color: 'rgba(243, 231, 223, 0.7)' }}>Privacy</a></li>
+              <li><a href="/terms" class="hover:text-[#F3E7DF] transition-colors" style={{ color: 'rgba(243, 231, 223, 0.7)' }}>Terms</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="mt-16 pt-8 border-t border-[#F3E7DF]/10 text-sm text-[#F3E7DF]/50" style={{ color: 'rgba(243, 231, 223, 0.5)' }}>
+          © {new Date().getFullYear()} Maison MKY. All rights reserved.
+        </div>
+      </div>
+    </footer>
+    </div>
+  </body>
+</html>
+
