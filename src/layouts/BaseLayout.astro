@@ -29,16 +29,30 @@ const isHome = Astro.url.pathname === '/';
     )}
     
     <header id="main-header" class="fixed top-0 left-0 right-0 z-40 transition-all duration-300" style={{ backgroundColor: 'rgba(38, 19, 21, 0.90)' }}>
-      <div class="max-w-7xl mx-auto px-6 h-24 flex items-center justify-between transition-all duration-300">
+      <div class="max-w-7xl mx-auto px-6 h-16 md:h-24 flex items-center justify-between transition-all duration-300">
         <!-- Logo area / landing target (visible on non-home pages) -->
-        <div id="logo-target" class={isHome ? 'w-12 h-12 opacity-0' : 'w-12 h-12'}>
+        <div id="logo-target" class={isHome ? 'w-10 md:w-12 h-10 md:h-12 opacity-0' : 'w-10 md:w-12 h-10 md:h-12'}>
           <a href="/" class="block w-full h-full">
             {!isHome && (
               <img src="/logo.png" alt="Maison MKY" class="w-full h-full object-contain" />
             )}
           </a>
         </div>
-        <nav class="flex items-center gap-8 text-sm">
+        
+        <!-- Mobile menu button -->
+        <button id="mobile-menu-button" class="md:hidden text-[#F3E7DF] z-50" aria-label="Toggle menu" aria-expanded="false">
+          <!-- Hamburger icon -->
+          <svg id="icon-burger" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+          <!-- Close icon -->
+          <svg id="icon-close" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+
+        <!-- Desktop navigation -->
+        <nav class="hidden md:flex items-center gap-8 text-sm">
           <a href="/men" class="text-[#F3E7DF] hover:text-[#F3E7DF]/70 transition-colors" style={{ color: 'var(--brand-ink-exact)' }}>MEN</a>
           <a href="/women" class="text-[#F3E7DF] hover:text-[#F3E7DF]/70 transition-colors" style={{ color: 'var(--brand-ink-exact)' }}>WOMEN</a>
           <a href="/search" class="text-[#F3E7DF] hover:text-[#F3E7DF]/70 transition-colors" style={{ color: 'var(--brand-ink-exact)' }}>SEARCH</a>
@@ -52,8 +66,33 @@ const isHome = Astro.url.pathname === '/';
           </form>
           <a href="/cart" class="text-[#F3E7DF] hover:text-[#F3E7DF]/70 transition-colors" style={{ color: 'var(--brand-ink-exact)' }}>CART</a>
         </nav>
+
+        <!-- Mobile drawer and overlay are rendered outside header -->
       </div>
     </header>
+    <!-- Mobile overlay and drawer (outside header for consistent stacking) -->
+    <div id="mobile-overlay" class="md:hidden fixed inset-0 z-[30] opacity-0 pointer-events-none transition-opacity duration-300" style={{ backgroundColor: 'rgba(38, 19, 21, 0.98)' }}></div>
+    <div id="mobile-drawer" class="md:hidden fixed inset-0 z-[35] w-full transition-transform duration-300 ease-in-out transform translate-x-full" style={{ backgroundColor: 'rgba(38, 19, 21, 0.98)' }}>
+      <div class="h-full flex flex-col justify-between px-6 py-8">
+        <div class="mt-12">
+          <nav class="flex flex-col gap-6 text-lg">
+            <a href="/men" class="text-[var(--brand-ink-exact)] hover:opacity-80 transition-opacity">MEN</a>
+            <a href="/women" class="text-[var(--brand-ink-exact)] hover:opacity-80 transition-opacity">WOMEN</a>
+            <a href="/search" class="text-[var(--brand-ink-exact)] hover:opacity-80 transition-opacity">SEARCH</a>
+            <a href="/cart" class="text-[var(--brand-ink-exact)] hover:opacity-80 transition-opacity">CART</a>
+          </nav>
+        </div>
+        <div class="pb-8">
+          <div class="text-[var(--brand-ink-exact)] mb-3">Currency</div>
+          <form action="/" method="get">
+            <select name="currency" class="w-full border border-[rgba(243,231,223,0.3)] rounded-md px-3 py-2 text-base bg-transparent text-[var(--brand-ink-exact)]" onChange="document.cookie='mky_currency='+this.value+'; Path=/; Max-Age=31536000'; location.reload()">
+              <option value="GBP">GBP</option>
+              <option value="EUR">EUR</option>
+            </select>
+          </form>
+        </div>
+      </div>
+    </div>
     
     {isHome && (
       <script>
@@ -121,9 +160,9 @@ const isHome = Astro.url.pathname === '/';
       </script>
     )}
     
-    <!-- Add padding to account for fixed header -->
+    <!-- Add padding to account for fixed header (use tall height to avoid cut-off at top) -->
     <div class="h-24"></div>
-    <main class="max-w-[1920px] mx-auto px-6 py-8">
+    <main class="max-w-[1920px] mx-auto px-4 md:px-6 py-6 md:py-8">
       <slot />
     </main>
     <footer class="border-t border-neutral-700/10 py-16 mt-24" style={{ backgroundColor: 'var(--brand-bg-exact)' }}>
@@ -162,6 +201,173 @@ const isHome = Astro.url.pathname === '/';
       </div>
     </footer>
     </div>
+
+    <script>
+      // Mobile drawer menu and logo animation functionality
+      document.addEventListener('DOMContentLoaded', () => {
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const drawer = document.getElementById('mobile-drawer');
+        const overlay = document.getElementById('mobile-overlay');
+        const floatingLogo = document.getElementById('floating-logo');
+        const isHomePage = !!floatingLogo;
+        let menuOpen = false;
+        
+        if (!mobileMenuButton || !drawer || !overlay) return;
+
+        // Calculate logo position based on scroll
+        const getLogoPositionForScroll = () => {
+          if (!isHomePage) return null;
+          
+          const scrollY = window.scrollY;
+          const scrollThreshold = 300;
+          const progress = Math.min(scrollY / scrollThreshold, 1);
+          
+          const hero = document.getElementById('hero-section');
+          const logoTarget = document.getElementById('logo-target');
+          
+          if (!logoTarget) return null;
+          
+          // Target position (navbar)
+          const targetRect = logoTarget.getBoundingClientRect();
+          const targetX = targetRect.left + targetRect.width / 2;
+          const targetY = targetRect.top + targetRect.height / 2 - 1.5;
+          
+          // Start position (hero)
+          let startX = window.innerWidth / 2;
+          let startY = 180;
+          if (hero) {
+            const heroRect = hero.getBoundingClientRect();
+            startX = heroRect.left + heroRect.width / 2;
+            startY = heroRect.top + heroRect.height * 0.35;
+          }
+          
+          // Sizes
+          const startSize = 280;
+          const endSize = 48;
+          const currentSize = startSize - (startSize - endSize) * progress;
+          
+          // Interpolate positions based on scroll
+          const currentX = startX + (targetX - startX) * progress;
+          const currentY = startY + (targetY - startY) * progress;
+          
+          return {
+            x: currentX,
+            y: currentY,
+            size: currentSize
+          };
+        };
+        
+        // Set logo position directly
+        const setLogoPosition = (pos) => {
+          if (!isHomePage || !floatingLogo) return;
+          
+          floatingLogo.style.width = `${pos.size}px`;
+          floatingLogo.style.height = `${pos.size}px`;
+          floatingLogo.style.left = `${pos.x}px`;
+          floatingLogo.style.top = `${pos.y}px`;
+        };
+        
+        // Animate logo to target position
+        const animateLogoTo = (targetPos) => {
+          if (!isHomePage || !floatingLogo) return;
+          
+          floatingLogo.style.transition = 'all 0.3s ease-in-out';
+          setLogoPosition(targetPos);
+          
+          // Remove transition after animation completes
+          setTimeout(() => {
+            floatingLogo.style.transition = '';
+          }, 300);
+        };
+
+        // Open the drawer menu
+        const openDrawer = () => {
+          drawer.style.transform = 'translateX(0)';
+          overlay.style.opacity = '1';
+          overlay.style.pointerEvents = 'auto';
+          document.body.style.overflow = 'hidden'; // Prevent scrolling
+          // Swap icons
+          const btn = mobileMenuButton as HTMLButtonElement;
+          const burger = document.getElementById('icon-burger');
+          const closeI = document.getElementById('icon-close');
+          btn.setAttribute('aria-expanded', 'true');
+          if (burger) burger.classList.add('hidden');
+          if (closeI) closeI.classList.remove('hidden');
+          
+          // Move it to header position if on home page (no re-render, same element)
+          if (isHomePage && floatingLogo) {
+            const logoTarget = document.getElementById('logo-target');
+            if (logoTarget) {
+              const targetRect = logoTarget.getBoundingClientRect();
+              animateLogoTo({
+                x: targetRect.left + targetRect.width / 2,
+                y: targetRect.top + targetRect.height / 2,
+                size: 48
+              });
+            }
+          }
+          
+          menuOpen = true;
+        };
+        
+        // Close the drawer menu
+        const closeDrawer = () => {
+          drawer.style.transform = 'translateX(100%)';
+          overlay.style.opacity = '0';
+          overlay.style.pointerEvents = 'none';
+          document.body.style.overflow = ''; // Restore scrolling
+          // Swap icons back
+          const btn = mobileMenuButton as HTMLButtonElement;
+          const burger = document.getElementById('icon-burger');
+          const closeI = document.getElementById('icon-close');
+          btn.setAttribute('aria-expanded', 'false');
+          if (burger) burger.classList.remove('hidden');
+          if (closeI) closeI.classList.add('hidden');
+          
+          // Return logo to original position based on scroll
+          if (isHomePage && floatingLogo) {
+            const currentScrollPos = getLogoPositionForScroll();
+            if (currentScrollPos) animateLogoTo(currentScrollPos);
+          }
+          
+          menuOpen = false;
+        };
+
+        // Add event listeners
+        mobileMenuButton.addEventListener('click', () => {
+          menuOpen ? closeDrawer() : openDrawer();
+        });
+        overlay.addEventListener('click', closeDrawer);
+        
+        // Close on nav link clicks or clicks inside drawer header icons
+        drawer.addEventListener('click', (e) => {
+          const target = e.target as HTMLElement;
+          if (target.closest('a')) {
+            closeDrawer();
+          }
+          if (target.closest('#icon-close')) {
+            closeDrawer();
+          }
+        });
+
+        // Close on window resize to desktop
+        window.addEventListener('resize', () => {
+          if (window.innerWidth >= 768 && menuOpen) {
+            closeDrawer();
+          }
+        });
+        
+        // Recalculate logo position on scroll when menu is closed
+        if (isHomePage) {
+          window.addEventListener('scroll', () => {
+            if (!menuOpen && floatingLogo) {
+              const logoPos = getLogoPositionForScroll();
+              if (logoPos) setLogoPosition(logoPos);
+            }
+          });
+        }
+      });
+    </script>
   </body>
 </html>
 

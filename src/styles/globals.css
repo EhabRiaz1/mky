@@ -59,6 +59,15 @@ body {
   background: transparent;
 }
 
+/* Mobile: nudge top page heading down when using collapsible nav */
+@media (max-width: 768px) {
+  /* Nudge top-most page heading/links below the collapsible navbar */
+  main > h1:first-child,
+  main > a:first-child {
+    margin-top: 0.75rem; /* 12px */
+  }
+}
+
 /* Photo frame styling */
 .photo-frame {
   border: 2px solid var(--brand-bg-exact);

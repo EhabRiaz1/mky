@@ -22,7 +22,10 @@ export default function LoadingScreen() {
           transition={{ duration: 0.8, ease: "easeInOut" }}
           className="fixed inset-0 z-50 flex items-center justify-center"
           style={{ 
-            background: 'var(--brand-bg-exact)'
+            background: 'var(--brand-bg-exact)',
+            height: '100%',
+            width: '100%',
+            overflow: 'hidden'
           }}
         >
           <motion.div 
@@ -33,9 +36,9 @@ export default function LoadingScreen() {
             className="flex items-center justify-center"
           >
             {/* Logo container with subtle fade effect */}
-            <div className="w-64 h-64 flex items-center justify-center relative">
+            <div className="w-48 h-48 sm:w-64 sm:h-64 flex items-center justify-center relative">
               {/* Logo with mask for subtle edge fade */}
-              <div className="w-48 h-48 relative">
+              <div className="w-32 h-32 sm:w-48 sm:h-48 relative">
                 <img 
                   src="/logo.png" 
                   alt="Maison MKY" 
