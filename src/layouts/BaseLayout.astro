@@ -2,8 +2,25 @@
 import '../styles/globals.css';
 import '../styles/colors.css';
 import LoadingScreen from '../components/LoadingScreen';
-const { title = 'Maison MKY', description = 'Luxury Fashion House' } = Astro.props;
+import AuthDrawerIsland from '../react/AuthDrawerIsland';
+const {
+  title = 'Maison MKY',
+  description = 'Luxury Fashion House',
+  stickyHeader = false,
+} = Astro.props;
 const isHome = Astro.url.pathname === '/';
+const useStickyHeader = !isHome && stickyHeader;
+const stickyBackground = 'rgba(38, 19, 21, 0.98)';
+const applyStickyColor = !isHome || useStickyHeader;
+const headerBackground = applyStickyColor ? stickyBackground : 'transparent';
+const headerPositionClasses = useStickyHeader
+  ? 'sticky top-0 left-0 right-0'
+  : 'fixed top-0 left-0 right-0';
+const headerEffectClasses = applyStickyColor
+  ? 'backdrop-blur-md'
+  : '';
+const headerTextClasses = applyStickyColor ? 'text-[var(--brand-ink-exact)]' : '';
+const shouldOffsetForHeader = !isHome && !useStickyHeader;
 ---
 <html lang="en">
   <head>
@@ -28,9 +45,30 @@ const isHome = Astro.url.pathname === '/';
       </div>
     )}
     
-    <header id="main-header" class="fixed top-0 left-0 right-0 z-40 transition-all duration-300" style={{ backgroundColor: 'rgba(38, 19, 21, 0.90)' }}>
-      <div class="max-w-7xl mx-auto px-6 h-16 md:h-24 flex items-center justify-between transition-all duration-300">
-        <!-- Logo area / landing target (visible on non-home pages) -->
+    <header
+      id="main-header"
+      class={`${headerPositionClasses} ${headerEffectClasses} ${headerTextClasses} z-40 transition-all duration-300`}
+      style={{ backgroundColor: headerBackground }}
+    >
+      <div class="max-w-7xl mx-auto px-6 h-16 md:h-20 flex items-center justify-between transition-all duration-300">
+        <!-- Left: Menu + Search (Desktop) -->
+        <div class="hidden md:flex items-center gap-8">
+          <button id="desktop-menu-button" class="group inline-flex items-center gap-2 text-base tracking-wider transition-opacity hover:opacity-70" style={{ color: 'var(--brand-ink-exact)', fontFamily: 'Inter, sans-serif', textTransform: 'uppercase', fontSize: '0.875rem', letterSpacing: '0.1em' }} aria-label="Menu">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 7h16M4 12h16M4 17h16" />
+            </svg>
+            <span class="relative inline-block group-hover:font-semibold">Menu
+              <span class="block h-[1.5px] bg-current origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 mt-0.5"></span>
+            </span>
+          </button>
+          <a href="/search" class="group text-base tracking-wider transition-opacity hover:opacity-70" style={{ color: 'var(--brand-ink-exact)', fontFamily: 'Inter, sans-serif', textTransform: 'uppercase', fontSize: '0.875rem', letterSpacing: '0.1em' }}>
+            <span class="relative inline-block group-hover:font-semibold">Search
+              <span class="block h-[1.5px] bg-current origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 mt-0.5"></span>
+            </span>
+          </a>
+        </div>
+
+        <!-- Center: Logo -->
         <div id="logo-target" class={isHome ? 'w-10 md:w-12 h-10 md:h-12 opacity-0' : 'w-10 md:w-12 h-10 md:h-12'}>
           <a href="/" class="block w-full h-full">
             {!isHome && (
@@ -40,59 +78,205 @@ const isHome = Astro.url.pathname === '/';
         </div>
         
         <!-- Mobile menu button -->
-        <button id="mobile-menu-button" class="md:hidden text-[#F3E7DF] z-50" aria-label="Toggle menu" aria-expanded="false">
-          <!-- Hamburger icon -->
-          <svg id="icon-burger" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <button id="mobile-menu-button" class="md:hidden text-[#F3E7DF] z-50" aria-label="Toggle menu">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-          <!-- Close icon -->
-          <svg id="icon-close" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
 
-        <!-- Desktop navigation -->
+        <!-- Right: Utility Nav (Desktop) -->
         <nav class="hidden md:flex items-center gap-8 text-sm">
-          <a href="/men" class="text-[#F3E7DF] hover:text-[#F3E7DF]/70 transition-colors" style={{ color: 'var(--brand-ink-exact)' }}>MEN</a>
-          <a href="/women" class="text-[#F3E7DF] hover:text-[#F3E7DF]/70 transition-colors" style={{ color: 'var(--brand-ink-exact)' }}>WOMEN</a>
-          <a href="/search" class="text-[#F3E7DF] hover:text-[#F3E7DF]/70 transition-colors" style={{ color: 'var(--brand-ink-exact)' }}>SEARCH</a>
           <form action="/" method="get" class="inline">
-            <select name="currency" class="border border-[#F3E7DF]/30 rounded-md px-2 py-1 text-sm bg-transparent text-[#F3E7DF]" 
-                    style={{ color: 'var(--brand-ink-exact)', borderColor: 'rgba(243, 231, 223, 0.3)' }}
+            <select name="currency" class="border-none bg-transparent text-sm tracking-wider" 
+                    style={{ color: 'var(--brand-ink-exact)', fontFamily: 'Inter, sans-serif', textTransform: 'uppercase', fontSize: '0.875rem', letterSpacing: '0.1em' }}
                     onChange="document.cookie='mky_currency='+this.value+'; Path=/; Max-Age=31536000'; location.reload()">
               <option value="GBP">GBP</option>
               <option value="EUR">EUR</option>
             </select>
           </form>
-          <a href="/cart" class="text-[#F3E7DF] hover:text-[#F3E7DF]/70 transition-colors" style={{ color: 'var(--brand-ink-exact)' }}>CART</a>
+          <a href="/cart" class="group tracking-wider transition-opacity hover:opacity-70" style={{ color: 'var(--brand-ink-exact)', fontFamily: 'Inter, sans-serif', textTransform: 'uppercase', fontSize: '0.875rem', letterSpacing: '0.1em' }}>
+            <span class="relative inline-block group-hover:font-semibold">Cart
+              <span class="block h-[1.5px] bg-current origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 mt-0.5"></span>
+            </span>
+          </a>
         </nav>
 
-        <!-- Mobile drawer and overlay are rendered outside header -->
+        
       </div>
     </header>
-    <!-- Mobile overlay and drawer (outside header for consistent stacking) -->
-    <div id="mobile-overlay" class="md:hidden fixed inset-0 z-[30] opacity-0 pointer-events-none transition-opacity duration-300" style={{ backgroundColor: 'rgba(38, 19, 21, 0.98)' }}></div>
-    <div id="mobile-drawer" class="md:hidden fixed inset-0 z-[35] w-full transition-transform duration-300 ease-in-out transform translate-x-full" style={{ backgroundColor: 'rgba(38, 19, 21, 0.98)' }}>
-      <div class="h-full flex flex-col justify-between px-6 py-8">
-        <div class="mt-12">
-          <nav class="flex flex-col gap-6 text-lg">
-            <a href="/men" class="text-[var(--brand-ink-exact)] hover:opacity-80 transition-opacity">MEN</a>
-            <a href="/women" class="text-[var(--brand-ink-exact)] hover:opacity-80 transition-opacity">WOMEN</a>
-            <a href="/search" class="text-[var(--brand-ink-exact)] hover:opacity-80 transition-opacity">SEARCH</a>
-            <a href="/cart" class="text-[var(--brand-ink-exact)] hover:opacity-80 transition-opacity">CART</a>
-          </nav>
-        </div>
-        <div class="pb-8">
-          <div class="text-[var(--brand-ink-exact)] mb-3">Currency</div>
-          <form action="/" method="get">
-            <select name="currency" class="w-full border border-[rgba(243,231,223,0.3)] rounded-md px-3 py-2 text-base bg-transparent text-[var(--brand-ink-exact)]" onChange="document.cookie='mky_currency='+this.value+'; Path=/; Max-Age=31536000'; location.reload()">
-              <option value="GBP">GBP</option>
-              <option value="EUR">EUR</option>
-            </select>
-          </form>
+
+    <!-- Drawers and overlays mounted outside header to avoid stacking/context issues -->
+    <!-- Desktop mega menu drawer (slides in from left) -->
+    <div id="desktop-drawer" class="hidden md:block fixed inset-y-0 left-0 z-[1000] w-96 bg-[rgba(243,231,223,0.98)] backdrop-blur-lg shadow-2xl transition-transform duration-300 ease-in-out transform -translate-x-full">
+      <div class="h-full flex flex-col px-10 py-12 overflow-y-auto">
+        <!-- Close button -->
+        <button id="close-desktop-drawer" class="absolute top-8 right-8 transition-opacity hover:opacity-70" style={{ color: 'var(--brand-bg-exact)' }} aria-label="Close menu">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+        
+        <!-- Main menu -->
+        <nav class="mt-16 flex flex-col gap-6">
+          <!-- Men Dropdown -->
+          <div class="border-b border-[rgba(38,19,21,0.1)] pb-6">
+            <button class="drawer-toggle group w-full flex items-center justify-between py-2 text-left" data-target="men-submenu">
+              <span class="relative inline-block text-xl tracking-wide group-hover:font-semibold" style={{ color: 'var(--brand-bg-exact)', fontFamily: 'Playfair Display, serif' }}>Men
+                <span class="block h-[2px] bg-current origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 mt-0.5"></span>
+              </span>
+              <svg class="drawer-chevron h-5 w-5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div id="men-submenu" class="drawer-submenu hidden mt-3 ml-4 flex flex-col gap-3">
+              <a href="/men/blazers" class="group text-base transition-opacity hover:opacity-70" style={{ color: 'rgba(38,19,21,0.7)', fontFamily: 'Inter, sans-serif' }}>
+                <span class="relative inline-block group-hover:font-medium">Blazers
+                  <span class="block h-[1.5px] bg-current origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 mt-0.5"></span>
+                </span>
+              </a>
+              <a href="/men/trousers" class="group text-base transition-opacity hover:opacity-70" style={{ color: 'rgba(38,19,21,0.7)', fontFamily: 'Inter, sans-serif' }}>
+                <span class="relative inline-block group-hover:font-medium">Trousers
+                  <span class="block h-[1.5px] bg-current origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 mt-0.5"></span>
+                </span>
+              </a>
+              <a href="/men" class="group text-base transition-opacity hover:opacity-70" style={{ color: 'rgba(38,19,21,0.7)', fontFamily: 'Inter, sans-serif' }}>
+                <span class="relative inline-block group-hover:font-medium">View All Men's
+                  <span class="block h-[1.5px] bg-current origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 mt-0.5"></span>
+                </span>
+              </a>
+            </div>
+          </div>
+          
+          <!-- Women Dropdown -->
+          <div class="border-b border-[rgba(38,19,21,0.1)] pb-6">
+            <button class="drawer-toggle group w-full flex items-center justify-between py-2 text-left" data-target="women-submenu">
+              <span class="relative inline-block text-xl tracking-wide group-hover:font-semibold" style={{ color: 'var(--brand-bg-exact)', fontFamily: 'Playfair Display, serif' }}>Women
+                <span class="block h-[2px] bg-current origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 mt-0.5"></span>
+              </span>
+              <svg class="drawer-chevron h-5 w-5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div id="women-submenu" class="drawer-submenu hidden mt-3 ml-4 flex flex-col gap-3">
+              <a href="/women/blazers" class="group text-base transition-opacity hover:opacity-70" style={{ color: 'rgba(38,19,21,0.7)', fontFamily: 'Inter, sans-serif' }}>
+                <span class="relative inline-block group-hover:font-medium">Blazers
+                  <span class="block h-[1.5px] bg-current origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 mt-0.5"></span>
+                </span>
+              </a>
+              <a href="/women/trousers" class="group text-base transition-opacity hover:opacity-70" style={{ color: 'rgba(38,19,21,0.7)', fontFamily: 'Inter, sans-serif' }}>
+                <span class="relative inline-block group-hover:font-medium">Trousers
+                  <span class="block h-[1.5px] bg-current origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 mt-0.5"></span>
+                </span>
+              </a>
+              <a href="/women" class="group text-base transition-opacity hover:opacity-70" style={{ color: 'rgba(38,19,21,0.7)', fontFamily: 'Inter, sans-serif' }}>
+                <span class="relative inline-block group-hover:font-medium">View All Women's
+                  <span class="block h-[1.5px] bg-current origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 mt-0.5"></span>
+                </span>
+              </a>
+            </div>
+          </div>
+          
+          <!-- Single Links -->
+          <a href="/products" class="group py-3 text-xl tracking-wide transition-opacity hover:opacity-70 border-b border-[rgba(38,19,21,0.1)]" style={{ color: 'var(--brand-bg-exact)', fontFamily: 'Playfair Display, serif' }}>
+            <span class="relative inline-block group-hover:font-semibold">Explore the Collection
+              <span class="block h-[2px] bg-current origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 mt-0.5"></span>
+            </span>
+          </a>
+          <a href="/products" class="group py-3 text-xl tracking-wide transition-opacity hover:opacity-70 border-b border-[rgba(38,19,21,0.1)]" style={{ color: 'var(--brand-bg-exact)', fontFamily: 'Playfair Display, serif' }}>
+            <span class="relative inline-block group-hover:font-semibold">New Arrivals
+              <span class="block h-[2px] bg-current origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 mt-0.5"></span>
+            </span>
+          </a>
+          <a href="/sustainability" class="group py-3 text-xl tracking-wide transition-opacity hover:opacity-70 border-b border-[rgba(38,19,21,0.1)]" style={{ color: 'var(--brand-bg-exact)', fontFamily: 'Playfair Display, serif' }}>
+            <span class="relative inline-block group-hover:font-semibold">Sustainability
+              <span class="block h-[2px] bg-current origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 mt-0.5"></span>
+            </span>
+          </a>
+          <a href="/our-story" class="group py-3 text-xl tracking-wide transition-opacity hover:opacity-70 border-b border-[rgba(38,19,21,0.1)]" style={{ color: 'var(--brand-bg-exact)', fontFamily: 'Playfair Display, serif' }}>
+            <span class="relative inline-block group-hover:font-semibold">Our Story
+              <span class="block h-[2px] bg-current origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 mt-0.5"></span>
+            </span>
+          </a>
+        </nav>
+        <div class="mt-auto">
+          <AuthDrawerIsland variant="desktop" client:load />
         </div>
       </div>
     </div>
+
+    <!-- Mobile drawer menu (slides in from right) -->
+    <div id="mobile-drawer" class="md:hidden fixed inset-y-0 right-0 z-[1000] w-[85vw] max-w-md bg-[rgba(38,19,21,0.98)] backdrop-blur-lg shadow-lg transition-transform duration-300 ease-in-out transform translate-x-full">
+      <div class="h-full flex flex-col justify-between px-8 py-10 overflow-y-auto">
+        <!-- Close button -->
+        <button id="close-drawer-button" class="absolute top-6 right-6 text-[var(--brand-ink-exact)]" aria-label="Close menu">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+        
+        <!-- Main menu -->
+        <div class="mt-16">
+          <nav class="flex flex-col gap-6">
+            <!-- Men Dropdown -->
+            <div class="border-b border-[rgba(243,231,223,0.1)] pb-6">
+              <button class="drawer-toggle w-full flex items-center justify-between py-2 text-left" data-target="mobile-men-submenu">
+                <span class="text-2xl tracking-wide text-[var(--brand-ink-exact)]" style={{ fontFamily: 'Playfair Display, serif' }}>Men</span>
+                <svg class="drawer-chevron h-5 w-5 text-[var(--brand-ink-exact)] transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              <div id="mobile-men-submenu" class="drawer-submenu hidden mt-4 ml-4 flex flex-col gap-3">
+                <a href="/men/blazers" class="text-base hover:opacity-70 transition-opacity" style={{ color: 'rgba(243,231,223,0.8)', fontFamily: 'Inter, sans-serif' }}>Blazers</a>
+                <a href="/men/trousers" class="text-base hover:opacity-70 transition-opacity" style={{ color: 'rgba(243,231,223,0.8)', fontFamily: 'Inter, sans-serif' }}>Trousers</a>
+                <a href="/men" class="text-base hover:opacity-70 transition-opacity" style={{ color: 'rgba(243,231,223,0.8)', fontFamily: 'Inter, sans-serif' }}>View All Men's</a>
+              </div>
+            </div>
+            
+            <!-- Women Dropdown -->
+            <div class="border-b border-[rgba(243,231,223,0.1)] pb-6">
+              <button class="drawer-toggle w-full flex items-center justify-between py-2 text-left" data-target="mobile-women-submenu">
+                <span class="text-2xl tracking-wide text-[var(--brand-ink-exact)]" style={{ fontFamily: 'Playfair Display, serif' }}>Women</span>
+                <svg class="drawer-chevron h-5 w-5 text-[var(--brand-ink-exact)] transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              <div id="mobile-women-submenu" class="drawer-submenu hidden mt-4 ml-4 flex flex-col gap-3">
+                <a href="/women/blazers" class="text-base hover:opacity-70 transition-opacity" style={{ color: 'rgba(243,231,223,0.8)', fontFamily: 'Inter, sans-serif' }}>Blazers</a>
+                <a href="/women/trousers" class="text-base hover:opacity-70 transition-opacity" style={{ color: 'rgba(243,231,223,0.8)', fontFamily: 'Inter, sans-serif' }}>Trousers</a>
+                <a href="/women" class="text-base hover:opacity-70 transition-opacity" style={{ color: 'rgba(243,231,223,0.8)', fontFamily: 'Inter, sans-serif' }}>View All Women's</a>
+              </div>
+            </div>
+            
+            <!-- Single Links -->
+            <a href="/products" class="py-3 text-2xl tracking-wide text-[var(--brand-ink-exact)] hover:opacity-80 transition-opacity border-b border-[rgba(243,231,223,0.1)]" style={{ fontFamily: 'Playfair Display, serif' }}>Explore the Collection</a>
+            <a href="/products" class="py-3 text-2xl tracking-wide text-[var(--brand-ink-exact)] hover:opacity-80 transition-opacity border-b border-[rgba(243,231,223,0.1)]" style={{ fontFamily: 'Playfair Display, serif' }}>New Arrivals</a>
+            <a href="/sustainability" class="py-3 text-2xl tracking-wide text-[var(--brand-ink-exact)] hover:opacity-80 transition-opacity border-b border-[rgba(243,231,223,0.1)]" style={{ fontFamily: 'Playfair Display, serif' }}>Sustainability</a>
+            <a href="/our-story" class="py-3 text-2xl tracking-wide text-[var(--brand-ink-exact)] hover:opacity-80 transition-opacity border-b border-[rgba(243,231,223,0.1)]" style={{ fontFamily: 'Playfair Display, serif' }}>Our Story</a>
+            <a href="/search" class="py-3 text-2xl tracking-wide text-[var(--brand-ink-exact)] hover:opacity-80 transition-opacity border-b border-[rgba(243,231,223,0.1)]" style={{ fontFamily: 'Playfair Display, serif' }}>Search</a>
+            <a href="/cart" class="py-3 text-2xl tracking-wide text-[var(--brand-ink-exact)] hover:opacity-80 transition-opacity border-b border-[rgba(243,231,223,0.1)]" style={{ fontFamily: 'Playfair Display, serif' }}>Cart</a>
+          </nav>
+        </div>
+        <div class="mt-auto">
+          <AuthDrawerIsland variant="mobile" client:load />
+          
+          <!-- Currency selector at bottom -->
+          <div class="pb-8 border-t border-[rgba(243,231,223,0.1)] pt-6">
+            <div class="text-[var(--brand-ink-exact)] mb-3 text-sm tracking-wider uppercase" style={{ fontFamily: 'Inter, sans-serif' }}>Currency</div>
+            <form action="/" method="get">
+              <select name="currency" class="w-full border-none bg-transparent text-base text-[var(--brand-ink-exact)]" style={{ fontFamily: 'Inter, sans-serif' }}
+                      onChange="document.cookie='mky_currency='+this.value+'; Path=/; Max-Age=31536000'; location.reload()">
+                <option value="GBP">GBP</option>
+                <option value="EUR">EUR</option>
+              </select>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Overlay backdrop for drawers -->
+    <div id="mobile-overlay" class="md:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-[900] opacity-0 pointer-events-none transition-opacity duration-300"></div>
+    <div id="desktop-overlay" class="hidden md:block fixed inset-0 bg-black/30 backdrop-blur-sm z-[900] opacity-0 pointer-events-none transition-opacity duration-300"></div>
     
     {isHome && (
       <script>
@@ -103,10 +287,14 @@ const isHome = Astro.url.pathname === '/';
           const floatingLogo = document.getElementById('floating-logo');
           const hero = document.getElementById('hero-section');
           const logoTarget = document.getElementById('logo-target');
+          const heroLogoAnchor = document.getElementById('hero-logo-anchor');
+          const heroHeading = document.getElementById('hero-heading');
           
           const handleScroll = () => {
             const scrollY = window.scrollY;
-            const scrollThreshold = 300; // Distance to complete the animation
+            const heroHeight = hero?.offsetHeight || 600;
+            const heroScrollThreshold = heroHeight * 0.8; // Start changing navbar when 80% past hero
+            const scrollThreshold = 300; // Distance to complete the logo animation
             const progress = Math.min(scrollY / scrollThreshold, 1);
             
             // Animate floating logo
@@ -115,13 +303,24 @@ const isHome = Astro.url.pathname === '/';
               const targetX = targetRect.left + targetRect.width / 2;
               const targetY = targetRect.top + targetRect.height / 2 - 1.5; // slight upward offset
 
-              // Start from hero center
+              // Start from hero center (default), or use hero text anchor on desktop
               let startX = window.innerWidth / 2;
-              let startY = 180;
+              let startY = heroHeight * 0.5; // Center of hero
               if (hero) {
                 const heroRect = hero.getBoundingClientRect();
                 startX = heroRect.left + heroRect.width / 2;
-                startY = heroRect.top + heroRect.height * 0.35;
+                startY = Math.max(heroRect.top + heroRect.height * 0.5, 200);
+              }
+              // Desktop: use precise hero text anchor
+              if (window.innerWidth >= 1024 && heroLogoAnchor) {
+                const anchorRect = heroLogoAnchor.getBoundingClientRect();
+                startX = anchorRect.left;
+                startY = anchorRect.top;
+              // Mobile: start above the New Season heading
+              } else if (window.innerWidth < 1024 && heroHeading) {
+                const headingRect = heroHeading.getBoundingClientRect();
+                startX = headingRect.left + headingRect.width / 1.48;
+                startY = headingRect.top - 140; // slightly above heading
               }
 
               // Sizes
@@ -139,18 +338,13 @@ const isHome = Astro.url.pathname === '/';
               floatingLogo.style.top = `${currentY}px`;
             }
             
-            // Header styling
-            if (scrollY > 50) {
-              header?.classList.add('backdrop-blur-md', 'border-b');
-              header?.style.setProperty('border-color', 'rgba(38, 19, 21, 0.2)');
+            // Header styling - only activate after scrolling past hero
+            if (scrollY > heroScrollThreshold) {
+              header?.classList.add('backdrop-blur-md');
               if (header) header.style.backgroundColor = 'rgba(38, 19, 21, 0.98)';
-              headerContent?.classList.remove('h-24');
-              headerContent?.classList.add('h-16');
             } else {
-              header?.classList.remove('backdrop-blur-md', 'border-b');
-              if (header) header.style.backgroundColor = 'rgba(38, 19, 21, 0.90)';
-              headerContent?.classList.remove('h-16');
-              headerContent?.classList.add('h-24');
+              header?.classList.remove('backdrop-blur-md');
+              if (header) header.style.backgroundColor = 'transparent';
             }
           };
           
@@ -160,8 +354,8 @@ const isHome = Astro.url.pathname === '/';
       </script>
     )}
     
-    <!-- Add padding to account for fixed header (use tall height to avoid cut-off at top) -->
-    <div class="h-24"></div>
+    <!-- Add padding to account for fixed header (not on home page) -->
+    {shouldOffsetForHeader && <div class="h-16 md:h-20"></div>}
     <main class="max-w-[1920px] mx-auto px-4 md:px-6 py-6 md:py-8">
       <slot />
     </main>
@@ -203,16 +397,24 @@ const isHome = Astro.url.pathname === '/';
     </div>
 
     <script>
-      // Mobile drawer menu and logo animation functionality
+      // Mobile drawer menu, desktop drawer menu, and logo animation functionality
       document.addEventListener('DOMContentLoaded', () => {
         const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const drawer = document.getElementById('mobile-drawer');
-        const overlay = document.getElementById('mobile-overlay');
+        const mobileDrawer = document.getElementById('mobile-drawer');
+        const mobileCloseButton = document.getElementById('close-drawer-button');
+        const mobileOverlay = document.getElementById('mobile-overlay');
+        
+        const desktopMenuButton = document.getElementById('desktop-menu-button');
+        const desktopDrawer = document.getElementById('desktop-drawer');
+        const desktopCloseButton = document.getElementById('close-desktop-drawer');
+        const desktopOverlay = document.getElementById('desktop-overlay');
+        
         const floatingLogo = document.getElementById('floating-logo');
         const isHomePage = !!floatingLogo;
-        let menuOpen = false;
+        let mobileMenuOpen = false;
+        let desktopMenuOpen = false;
         
-        if (!mobileMenuButton || !drawer || !overlay) return;
+        if (!mobileMenuButton || !mobileDrawer || !mobileOverlay || !mobileCloseButton) return;
 
         // Calculate logo position based on scroll
         const getLogoPositionForScroll = () => {
@@ -224,6 +426,8 @@ const isHome = Astro.url.pathname === '/';
           
           const hero = document.getElementById('hero-section');
           const logoTarget = document.getElementById('logo-target');
+          const heroLogoAnchor = document.getElementById('hero-logo-anchor');
+          const heroHeading = document.getElementById('hero-heading');
           
           if (!logoTarget) return null;
           
@@ -232,13 +436,22 @@ const isHome = Astro.url.pathname === '/';
           const targetX = targetRect.left + targetRect.width / 2;
           const targetY = targetRect.top + targetRect.height / 2 - 1.5;
           
-          // Start position (hero)
+          // Start position (hero center by default). Use hero text anchor on desktop if present
           let startX = window.innerWidth / 2;
           let startY = 180;
           if (hero) {
             const heroRect = hero.getBoundingClientRect();
             startX = heroRect.left + heroRect.width / 2;
             startY = heroRect.top + heroRect.height * 0.35;
+          }
+          if (window.innerWidth >= 1024 && heroLogoAnchor) {
+            const anchorRect = heroLogoAnchor.getBoundingClientRect();
+            startX = anchorRect.left;
+            startY = anchorRect.top;
+          } else if (window.innerWidth < 1024 && heroHeading) {
+            const headingRect = heroHeading.getBoundingClientRect();
+            startX = headingRect.left + headingRect.width / 2;
+            startY = headingRect.top - 24; // slightly above heading
           }
           
           // Sizes
@@ -280,21 +493,13 @@ const isHome = Astro.url.pathname === '/';
           }, 300);
         };
 
-        // Open the drawer menu
-        const openDrawer = () => {
-          drawer.style.transform = 'translateX(0)';
-          overlay.style.opacity = '1';
-          overlay.style.pointerEvents = 'auto';
-          document.body.style.overflow = 'hidden'; // Prevent scrolling
-          // Swap icons
-          const btn = mobileMenuButton as HTMLButtonElement;
-          const burger = document.getElementById('icon-burger');
-          const closeI = document.getElementById('icon-close');
-          btn.setAttribute('aria-expanded', 'true');
-          if (burger) burger.classList.add('hidden');
-          if (closeI) closeI.classList.remove('hidden');
+        // Open mobile drawer
+        const openMobileDrawer = () => {
+          mobileDrawer.style.transform = 'translateX(0)';
+          mobileOverlay.style.opacity = '1';
+          mobileOverlay.style.pointerEvents = 'auto';
+          document.body.style.overflow = 'hidden';
           
-          // Move it to header position if on home page (no re-render, same element)
           if (isHomePage && floatingLogo) {
             const logoTarget = document.getElementById('logo-target');
             if (logoTarget) {
@@ -307,67 +512,115 @@ const isHome = Astro.url.pathname === '/';
             }
           }
           
-          menuOpen = true;
+          mobileMenuOpen = true;
         };
         
-        // Close the drawer menu
-        const closeDrawer = () => {
-          drawer.style.transform = 'translateX(100%)';
-          overlay.style.opacity = '0';
-          overlay.style.pointerEvents = 'none';
-          document.body.style.overflow = ''; // Restore scrolling
-          // Swap icons back
-          const btn = mobileMenuButton as HTMLButtonElement;
-          const burger = document.getElementById('icon-burger');
-          const closeI = document.getElementById('icon-close');
-          btn.setAttribute('aria-expanded', 'false');
-          if (burger) burger.classList.remove('hidden');
-          if (closeI) closeI.classList.add('hidden');
+        // Close mobile drawer
+        const closeMobileDrawer = () => {
+          mobileDrawer.style.transform = 'translateX(100%)';
+          mobileOverlay.style.opacity = '0';
+          mobileOverlay.style.pointerEvents = 'none';
+          document.body.style.overflow = '';
           
-          // Return logo to original position based on scroll
           if (isHomePage && floatingLogo) {
             const currentScrollPos = getLogoPositionForScroll();
             if (currentScrollPos) animateLogoTo(currentScrollPos);
           }
           
-          menuOpen = false;
+          mobileMenuOpen = false;
         };
 
-        // Add event listeners
-        mobileMenuButton.addEventListener('click', () => {
-          menuOpen ? closeDrawer() : openDrawer();
-        });
-        overlay.addEventListener('click', closeDrawer);
+        // Open desktop drawer
+        const openDesktopDrawer = () => {
+          if (!desktopDrawer || !desktopOverlay) return;
+          desktopDrawer.style.transform = 'translateX(0)';
+          desktopOverlay.style.opacity = '1';
+          desktopOverlay.style.pointerEvents = 'auto';
+          document.body.style.overflow = 'hidden';
+          desktopMenuOpen = true;
+        };
         
-        // Close on nav link clicks or clicks inside drawer header icons
-        drawer.addEventListener('click', (e) => {
-          const target = e.target as HTMLElement;
-          if (target.closest('a')) {
-            closeDrawer();
-          }
-          if (target.closest('#icon-close')) {
-            closeDrawer();
-          }
+        // Close desktop drawer
+        const closeDesktopDrawer = () => {
+          if (!desktopDrawer || !desktopOverlay) return;
+          desktopDrawer.style.transform = 'translateX(-100%)';
+          desktopOverlay.style.opacity = '0';
+          desktopOverlay.style.pointerEvents = 'none';
+          document.body.style.overflow = '';
+          desktopMenuOpen = false;
+        };
+
+        // Add event listeners - Mobile
+        mobileMenuButton.addEventListener('click', openMobileDrawer);
+        mobileCloseButton.addEventListener('click', closeMobileDrawer);
+        mobileOverlay.addEventListener('click', closeMobileDrawer);
+        
+        // Close mobile drawer on nav link clicks
+        const mobileLinks = mobileDrawer.querySelectorAll('a');
+        mobileLinks.forEach(link => {
+          link.addEventListener('click', closeMobileDrawer);
         });
 
-        // Close on window resize to desktop
+        // Add event listeners - Desktop
+        if (desktopMenuButton && desktopCloseButton && desktopOverlay) {
+          desktopMenuButton.addEventListener('click', openDesktopDrawer);
+          desktopCloseButton.addEventListener('click', closeDesktopDrawer);
+          desktopOverlay.addEventListener('click', closeDesktopDrawer);
+          
+          // Close desktop drawer on nav link clicks
+          if (desktopDrawer) {
+            const desktopLinks = desktopDrawer.querySelectorAll('a');
+            desktopLinks.forEach(link => {
+              link.addEventListener('click', closeDesktopDrawer);
+            });
+          }
+        }
+
+        // Close on window resize
         window.addEventListener('resize', () => {
-          if (window.innerWidth >= 768 && menuOpen) {
-            closeDrawer();
+          if (window.innerWidth >= 768 && mobileMenuOpen) {
+            closeMobileDrawer();
+          }
+          if (window.innerWidth < 768 && desktopMenuOpen) {
+            closeDesktopDrawer();
           }
         });
         
         // Recalculate logo position on scroll when menu is closed
         if (isHomePage) {
           window.addEventListener('scroll', () => {
-            if (!menuOpen && floatingLogo) {
+            if (!mobileMenuOpen && floatingLogo) {
               const logoPos = getLogoPositionForScroll();
               if (logoPos) setLogoPosition(logoPos);
             }
           });
         }
+        
+        // Accordion functionality for drawer menus
+        const drawerToggles = document.querySelectorAll('.drawer-toggle');
+        drawerToggles.forEach(toggle => {
+          toggle.addEventListener('click', () => {
+            const targetId = toggle.getAttribute('data-target');
+            const submenu = document.getElementById(targetId);
+            const chevron = toggle.querySelector('.drawer-chevron');
+            
+            if (submenu && chevron) {
+              const isHidden = submenu.classList.contains('hidden');
+              
+              if (isHidden) {
+                submenu.classList.remove('hidden');
+                chevron.style.transform = 'rotate(180deg)';
+              } else {
+                submenu.classList.add('hidden');
+                chevron.style.transform = 'rotate(0deg)';
+              }
+            }
+          });
+        });
       });
     </script>
   </body>
 </html>
+
+
 

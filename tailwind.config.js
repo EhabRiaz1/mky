@@ -15,11 +15,15 @@ export default {
         card: '#FFFFFF',
         accent: '#A38469'
       },
+      fontFamily: {
+        'serif': ['Playfair Display', 'Georgia', 'serif'],
+        'sans': ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
+      },
       borderRadius: {
-        card: '14px'
+        card: '0'
       },
       boxShadow: {
-        card: '0 8px 24px rgba(0,0,0,0.06)'
+        card: 'none'
       }
     },
   },
