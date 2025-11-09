@@ -1,12 +1,56 @@
 ---
 import ProductDetail from "../components/ProductDetail.tsx";
+import SimilarProducts from "../components/SimilarProducts.tsx";
 import BaseLayout from "../layouts/BaseLayout.astro";
 const handle = Astro.url.searchParams.get('handle') ?? '';
+const id = Astro.url.searchParams.get('id') ?? '';
+const referrer = Astro.url.searchParams.get('from') ?? '';
+
+// Determine back link and text based on referrer
+let backLink = '/products';
+let backText = 'Back to shop';
+
+if (referrer.includes('blazers')) {
+  backLink = referrer;
+  backText = 'Back to blazers';
+} else if (referrer.includes('trousers')) {
+  backLink = referrer;
+  backText = 'Back to trousers';
+} else if (referrer.includes('men')) {
+  backLink = referrer;
+  backText = 'Back to men\'s collection';
+} else if (referrer.includes('women')) {
+  backLink = referrer;
+  backText = 'Back to women\'s collection';
+}
+console.log('*** [Product.astro] Parsed searchParams:', Astro.url.searchParams);
+console.log('*** [Product.astro] Passing to ProductDetail:', { handle, id });
 ---
-<BaseLayout title="Product — Maison MKY">
-  <a href="/products" class="text-sm hover:underline">Back to shop</a>
-  <div class="mt-4">
-    <ProductDetail client:load handle={handle} />
+<BaseLayout title="Product — Maison MKY" fullWidth={true}>
+  <div class="p-0 m-0 relative">
+    <a href={backLink} class="absolute top-[80px] left-6 z-10 px-4 py-2 bg-[rgba(38,19,21,0.05)] hover:bg-[rgba(38,19,21,0.1)] rounded-full text-[rgb(38,19,21)] text-sm font-medium transition-all duration-300 flex items-center">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+      </svg>
+      {backText}
+    </a>
+    
+    <div>
+      <ProductDetail client:load handle={handle} id={id} />
+    </div>
+    
+    <!-- Horizontal Divider before Similar Products -->
+    <div class="w-full border-t border-[rgb(38,19,21)] opacity-20 my-16"></div>
+    
+    <!-- Similar Products Section - Dynamic based on current product -->
+    <div class="px-4 md:px-6 mb-16">
+      <SimilarProducts client:load productId={id} handle={handle} limit={4} />
+    </div>
   </div>
 </BaseLayout>
+
+<style is:global>
+  #main-header { background-color: var(--brand-bg-exact) !important; }
+  #main-header.backdrop-blur-md { background-color: var(--brand-bg-exact) !important; }
+</style>
 

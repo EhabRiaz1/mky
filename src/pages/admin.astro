@@ -1,9 +1,16 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import AdminIsland from '../react/AdminIsland';
+import '../styles/admin.css';
 ---
-<BaseLayout title="Admin">
+<BaseLayout title="Admin Dashboard">
   <div class="max-w-[1920px] mx-auto px-4 md:px-6 py-6 md:py-8">
     <AdminIsland client:only="react" />
   </div>
 </BaseLayout>
+
+<style is:global>
+  #main-header { background-color: var(--brand-bg-exact) !important; }
+  #main-header.backdrop-blur-md { background-color: var(--brand-bg-exact) !important; }
+  body { background-color: var(--surface) !important; }
+</style>

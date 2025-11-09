@@ -2,94 +2,26 @@
 > storefront@0.0.1 dev
 > astro dev
 
-02:03:52 [types] Generated 1ms
-02:03:52 [content] Syncing content
-02:03:52 [content] Synced content
-02:03:53 [vite] Port 4321 is in use, trying another one...
+11:27:26 [types] Generated 1ms
+11:27:26 [content] Syncing content
+11:27:26 [content] Synced content
+11:27:26 [vite] Port 4321 is in use, trying another one...
+11:27:26 [vite] Port 4322 is in use, trying another one...
 
- astro  v5.14.1 ready in 468 ms
+ astro  v5.14.1 ready in 456 ms
 
-┃ Local    http://localhost:4322/
+┃ Local    http://localhost:4323/
 ┃ Network  use --host to expose
 
-02:03:53 watching for file changes...
-Error: Cannot apply unknown utility class `px-5`. Are you using CSS modules or similar and missing `@reference`? https://tailwindcss.com/docs/functions-and-directives#reference-directive
-    at onInvalidCandidate (/Users/ehabriaz/Desktop/ε/mky/node_modules/@tailwindcss/node/node_modules/tailwindcss/dist/lib.js:18:1332)
-    at ge (/Users/ehabriaz/Desktop/ε/mky/node_modules/@tailwindcss/node/node_modules/tailwindcss/dist/lib.js:13:29888)
-    at /Users/ehabriaz/Desktop/ε/mky/node_modules/@tailwindcss/node/node_modules/tailwindcss/dist/lib.js:18:373
-    at L (/Users/ehabriaz/Desktop/ε/mky/node_modules/@tailwindcss/node/node_modules/tailwindcss/dist/lib.js:3:1656)
-    at je (/Users/ehabriaz/Desktop/ε/mky/node_modules/@tailwindcss/node/node_modules/tailwindcss/dist/lib.js:18:172)
-    at bi (/Users/ehabriaz/Desktop/ε/mky/node_modules/@tailwindcss/node/node_modules/tailwindcss/dist/lib.js:35:780)
-    at async yi (/Users/ehabriaz/Desktop/ε/mky/node_modules/@tailwindcss/node/node_modules/tailwindcss/dist/lib.js:35:1123)
-    at async Or (/Users/ehabriaz/Desktop/ε/mky/node_modules/@tailwindcss/node/dist/index.js:10:3384)
-    at async W (/Users/ehabriaz/Desktop/ε/mky/node_modules/@tailwindcss/postcss/dist/index.js:10:4048)
-    at async Object.Once (/Users/ehabriaz/Desktop/ε/mky/node_modules/@tailwindcss/postcss/dist/index.js:10:4318)
-Error: Cannot apply unknown utility class `px-5`. Are you using CSS modules or similar and missing `@reference`? https://tailwindcss.com/docs/functions-and-directives#reference-directive
-    at onInvalidCandidate (/Users/ehabriaz/Desktop/ε/mky/node_modules/@tailwindcss/node/node_modules/tailwindcss/dist/lib.js:18:1332)
-    at ge (/Users/ehabriaz/Desktop/ε/mky/node_modules/@tailwindcss/node/node_modules/tailwindcss/dist/lib.js:13:29888)
-    at /Users/ehabriaz/Desktop/ε/mky/node_modules/@tailwindcss/node/node_modules/tailwindcss/dist/lib.js:18:373
-    at L (/Users/ehabriaz/Desktop/ε/mky/node_modules/@tailwindcss/node/node_modules/tailwindcss/dist/lib.js:3:1656)
-    at je (/Users/ehabriaz/Desktop/ε/mky/node_modules/@tailwindcss/node/node_modules/tailwindcss/dist/lib.js:18:172)
-    at bi (/Users/ehabriaz/Desktop/ε/mky/node_modules/@tailwindcss/node/node_modules/tailwindcss/dist/lib.js:35:780)
-    at async yi (/Users/ehabriaz/Desktop/ε/mky/node_modules/@tailwindcss/node/node_modules/tailwindcss/dist/lib.js:35:1123)
-    at async Or (/Users/ehabriaz/Desktop/ε/mky/node_modules/@tailwindcss/node/dist/index.js:10:3384)
-    at async W (/Users/ehabriaz/Desktop/ε/mky/node_modules/@tailwindcss/postcss/dist/index.js:10:4048)
-    at async Object.Once (/Users/ehabriaz/Desktop/ε/mky/node_modules/@tailwindcss/postcss/dist/index.js:10:4318)
-02:04:05 [200] / 51ms
-Error: Cannot apply unknown utility class `px-5`. Are you using CSS modules or similar and missing `@reference`? https://tailwindcss.com/docs/functions-and-directives#reference-directive
-    at onInvalidCandidate (/Users/ehabriaz/Desktop/ε/mky/node_modules/@tailwindcss/node/node_modules/tailwindcss/dist/lib.js:18:1332)
-    at ge (/Users/ehabriaz/Desktop/ε/mky/node_modules/@tailwindcss/node/node_modules/tailwindcss/dist/lib.js:13:29888)
-    at /Users/ehabriaz/Desktop/ε/mky/node_modules/@tailwindcss/node/node_modules/tailwindcss/dist/lib.js:18:373
-    at L (/Users/ehabriaz/Desktop/ε/mky/node_modules/@tailwindcss/node/node_modules/tailwindcss/dist/lib.js:3:1656)
-    at je (/Users/ehabriaz/Desktop/ε/mky/node_modules/@tailwindcss/node/node_modules/tailwindcss/dist/lib.js:18:172)
-    at bi (/Users/ehabriaz/Desktop/ε/mky/node_modules/@tailwindcss/node/node_modules/tailwindcss/dist/lib.js:35:780)
-    at async yi (/Users/ehabriaz/Desktop/ε/mky/node_modules/@tailwindcss/node/node_modules/tailwindcss/dist/lib.js:35:1123)
-    at async Or (/Users/ehabriaz/Desktop/ε/mky/node_modules/@tailwindcss/node/dist/index.js:10:3384)
-    at async W (/Users/ehabriaz/Desktop/ε/mky/node_modules/@tailwindcss/postcss/dist/index.js:10:4048)
-    at async Object.Once (/Users/ehabriaz/Desktop/ε/mky/node_modules/@tailwindcss/postcss/dist/index.js:10:4318)
-02:05:30 [watch] /src/styles/globals.css, /@fs/Users/ehabriaz/Desktop/ε/mky/node_modules/@astrojs/tailwind/base.css
-02:05:30 [ERROR] [vite] Internal server error: [postcss] /Users/ehabriaz/Desktop/ε/mky/apps/storefront/node_modules/tailwindcss/index.css:486:1: `@layer base` is used but no matching `@tailwind base` directive is present.
-  Plugin: vite:css
-  File: /Users/ehabriaz/Desktop/ε/mky/apps/storefront/node_modules/tailwindcss/index.css:486:0
-  484|  }
-  485|  
-  486|  @layer base {
-     |  ^
-  487|    /*
-  488|    1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)
-      at Input.error (/Users/ehabriaz/Desktop/ε/mky/node_modules/postcss/lib/input.js:135:16)
-      at AtRule.error (/Users/ehabriaz/Desktop/ε/mky/node_modules/postcss/lib/node.js:146:32)
-      at normalizeTailwindDirectives (/Users/ehabriaz/Desktop/ε/mky/node_modules/tailwindcss/lib/lib/normalizeTailwindDirectives.js:72:32)
-      at /Users/ehabriaz/Desktop/ε/mky/node_modules/tailwindcss/lib/processTailwindFeatures.js:29:98
-      at plugins (/Users/ehabriaz/Desktop/ε/mky/node_modules/tailwindcss/lib/plugin.js:38:69)
-      at LazyResult.runOnRoot (/Users/ehabriaz/Desktop/ε/mky/node_modules/postcss/lib/lazy-result.js:361:16)
-      at LazyResult.runAsync (/Users/ehabriaz/Desktop/ε/mky/node_modules/postcss/lib/lazy-result.js:290:26)
-      at async runPostCSS (file:///Users/ehabriaz/Desktop/%CE%B5/mky/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:43842:21)
-      at async compilePostCSS (file:///Users/ehabriaz/Desktop/%CE%B5/mky/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:43812:18)
-      at async compileCSS (file:///Users/ehabriaz/Desktop/%CE%B5/mky/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:43667:27)
-      at async TransformPluginContext.handler (file:///Users/ehabriaz/Desktop/%CE%B5/mky/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:42983:11)
-      at async EnvironmentPluginContainer.transform (file:///Users/ehabriaz/Desktop/%CE%B5/mky/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:42312:18)
-      at async loadAndTransform (file:///Users/ehabriaz/Desktop/%CE%B5/mky/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:35738:27)
-      at async viteTransformMiddleware (file:///Users/ehabriaz/Desktop/%CE%B5/mky/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:37253:24)
-02:05:30 [ERROR] [postcss] /Users/ehabriaz/Desktop/ε/mky/apps/storefront/node_modules/tailwindcss/index.css:486:1: `@layer base` is used but no matching `@tailwind base` directive is present.
-  Stack trace:
-    at /Users/ehabriaz/Desktop/ε/mky/apps/storefront/node_modules/tailwindcss/index.css
-    [...] See full stack trace in the browser, or rerun with --verbose.
-02:05:37 [watch] /src/styles/globals.css, /@fs/Users/ehabriaz/Desktop/ε/mky/node_modules/@astrojs/tailwind/base.css
-02:05:37 [ERROR] [postcss] /Users/ehabriaz/Desktop/ε/mky/apps/storefront/node_modules/tailwindcss/index.css:486:1: `@layer base` is used but no matching `@tailwind base` directive is present.
-  Stack trace:
-    at Input.error (/Users/ehabriaz/Desktop/ε/mky/node_modules/postcss/lib/input.js:135:16)
-    [...] See full stack trace in the browser, or rerun with --verbose.
-02:05:37 [ERROR] [postcss] /Users/ehabriaz/Desktop/ε/mky/apps/storefront/node_modules/tailwindcss/index.css:486:1: `@layer base` is used but no matching `@tailwind base` directive is present.
-  Stack trace:
-    at Input.error (/Users/ehabriaz/Desktop/ε/mky/node_modules/postcss/lib/input.js:135:16)
-    [...] See full stack trace in the browser, or rerun with --verbose.
-02:06:15 [watch] /src/styles/globals.css, /@fs/Users/ehabriaz/Desktop/ε/mky/node_modules/@astrojs/tailwind/base.css
-02:06:15 [ERROR] [postcss] /Users/ehabriaz/Desktop/ε/mky/apps/storefront/node_modules/tailwindcss/index.css:486:1: `@layer base` is used but no matching `@tailwind base` directive is present.
-  Stack trace:
-    at Input.error (/Users/ehabriaz/Desktop/ε/mky/node_modules/postcss/lib/input.js:135:16)
-    [...] See full stack trace in the browser, or rerun with --verbose.
-02:06:15 [ERROR] [postcss] /Users/ehabriaz/Desktop/ε/mky/apps/storefront/node_modules/tailwindcss/index.css:486:1: `@layer base` is used but no matching `@tailwind base` directive is present.
-  Stack trace:
-    at Input.error (/Users/ehabriaz/Desktop/ε/mky/node_modules/postcss/lib/input.js:135:16)
-    [...] See full stack trace in the browser, or rerun with --verbose.
+11:27:26 watching for file changes...
+
+ update  ▶ New version of Astro available: 5.15.2
+  Run npx @astrojs/upgrade to update
+
+11:28:26 [200] /login 223ms
+11:33:03 [200] /women 15ms
+17:48:10 [200] /login 18ms
+17:48:14 [200] /login 7ms
+12:35:24 [200] /login 32ms
+12:35:32 [200] /login 13ms
+12:35:47 [200] /login 11ms

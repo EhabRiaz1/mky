@@ -21,36 +21,64 @@ export default function OrdersPending() {
 
   useEffect(() => { load() }, [])
 
-  if (loading) return <div>Loading…</div>
+  if (loading) return <div className="admin-loading">Loading pending orders…</div>
 
   return (
     <div>
-      <h2>Pending Orders</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Order</th>
-            <th>Email</th>
-            <th>Total</th>
-            <th>Created</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {orders.map(o => (
-            <tr key={o.id}>
-              <td>{o.id.slice(0,8)}</td>
-              <td>{o.email ?? '—'}</td>
-              <td>${(o.total_cents/100).toFixed(2)}</td>
-              <td>{new Date(o.created_at).toLocaleString()}</td>
-              <td>
-                <button onClick={async ()=>{ await supabase.rpc('order_set_status', { p_order_id: o.id, p_status: 'paid' }); await load(); }}>Mark Paid</button>
-                <button onClick={async ()=>{ await supabase.rpc('order_set_status', { p_order_id: o.id, p_status: 'cancelled' }); await load(); }} style={{ marginLeft: 8 }}>Cancel</button>
-              </td>
+      <h2 className="admin-section-title">Pending Orders</h2>
+      <div className="admin-box">
+        <table className="admin-table">
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Customer</th>
+              <th>Total</th>
+              <th>Created</th>
+              <th>Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {orders.length === 0 ? (
+              <tr>
+                <td colSpan={5} style={{textAlign: 'center', padding: '2rem'}}>
+                  No pending orders at this time
+                </td>
+              </tr>
+            ) : (
+              orders.map(o => (
+                <tr key={o.id}>
+                  <td>{o.id.slice(0,8)}</td>
+                  <td>{o.email ?? '—'}</td>
+                  <td>${(o.total_cents/100).toFixed(2)}</td>
+                  <td>{new Date(o.created_at).toLocaleString()}</td>
+                  <td>
+                    <div style={{display: 'flex', gap: '0.5rem'}}>
+                      <button 
+                        className="admin-btn admin-btn-primary" 
+                        onClick={async ()=>{ 
+                          await supabase.rpc('order_set_status', { p_order_id: o.id, p_status: 'paid' }); 
+                          await load(); 
+                        }}
+                      >
+                        Mark Paid
+                      </button>
+                      <button 
+                        className="admin-btn admin-btn-secondary" 
+                        onClick={async ()=>{ 
+                          await supabase.rpc('order_set_status', { p_order_id: o.id, p_status: 'cancelled' }); 
+                          await load(); 
+                        }}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   )
 }

@@ -4,9 +4,10 @@ import '../styles/colors.css';
 import LoadingScreen from '../components/LoadingScreen';
 import AuthDrawerIsland from '../react/AuthDrawerIsland';
 const {
-  title = 'Maison MKY',
+  title = 'MKY - The Lifestyle',
   description = 'Luxury Fashion House',
   stickyHeader = false,
+  fullWidth = false,
 } = Astro.props;
 const isHome = Astro.url.pathname === '/';
 const useStickyHeader = !isHome && stickyHeader;
@@ -34,17 +35,6 @@ const shouldOffsetForHeader = !isHome && !useStickyHeader;
   <body class="min-h-screen text-neutral-900" style={{ backgroundColor: 'var(--brand-ink-exact)' }}>
     <LoadingScreen client:load />
     <div class="page-content">
-    <!-- Floating logo that animates from hero to navbar (home page only) -->
-    {isHome && (
-      <div id="floating-logo" class="fixed z-50 transition-all duration-300 ease-out pointer-events-none" style="left: 50%; top: 180px; transform: translate(-50%, -50%); width: 280px; height: 280px;">
-        <img 
-          src="/logo.png" 
-          alt="Maison MKY" 
-          class="w-full h-full object-contain"
-        />
-      </div>
-    )}
-    
     <header
       id="main-header"
       class={`${headerPositionClasses} ${headerEffectClasses} ${headerTextClasses} z-40 transition-all duration-300`}
@@ -53,7 +43,7 @@ const shouldOffsetForHeader = !isHome && !useStickyHeader;
       <div class="max-w-7xl mx-auto px-6 h-16 md:h-20 flex items-center justify-between transition-all duration-300">
         <!-- Left: Menu + Search (Desktop) -->
         <div class="hidden md:flex items-center gap-8">
-          <button id="desktop-menu-button" class="group inline-flex items-center gap-2 text-base tracking-wider transition-opacity hover:opacity-70" style={{ color: 'var(--brand-ink-exact)', fontFamily: 'Inter, sans-serif', textTransform: 'uppercase', fontSize: '0.875rem', letterSpacing: '0.1em' }} aria-label="Menu">
+          <button id="desktop-menu-button" type="button" onclick="(function(){var d=document.getElementById('desktop-drawer');var o=document.getElementById('desktop-overlay');if(!d||!o)return;d.classList.remove('-translate-x-full');d.classList.add('translate-x-0');o.classList.remove('opacity-0','pointer-events-none');o.classList.add('opacity-100');document.body.style.overflow='hidden';})()" class="group inline-flex items-center gap-2 text-base tracking-wider transition-opacity hover:opacity-70" style={{ color: 'var(--brand-ink-exact)', fontFamily: 'Inter, sans-serif', textTransform: 'uppercase', fontSize: '0.875rem', letterSpacing: '0.1em' }} aria-label="Menu">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M4 7h16M4 12h16M4 17h16" />
             </svg>
@@ -69,16 +59,14 @@ const shouldOffsetForHeader = !isHome && !useStickyHeader;
         </div>
 
         <!-- Center: Logo -->
-        <div id="logo-target" class={isHome ? 'w-10 md:w-12 h-10 md:h-12 opacity-0' : 'w-10 md:w-12 h-10 md:h-12'}>
+        <div id="logo-target" class="w-10 md:w-12 h-10 md:h-12">
           <a href="/" class="block w-full h-full">
-            {!isHome && (
-              <img src="/logo.png" alt="Maison MKY" class="w-full h-full object-contain" />
-            )}
+            <img src="/logo.png" alt="MKY" class="w-full h-full object-contain" />
           </a>
         </div>
         
         <!-- Mobile menu button -->
-        <button id="mobile-menu-button" class="md:hidden text-[#F3E7DF] z-50" aria-label="Toggle menu">
+        <button id="mobile-menu-button" type="button" onclick="(function(){var d=document.getElementById('mobile-drawer');var o=document.getElementById('mobile-overlay');if(!d||!o)return;d.classList.remove('translate-x-full');d.classList.add('translate-x-0');o.classList.remove('opacity-0','pointer-events-none');o.classList.add('opacity-100');document.body.style.overflow='hidden';})()" class="md:hidden text-[#F3E7DF] z-50" aria-label="Toggle menu">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
           </svg>
@@ -110,7 +98,7 @@ const shouldOffsetForHeader = !isHome && !useStickyHeader;
     <div id="desktop-drawer" class="hidden md:block fixed inset-y-0 left-0 z-[1000] w-96 bg-[rgba(243,231,223,0.98)] backdrop-blur-lg shadow-2xl transition-transform duration-300 ease-in-out transform -translate-x-full">
       <div class="h-full flex flex-col px-10 py-12 overflow-y-auto">
         <!-- Close button -->
-        <button id="close-desktop-drawer" class="absolute top-8 right-8 transition-opacity hover:opacity-70" style={{ color: 'var(--brand-bg-exact)' }} aria-label="Close menu">
+        <button id="close-desktop-drawer" type="button" onclick="(function(){var d=document.getElementById('desktop-drawer');var o=document.getElementById('desktop-overlay');if(!d||!o)return;d.classList.remove('translate-x-0');d.classList.add('-translate-x-full');o.classList.remove('opacity-100');o.classList.add('opacity-0','pointer-events-none');document.body.style.overflow='';})()" class="absolute top-8 right-8 transition-opacity hover:opacity-70" style={{ color: 'var(--brand-bg-exact)' }} aria-label="Close menu">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" />
           </svg>
@@ -120,7 +108,7 @@ const shouldOffsetForHeader = !isHome && !useStickyHeader;
         <nav class="mt-16 flex flex-col gap-6">
           <!-- Men Dropdown -->
           <div class="border-b border-[rgba(38,19,21,0.1)] pb-6">
-            <button class="drawer-toggle group w-full flex items-center justify-between py-2 text-left" data-target="men-submenu">
+            <button type="button" aria-expanded="false" onclick="(function(btn){var id=btn.getAttribute('data-target');var s=document.getElementById(id);var c=btn.querySelector('.drawer-chevron');if(!s)return;var hidden=s.classList.contains('hidden');if(hidden){s.classList.remove('hidden');if(c){c.style.transform='rotate(180deg)';}btn.setAttribute('aria-expanded','true');}else{s.classList.add('hidden');if(c){c.style.transform='rotate(0deg)';}btn.setAttribute('aria-expanded','false');}})(this)" class="drawer-toggle group w-full flex items-center justify-between py-2 text-left" data-target="men-submenu">
               <span class="relative inline-block text-xl tracking-wide group-hover:font-semibold" style={{ color: 'var(--brand-bg-exact)', fontFamily: 'Playfair Display, serif' }}>Men
                 <span class="block h-[2px] bg-current origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 mt-0.5"></span>
               </span>
@@ -149,7 +137,7 @@ const shouldOffsetForHeader = !isHome && !useStickyHeader;
           
           <!-- Women Dropdown -->
           <div class="border-b border-[rgba(38,19,21,0.1)] pb-6">
-            <button class="drawer-toggle group w-full flex items-center justify-between py-2 text-left" data-target="women-submenu">
+            <button type="button" aria-expanded="false" onclick="(function(btn){var id=btn.getAttribute('data-target');var s=document.getElementById(id);var c=btn.querySelector('.drawer-chevron');if(!s)return;var hidden=s.classList.contains('hidden');if(hidden){s.classList.remove('hidden');if(c){c.style.transform='rotate(180deg)';}btn.setAttribute('aria-expanded','true');}else{s.classList.add('hidden');if(c){c.style.transform='rotate(0deg)';}btn.setAttribute('aria-expanded','false');}})(this)" class="drawer-toggle group w-full flex items-center justify-between py-2 text-left" data-target="women-submenu">
               <span class="relative inline-block text-xl tracking-wide group-hover:font-semibold" style={{ color: 'var(--brand-bg-exact)', fontFamily: 'Playfair Display, serif' }}>Women
                 <span class="block h-[2px] bg-current origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 mt-0.5"></span>
               </span>
@@ -208,7 +196,7 @@ const shouldOffsetForHeader = !isHome && !useStickyHeader;
     <div id="mobile-drawer" class="md:hidden fixed inset-y-0 right-0 z-[1000] w-[85vw] max-w-md bg-[rgba(38,19,21,0.98)] backdrop-blur-lg shadow-lg transition-transform duration-300 ease-in-out transform translate-x-full">
       <div class="h-full flex flex-col justify-between px-8 py-10 overflow-y-auto">
         <!-- Close button -->
-        <button id="close-drawer-button" class="absolute top-6 right-6 text-[var(--brand-ink-exact)]" aria-label="Close menu">
+        <button id="close-drawer-button" type="button" onclick="(function(){var d=document.getElementById('mobile-drawer');var o=document.getElementById('mobile-overlay');if(!d||!o)return;d.classList.remove('translate-x-0');d.classList.add('translate-x-full');o.classList.remove('opacity-100');o.classList.add('opacity-0','pointer-events-none');document.body.style.overflow='';})()" class="absolute top-6 right-6 text-[var(--brand-ink-exact)]" aria-label="Close menu">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" />
           </svg>
@@ -219,7 +207,7 @@ const shouldOffsetForHeader = !isHome && !useStickyHeader;
           <nav class="flex flex-col gap-6">
             <!-- Men Dropdown -->
             <div class="border-b border-[rgba(243,231,223,0.1)] pb-6">
-              <button class="drawer-toggle w-full flex items-center justify-between py-2 text-left" data-target="mobile-men-submenu">
+              <button type="button" aria-expanded="false" onclick="(function(btn){var id=btn.getAttribute('data-target');var s=document.getElementById(id);var c=btn.querySelector('.drawer-chevron');if(!s)return;var hidden=s.classList.contains('hidden');if(hidden){s.classList.remove('hidden');if(c){c.style.transform='rotate(180deg)';}btn.setAttribute('aria-expanded','true');}else{s.classList.add('hidden');if(c){c.style.transform='rotate(0deg)';}btn.setAttribute('aria-expanded','false');}})(this)" class="drawer-toggle w-full flex items-center justify-between py-2 text-left" data-target="mobile-men-submenu">
                 <span class="text-2xl tracking-wide text-[var(--brand-ink-exact)]" style={{ fontFamily: 'Playfair Display, serif' }}>Men</span>
                 <svg class="drawer-chevron h-5 w-5 text-[var(--brand-ink-exact)] transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7" />
@@ -234,7 +222,7 @@ const shouldOffsetForHeader = !isHome && !useStickyHeader;
             
             <!-- Women Dropdown -->
             <div class="border-b border-[rgba(243,231,223,0.1)] pb-6">
-              <button class="drawer-toggle w-full flex items-center justify-between py-2 text-left" data-target="mobile-women-submenu">
+              <button type="button" aria-expanded="false" onclick="(function(btn){var id=btn.getAttribute('data-target');var s=document.getElementById(id);var c=btn.querySelector('.drawer-chevron');if(!s)return;var hidden=s.classList.contains('hidden');if(hidden){s.classList.remove('hidden');if(c){c.style.transform='rotate(180deg)';}btn.setAttribute('aria-expanded','true');}else{s.classList.add('hidden');if(c){c.style.transform='rotate(0deg)';}btn.setAttribute('aria-expanded','false');}})(this)" class="drawer-toggle w-full flex items-center justify-between py-2 text-left" data-target="mobile-women-submenu">
                 <span class="text-2xl tracking-wide text-[var(--brand-ink-exact)]" style={{ fontFamily: 'Playfair Display, serif' }}>Women</span>
                 <svg class="drawer-chevron h-5 w-5 text-[var(--brand-ink-exact)] transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7" />
@@ -275,95 +263,20 @@ const shouldOffsetForHeader = !isHome && !useStickyHeader;
     </div>
 
     <!-- Overlay backdrop for drawers -->
-    <div id="mobile-overlay" class="md:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-[900] opacity-0 pointer-events-none transition-opacity duration-300"></div>
-    <div id="desktop-overlay" class="hidden md:block fixed inset-0 bg-black/30 backdrop-blur-sm z-[900] opacity-0 pointer-events-none transition-opacity duration-300"></div>
+    <div id="mobile-overlay" onclick="(function(){var d=document.getElementById('mobile-drawer');var o=document.getElementById('mobile-overlay');if(!d||!o)return;d.classList.remove('translate-x-0');d.classList.add('translate-x-full');o.classList.remove('opacity-100');o.classList.add('opacity-0','pointer-events-none');document.body.style.overflow='';})()" class="md:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-[900] opacity-0 pointer-events-none transition-opacity duration-300"></div>
+    <div id="desktop-overlay" onclick="(function(){var d=document.getElementById('desktop-drawer');var o=document.getElementById('desktop-overlay');if(!d||!o)return;d.classList.remove('translate-x-0');d.classList.add('-translate-x-full');o.classList.remove('opacity-100');o.classList.add('opacity-0','pointer-events-none');document.body.style.overflow='';})()" class="hidden md:block fixed inset-0 bg-black/30 backdrop-blur-sm z-[900] opacity-0 pointer-events-none transition-opacity duration-300"></div>
     
-    {isHome && (
-      <script>
-        // Animate logo and header on scroll (home only)
-        document.addEventListener('DOMContentLoaded', () => {
-          const header = document.getElementById('main-header');
-          const headerContent = header?.querySelector('div');
-          const floatingLogo = document.getElementById('floating-logo');
-          const hero = document.getElementById('hero-section');
-          const logoTarget = document.getElementById('logo-target');
-          const heroLogoAnchor = document.getElementById('hero-logo-anchor');
-          const heroHeading = document.getElementById('hero-heading');
-          
-          const handleScroll = () => {
-            const scrollY = window.scrollY;
-            const heroHeight = hero?.offsetHeight || 600;
-            const heroScrollThreshold = heroHeight * 0.8; // Start changing navbar when 80% past hero
-            const scrollThreshold = 300; // Distance to complete the logo animation
-            const progress = Math.min(scrollY / scrollThreshold, 1);
-            
-            // Animate floating logo
-            if (floatingLogo && logoTarget) {
-              const targetRect = logoTarget.getBoundingClientRect();
-              const targetX = targetRect.left + targetRect.width / 2;
-              const targetY = targetRect.top + targetRect.height / 2 - 1.5; // slight upward offset
-
-              // Start from hero center (default), or use hero text anchor on desktop
-              let startX = window.innerWidth / 2;
-              let startY = heroHeight * 0.5; // Center of hero
-              if (hero) {
-                const heroRect = hero.getBoundingClientRect();
-                startX = heroRect.left + heroRect.width / 2;
-                startY = Math.max(heroRect.top + heroRect.height * 0.5, 200);
-              }
-              // Desktop: use precise hero text anchor
-              if (window.innerWidth >= 1024 && heroLogoAnchor) {
-                const anchorRect = heroLogoAnchor.getBoundingClientRect();
-                startX = anchorRect.left;
-                startY = anchorRect.top;
-              // Mobile: start above the New Season heading
-              } else if (window.innerWidth < 1024 && heroHeading) {
-                const headingRect = heroHeading.getBoundingClientRect();
-                startX = headingRect.left + headingRect.width / 1.48;
-                startY = headingRect.top - 140; // slightly above heading
-              }
-
-              // Sizes
-              const startSize = 280;
-              const endSize = 48;
-              const currentSize = startSize - (startSize - endSize) * progress;
-
-              // Interpolate positions
-              const currentX = startX + (targetX - startX) * progress;
-              const currentY = startY + (targetY - startY) * progress;
-
-              floatingLogo.style.width = `${currentSize}px`;
-              floatingLogo.style.height = `${currentSize}px`;
-              floatingLogo.style.left = `${currentX}px`;
-              floatingLogo.style.top = `${currentY}px`;
-            }
-            
-            // Header styling - only activate after scrolling past hero
-            if (scrollY > heroScrollThreshold) {
-              header?.classList.add('backdrop-blur-md');
-              if (header) header.style.backgroundColor = 'rgba(38, 19, 21, 0.98)';
-            } else {
-              header?.classList.remove('backdrop-blur-md');
-              if (header) header.style.backgroundColor = 'transparent';
-            }
-          };
-          
-          window.addEventListener('scroll', handleScroll);
-          handleScroll();
-        });
-      </script>
-    )}
     
     <!-- Add padding to account for fixed header (not on home page) -->
     {shouldOffsetForHeader && <div class="h-16 md:h-20"></div>}
-    <main class="max-w-[1920px] mx-auto px-4 md:px-6 py-6 md:py-8">
+    <main class={`${fullWidth ? 'max-w-none px-0 py-0' : 'max-w-[1920px] mx-auto px-4 md:px-6 py-6 md:py-8'}`}>
       <slot />
     </main>
     <footer class="border-t border-neutral-700/10 py-16 mt-24" style={{ backgroundColor: 'var(--brand-bg-exact)' }}>
       <div class="max-w-7xl mx-auto px-6">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-10">
           <div>
-            <h3 class="font-light tracking-widest mb-4 text-[#F3E7DF]" style={{ color: 'var(--brand-ink-exact)' }}>MAISON MKY</h3>
+            <h3 class="font-light tracking-widest mb-4 text-[#F3E7DF]" style={{ color: 'var(--brand-ink-exact)' }}>MKY - The Lifestyle</h3>
             <p class="text-sm text-[#F3E7DF]/70" style={{ color: 'rgba(243, 231, 223, 0.7)' }}>Luxury apparel crafted in Italy with the finest materials.</p>
           </div>
           <div>
@@ -390,15 +303,15 @@ const shouldOffsetForHeader = !isHome && !useStickyHeader;
           </div>
         </div>
         <div class="mt-16 pt-8 border-t border-[#F3E7DF]/10 text-sm text-[#F3E7DF]/50" style={{ color: 'rgba(243, 231, 223, 0.5)' }}>
-          © {new Date().getFullYear()} Maison MKY. All rights reserved.
+          © {new Date().getFullYear()} MKY - The Lifestyle. All rights reserved.
         </div>
       </div>
     </footer>
     </div>
 
     <script>
-      // Mobile drawer menu, desktop drawer menu, and logo animation functionality
-      document.addEventListener('DOMContentLoaded', () => {
+      // Mobile drawer menu and desktop drawer menu functionality
+      const initNav = () => {
         const mobileMenuButton = document.getElementById('mobile-menu-button');
         const mobileDrawer = document.getElementById('mobile-drawer');
         const mobileCloseButton = document.getElementById('close-drawer-button');
@@ -409,157 +322,78 @@ const shouldOffsetForHeader = !isHome && !useStickyHeader;
         const desktopCloseButton = document.getElementById('close-desktop-drawer');
         const desktopOverlay = document.getElementById('desktop-overlay');
         
-        const floatingLogo = document.getElementById('floating-logo');
-        const isHomePage = !!floatingLogo;
         let mobileMenuOpen = false;
         let desktopMenuOpen = false;
-        
-        if (!mobileMenuButton || !mobileDrawer || !mobileOverlay || !mobileCloseButton) return;
-
-        // Calculate logo position based on scroll
-        const getLogoPositionForScroll = () => {
-          if (!isHomePage) return null;
-          
-          const scrollY = window.scrollY;
-          const scrollThreshold = 300;
-          const progress = Math.min(scrollY / scrollThreshold, 1);
-          
-          const hero = document.getElementById('hero-section');
-          const logoTarget = document.getElementById('logo-target');
-          const heroLogoAnchor = document.getElementById('hero-logo-anchor');
-          const heroHeading = document.getElementById('hero-heading');
-          
-          if (!logoTarget) return null;
-          
-          // Target position (navbar)
-          const targetRect = logoTarget.getBoundingClientRect();
-          const targetX = targetRect.left + targetRect.width / 2;
-          const targetY = targetRect.top + targetRect.height / 2 - 1.5;
-          
-          // Start position (hero center by default). Use hero text anchor on desktop if present
-          let startX = window.innerWidth / 2;
-          let startY = 180;
-          if (hero) {
-            const heroRect = hero.getBoundingClientRect();
-            startX = heroRect.left + heroRect.width / 2;
-            startY = heroRect.top + heroRect.height * 0.35;
-          }
-          if (window.innerWidth >= 1024 && heroLogoAnchor) {
-            const anchorRect = heroLogoAnchor.getBoundingClientRect();
-            startX = anchorRect.left;
-            startY = anchorRect.top;
-          } else if (window.innerWidth < 1024 && heroHeading) {
-            const headingRect = heroHeading.getBoundingClientRect();
-            startX = headingRect.left + headingRect.width / 2;
-            startY = headingRect.top - 24; // slightly above heading
-          }
-          
-          // Sizes
-          const startSize = 280;
-          const endSize = 48;
-          const currentSize = startSize - (startSize - endSize) * progress;
-          
-          // Interpolate positions based on scroll
-          const currentX = startX + (targetX - startX) * progress;
-          const currentY = startY + (targetY - startY) * progress;
-          
-          return {
-            x: currentX,
-            y: currentY,
-            size: currentSize
-          };
-        };
-        
-        // Set logo position directly
-        const setLogoPosition = (pos) => {
-          if (!isHomePage || !floatingLogo) return;
-          
-          floatingLogo.style.width = `${pos.size}px`;
-          floatingLogo.style.height = `${pos.size}px`;
-          floatingLogo.style.left = `${pos.x}px`;
-          floatingLogo.style.top = `${pos.y}px`;
-        };
-        
-        // Animate logo to target position
-        const animateLogoTo = (targetPos) => {
-          if (!isHomePage || !floatingLogo) return;
-          
-          floatingLogo.style.transition = 'all 0.3s ease-in-out';
-          setLogoPosition(targetPos);
-          
-          // Remove transition after animation completes
-          setTimeout(() => {
-            floatingLogo.style.transition = '';
-          }, 300);
-        };
 
         // Open mobile drawer
         const openMobileDrawer = () => {
-          mobileDrawer.style.transform = 'translateX(0)';
-          mobileOverlay.style.opacity = '1';
-          mobileOverlay.style.pointerEvents = 'auto';
+          // show drawer
+          mobileDrawer.classList.remove('translate-x-full');
+          mobileDrawer.classList.add('translate-x-0');
+          // show overlay
+          mobileOverlay.classList.remove('opacity-0', 'pointer-events-none');
+          mobileOverlay.classList.add('opacity-100');
           document.body.style.overflow = 'hidden';
-          
-          if (isHomePage && floatingLogo) {
-            const logoTarget = document.getElementById('logo-target');
-            if (logoTarget) {
-              const targetRect = logoTarget.getBoundingClientRect();
-              animateLogoTo({
-                x: targetRect.left + targetRect.width / 2,
-                y: targetRect.top + targetRect.height / 2,
-                size: 48
-              });
-            }
-          }
           
           mobileMenuOpen = true;
         };
+        // expose for inline fallback
+        window.mkyOpenMobileDrawer = openMobileDrawer;
         
         // Close mobile drawer
         const closeMobileDrawer = () => {
-          mobileDrawer.style.transform = 'translateX(100%)';
-          mobileOverlay.style.opacity = '0';
-          mobileOverlay.style.pointerEvents = 'none';
+          // hide drawer
+          mobileDrawer.classList.remove('translate-x-0');
+          mobileDrawer.classList.add('translate-x-full');
+          // hide overlay
+          mobileOverlay.classList.remove('opacity-100');
+          mobileOverlay.classList.add('opacity-0', 'pointer-events-none');
           document.body.style.overflow = '';
-          
-          if (isHomePage && floatingLogo) {
-            const currentScrollPos = getLogoPositionForScroll();
-            if (currentScrollPos) animateLogoTo(currentScrollPos);
-          }
           
           mobileMenuOpen = false;
         };
+        window.mkyCloseMobileDrawer = closeMobileDrawer;
 
         // Open desktop drawer
         const openDesktopDrawer = () => {
           if (!desktopDrawer || !desktopOverlay) return;
-          desktopDrawer.style.transform = 'translateX(0)';
-          desktopOverlay.style.opacity = '1';
-          desktopOverlay.style.pointerEvents = 'auto';
+          // show drawer
+          desktopDrawer.classList.remove('-translate-x-full');
+          desktopDrawer.classList.add('translate-x-0');
+          // show overlay
+          desktopOverlay.classList.remove('opacity-0', 'pointer-events-none');
+          desktopOverlay.classList.add('opacity-100');
           document.body.style.overflow = 'hidden';
           desktopMenuOpen = true;
         };
+        window.mkyOpenDesktopDrawer = openDesktopDrawer;
         
         // Close desktop drawer
         const closeDesktopDrawer = () => {
           if (!desktopDrawer || !desktopOverlay) return;
-          desktopDrawer.style.transform = 'translateX(-100%)';
-          desktopOverlay.style.opacity = '0';
-          desktopOverlay.style.pointerEvents = 'none';
+          // hide drawer
+          desktopDrawer.classList.remove('translate-x-0');
+          desktopDrawer.classList.add('-translate-x-full');
+          // hide overlay
+          desktopOverlay.classList.remove('opacity-100');
+          desktopOverlay.classList.add('opacity-0', 'pointer-events-none');
           document.body.style.overflow = '';
           desktopMenuOpen = false;
         };
+        window.mkyCloseDesktopDrawer = closeDesktopDrawer;
 
-        // Add event listeners - Mobile
-        mobileMenuButton.addEventListener('click', openMobileDrawer);
-        mobileCloseButton.addEventListener('click', closeMobileDrawer);
-        mobileOverlay.addEventListener('click', closeMobileDrawer);
-        
-        // Close mobile drawer on nav link clicks
-        const mobileLinks = mobileDrawer.querySelectorAll('a');
-        mobileLinks.forEach(link => {
-          link.addEventListener('click', closeMobileDrawer);
-        });
+        // Add event listeners - Mobile (guarded)
+        if (mobileMenuButton && mobileDrawer && mobileOverlay && mobileCloseButton) {
+          mobileMenuButton.addEventListener('click', openMobileDrawer);
+          mobileCloseButton.addEventListener('click', closeMobileDrawer);
+          mobileOverlay.addEventListener('click', closeMobileDrawer);
+          
+          // Close mobile drawer on nav link clicks
+          const mobileLinks = mobileDrawer.querySelectorAll('a');
+          mobileLinks.forEach(link => {
+            link.addEventListener('click', closeMobileDrawer);
+          });
+        }
 
         // Add event listeners - Desktop
         if (desktopMenuButton && desktopCloseButton && desktopOverlay) {
@@ -586,38 +420,38 @@ const shouldOffsetForHeader = !isHome && !useStickyHeader;
           }
         });
         
-        // Recalculate logo position on scroll when menu is closed
-        if (isHomePage) {
-          window.addEventListener('scroll', () => {
-            if (!mobileMenuOpen && floatingLogo) {
-              const logoPos = getLogoPositionForScroll();
-              if (logoPos) setLogoPosition(logoPos);
-            }
-          });
-        }
-        
-        // Accordion functionality for drawer menus
-        const drawerToggles = document.querySelectorAll('.drawer-toggle');
-        drawerToggles.forEach(toggle => {
-          toggle.addEventListener('click', () => {
-            const targetId = toggle.getAttribute('data-target');
-            const submenu = document.getElementById(targetId);
-            const chevron = toggle.querySelector('.drawer-chevron');
-            
-            if (submenu && chevron) {
-              const isHidden = submenu.classList.contains('hidden');
-              
-              if (isHidden) {
-                submenu.classList.remove('hidden');
-                chevron.style.transform = 'rotate(180deg)';
-              } else {
-                submenu.classList.add('hidden');
-                chevron.style.transform = 'rotate(0deg)';
-              }
-            }
-          });
+        // Accordion functionality for drawer menus (global delegation)
+        document.addEventListener('click', (event) => {
+          const t = event.target;
+          if (!t || !(t instanceof Element)) return;
+          const toggle = t.closest('.drawer-toggle');
+          if (!toggle) return;
+          const targetId = toggle.getAttribute('data-target');
+          let submenu = null;
+          if (targetId) submenu = document.getElementById(targetId);
+          if (!submenu) {
+            const nextEl = toggle.nextElementSibling;
+            if (nextEl && nextEl.classList && nextEl.classList.contains('drawer-submenu')) submenu = nextEl;
+          }
+          if (!submenu) return;
+          const chevron = toggle.querySelector('.drawer-chevron');
+          const isHidden = submenu.classList.contains('hidden');
+          if (isHidden) {
+            submenu.classList.remove('hidden');
+            if (chevron) chevron.style.transform = 'rotate(180deg)';
+            toggle.setAttribute('aria-expanded', 'true');
+          } else {
+            submenu.classList.add('hidden');
+            if (chevron) chevron.style.transform = 'rotate(0deg)';
+            toggle.setAttribute('aria-expanded', 'false');
+          }
         });
-      });
+      };
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initNav);
+      } else {
+        initNav();
+      }
     </script>
   </body>
 </html>

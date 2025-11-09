@@ -20,33 +20,52 @@ export default function Orders() {
     })()
   }, [])
 
-  if (loading) return <div>Loading orders…</div>
+  if (loading) return <div className="admin-loading">Loading orders…</div>
+
+  // Map status to appropriate CSS class
+  const getStatusClass = (status: string) => {
+    switch(status.toLowerCase()) {
+      case 'completed':
+        return 'status-completed';
+      case 'cancelled':
+        return 'status-cancelled';
+      case 'pending':
+      default:
+        return 'status-pending';
+    }
+  };
 
   return (
     <div>
-      <h2>Orders</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Order</th>
-            <th>Email</th>
-            <th>Status</th>
-            <th>Total</th>
-            <th>Created</th>
-          </tr>
-        </thead>
-        <tbody>
-          {orders.map((o) => (
-            <tr key={o.id}>
-              <td>{o.id.slice(0, 8)}</td>
-              <td>{o.email ?? '—'}</td>
-              <td>{o.status}</td>
-              <td>${(o.total_cents / 100).toFixed(2)}</td>
-              <td>{new Date(o.created_at).toLocaleString()}</td>
+      <h2 className="admin-section-title">Orders</h2>
+      <div className="admin-box">
+        <table className="admin-table">
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Customer</th>
+              <th>Status</th>
+              <th>Total</th>
+              <th>Created</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {orders.map((o) => (
+              <tr key={o.id}>
+                <td>{o.id.slice(0, 8)}</td>
+                <td>{o.email ?? '—'}</td>
+                <td>
+                  <span className={`status-pill ${getStatusClass(o.status)}`}>
+                    {o.status}
+                  </span>
+                </td>
+                <td>${(o.total_cents / 100).toFixed(2)}</td>
+                <td>{new Date(o.created_at).toLocaleString()}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   )
 }

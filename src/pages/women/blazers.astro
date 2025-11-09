@@ -1,11 +1,46 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import ProductGrid from "../../components/ProductGrid.tsx";
+import CatalogTopBar from "../../components/CatalogTopBar.tsx";
+import CategoryIconNav from "../../components/CategoryIconNav.tsx";
+import CatalogHero from "../../components/CatalogHero.tsx";
+
+const womenCategories = [
+  { name: 'Blazers', icon: '/images/explore-women-blazers.png', href: '/women/blazers' },
+  { name: 'Trousers', icon: '/images/explore-women-trousers.png', href: '/women/trousers' },
+];
 ---
-<BaseLayout title="Women Blazers — Maison MKY">
-  <h1 class="text-3xl font-semibold mb-6">Women · Blazers</h1>
-  <ProductGrid client:load gender="women" collection="blazers" />
+<BaseLayout title="Women Blazers — Maison MKY" fullWidth={true}>
+  <div class="min-h-screen bg-white">
+    {/* Top Bar with Category & Filters */}
+    <CatalogTopBar client:load categoryTitle="Blazers" />
+    
+    {/* Category Icon Navigation */}
+    <CategoryIconNav client:load categories={womenCategories} currentCategory="Blazers" />
+    
+    {/* Hero Image - Edge to Edge */}
+    <CatalogHero 
+      client:load 
+      image="/images/explore-women-blazers.png"
+      alt="Women's Blazers Collection"
+    />
+    
+    {/* Product Grid - Edge to Edge */}
+    <div class="w-full">
+      <ProductGrid client:load gender="women" collection="blazers" />
+    </div>
+  </div>
 </BaseLayout>
+
+<style is:global>
+  #main-header { background-color: var(--brand-bg-exact) !important; }
+  #main-header.backdrop-blur-md { background-color: var(--brand-bg-exact) !important; }
+  
+  /* Remove default container padding for edge-to-edge */
+  main {
+    padding: 0 !important;
+  }
+</style>
 
 
 

@@ -6,11 +6,14 @@ import Reveal from "../components/Reveal.tsx";
 import IntroVideo from "../components/IntroVideo.tsx";
 import FeaturedCollection from "../components/FeaturedCollection.tsx";
 import ServicesBar from "../components/ServicesBar.tsx";
+import DareToEnter from "../components/DareToEnter.tsx";
 ---
-<BaseLayout title="MKY — New Collection">
-  <!-- Hero Section (edge-to-edge, full-bleed) -->
-  <section class="-mx-4 md:-mx-6 -mt-6 md:-mt-8">
-    <Hero client:load />
+<BaseLayout title="MKY — New Collection" fullWidth={true}>
+  <!-- Dare to Enter Splash Screen (home page only, once per session) -->
+  <DareToEnter client:load />
+  <!-- Intro Video Section - First (looping, never ends) -->
+  <section class="max-w-none px-0 py-0">
+    <IntroVideo client:load />
   </section>
   
   <!-- Explore Section -->
@@ -164,37 +167,46 @@ import ServicesBar from "../components/ServicesBar.tsx";
     </Reveal>
   </section>
 
-  <!-- Intro Video Split Section (replaces New Arrivals) -->
-  <IntroVideo client:load />
+  <!-- Logo Section - Full width, slim -->
+  <section class="max-w-none px-0 py-0" style="width: 100vw; margin-left: calc(-50vw + 50%);">
+    <div class="flex items-center justify-center" style={{ 
+      height: '120px',
+      backgroundColor: 'var(--brand-bg-exact)'
+    }}>
+      <img src="/logo.png" alt="MKY" class="w-16 h-16 object-contain" />
+    </div>
+  </section>
 
   <!-- Full-width Split Section -->
-  <section class="-mx-4 md:-mx-6 mt-0 mb-20">
-    <Reveal client:load>
-      <div class="grid md:grid-cols-2 gap-0" style="margin-left: calc(-50vw + 50%); width: 100vw;">
-        <a href="/men" class="block group relative overflow-hidden" style="height: 75vh; min-height: 600px;">
-          <img 
-            src="/images/men-category.jpg" 
-            class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" 
-            alt="Men's Collection" 
-          />
-          <div class="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-500" />
-          <div class="relative h-full flex items-end p-8 md:p-12">
-            <h3 class="text-white text-3xl md:text-5xl tracking-wide" style="font-family: 'Playfair Display', serif;">Men's Collection</h3>
-          </div>
-        </a>
-        <a href="/women" class="block group relative overflow-hidden" style="height: 75vh; min-height: 600px;">
-          <img 
-            src="/images/women-category.jpg" 
-            class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" 
-            alt="Women's Collection" 
-          />
-          <div class="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-500" />
-          <div class="relative h-full flex items-end p-8 md:p-12">
-            <h3 class="text-white text-3xl md:text-5xl tracking-wide" style="font-family: 'Playfair Display', serif;">Women's Collection</h3>
-          </div>
-        </a>
-      </div>
-    </Reveal>
+  <section class="max-w-none px-0 py-0 mt-0 mb-20">
+    <div class="-mx-4 md:-mx-6">
+      <Reveal client:load>
+        <div class="grid md:grid-cols-2 gap-0" style="margin-left: calc(-50vw + 50%); width: 100vw;">
+          <a href="/men" class="block group relative overflow-hidden" style="height: 75vh; min-height: 600px;">
+            <img 
+              src="/images/men-category.jpg" 
+              class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" 
+              alt="Men's Collection" 
+            />
+            <div class="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-500" />
+            <div class="relative h-full flex items-end p-8 md:p-12">
+              <h3 class="text-white text-3xl md:text-5xl tracking-wide" style="font-family: 'Playfair Display', serif;">Men's Collection</h3>
+            </div>
+          </a>
+          <a href="/women" class="block group relative overflow-hidden" style="height: 75vh; min-height: 600px;">
+            <img 
+              src="/images/women-category.jpg" 
+              class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" 
+              alt="Women's Collection" 
+            />
+            <div class="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-500" />
+            <div class="relative h-full flex items-end p-8 md:p-12">
+              <h3 class="text-white text-3xl md:text-5xl tracking-wide" style="font-family: 'Playfair Display', serif;">Women's Collection</h3>
+            </div>
+          </a>
+        </div>
+      </Reveal>
+    </div>
   </section>
 
   <!-- Services -->

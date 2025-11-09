@@ -18,7 +18,6 @@ export default function IntroVideo({
 
   const [isDesktop, setIsDesktop] = useState<boolean>(false);
   const [hasStarted, setHasStarted] = useState<boolean>(false);
-  const [hasEnded, setHasEnded] = useState<boolean>(false);
   const [inView, setInView] = useState<boolean>(false);
 
   useEffect(() => {
@@ -59,12 +58,16 @@ export default function IntroVideo({
     }
   }, [inView, hasStarted, isDesktop]);
 
-  const handleEnded = () => {
-    setHasEnded(true);
-  };
-
   const rightInitialLeft = `${leftWidthVw}vw`;
   const rightInitialWidth = `${100 - leftWidthVw}vw`;
+
+  const handleScrollDown = () => {
+    // Scroll down by one viewport height
+    window.scrollBy({ 
+      top: window.innerHeight, 
+      behavior: 'smooth' 
+    });
+  };
 
   return (
     <section
@@ -72,16 +75,13 @@ export default function IntroVideo({
       className="relative -mx-4 md:-mx-6 my-0"
       style={{ marginLeft: 'calc(-50vw + 50%)' }}
     >
-      {/* Desktop / Tablet: Split view with expanding right panel */}
-      <motion.div
+      {/* Desktop / Tablet: Split view - video loops infinitely on left, logo on right */}
+      <div
         className="hidden md:block relative"
-        initial={false}
-        animate={{ height: hasEnded ? '50vh' : '100vh' }}
-        transition={{ duration: 0.8, ease: 'easeInOut' }}
-        style={{ minHeight: hasEnded ? 350 : 700 }}
+        style={{ height: '100vh', minHeight: 700 }}
       >
         <div className="absolute inset-0">
-          {/* Left: Portrait video fixed within viewport */}
+          {/* Left: Portrait video (looping, never ends) */}
           <div className="absolute left-0 top-0 h-full" style={{ width: `${leftWidthVw}vw` }}>
             <video
               ref={desktopVideoRef}
@@ -89,51 +89,66 @@ export default function IntroVideo({
               playsInline
               muted
               preload="auto"
-              onEnded={handleEnded}
+              loop
               className="absolute inset-0 w-full h-full object-cover object-center"
             />
           </div>
 
-          {/* Right: Brand panel that expands to full width on end */}
-          <motion.div
-            initial={{ left: rightInitialLeft, width: rightInitialWidth }}
-            animate={hasEnded ? { left: 0, width: '100vw' } : { left: rightInitialLeft, width: rightInitialWidth }}
-            transition={{ duration: 1.0, ease: 'easeInOut' }}
-            className="absolute top-0 h-full flex items-center justify-center"
-            style={{ backgroundColor: 'var(--brand-bg-exact)' }}
+          {/* Right: Brand panel with logo and explore button */}
+          <div
+            className="absolute top-0 h-full flex flex-col items-center justify-center gap-8"
+            style={{ 
+              left: rightInitialLeft, 
+              width: rightInitialWidth,
+              backgroundColor: 'var(--brand-bg-exact)' 
+            }}
           >
             <img src={logoSrc} alt="Maison MKY" className="w-32 h-32 lg:w-40 lg:h-40 object-contain" />
-          </motion.div>
+            
+            {/* Elegant Explore Button */}
+            <button
+              onClick={handleScrollDown}
+              className="group px-6 py-3 border border-white/60 hover:border-white transition-all duration-300 rounded-full"
+              style={{ 
+                fontFamily: 'Inter, sans-serif',
+                fontSize: '0.875rem',
+                letterSpacing: '0.1em',
+                textTransform: 'uppercase',
+                color: 'white'
+              }}
+            >
+              <span className="relative inline-block group-hover:font-medium">
+                Click to Explore
+                <span className="block h-[1px] bg-white origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 mt-0.5"></span>
+              </span>
+            </button>
+          </div>
         </div>
-      </motion.div>
+      </div>
 
-      {/* Mobile: Video blurs out then brand background with centered logo fades in */}
-      <motion.div
-        className="md:hidden relative"
-        initial={false}
-        animate={{ height: hasEnded ? '50vh' : '100vh' }}
-        transition={{ duration: 0.8, ease: 'easeInOut' }}
-        style={{ minHeight: hasEnded ? 280 : 560 }}
-      >
-        <video
-          ref={mobileVideoRef}
-          src={videoSrc}
-          playsInline
-          muted
-          preload="auto"
-          onEnded={handleEnded}
-          className={`absolute inset-0 w-full h-full object-cover object-center transition-all duration-700 ${hasEnded ? 'blur-md scale-105' : ''}`}
-        />
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: hasEnded ? 1 : 0 }}
-          transition={{ duration: 0.8 }}
-          className="absolute inset-0 flex items-center justify-center"
+      {/* Mobile: Video full width (looping, never ends), logo centered below */}
+      <div className="md:hidden relative flex flex-col">
+        {/* Video Section */}
+        <div className="relative" style={{ height: '100vh', minHeight: 560 }}>
+          <video
+            ref={mobileVideoRef}
+            src={videoSrc}
+            playsInline
+            muted
+            preload="auto"
+            loop
+            className="absolute inset-0 w-full h-full object-cover object-center"
+          />
+        </div>
+
+        {/* Logo Section - Centered below video */}
+        <div
+          className="flex items-center justify-center py-12"
           style={{ backgroundColor: 'var(--brand-bg-exact)' }}
         >
           <img src={logoSrc} alt="Maison MKY" className="w-24 h-24 object-contain" />
-        </motion.div>
-      </motion.div>
+        </div>
+      </div>
     </section>
   );
 }
