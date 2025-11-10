@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SignupIsland from '../react/SignupIsland';
+---
+<BaseLayout title="Sign up" stickyHeader={true}>
+  <div class="max-w-[800px] mx-auto px-4 md:px-6 py-6 md:py-8">
+    <SignupIsland client:load />
+  </div>
+</BaseLayout>
+
+<style is:global>
+  #main-header { background-color: var(--brand-bg-exact) !important; }
+  #main-header.backdrop-blur-md { background-color: var(--brand-bg-exact) !important; }
+</style>

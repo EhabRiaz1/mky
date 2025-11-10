@@ -1,0 +1,99 @@
+{
+	"version": 3,
+	"routes": [
+		{
+			"handle": "filesystem"
+		},
+		{
+			"src": "^/_astro/(.*)$",
+			"headers": {
+				"cache-control": "public, max-age=31536000, immutable"
+			},
+			"continue": true
+		},
+		{
+			"src": "^/_server-islands/([^/]+?)/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/_image/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/admin/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/api/create-payment-intent/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/api/place-order/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/cart/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/checkout/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/login/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/men/blazers/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/men/trousers/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/men/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/privacy/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/product/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/products/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/search/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/signup/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/terms/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/women/blazers/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/women/trousers/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/women/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/$",
+			"dest": "_render"
+		}
+	]
+}

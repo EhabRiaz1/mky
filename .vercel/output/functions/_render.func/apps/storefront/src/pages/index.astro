@@ -1,0 +1,360 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Hero from "../components/Hero.tsx";
+import Reveal from "../components/Reveal.tsx";
+// import NewArrivals from "../components/NewArrivals.tsx";
+import IntroVideo from "../components/IntroVideo.tsx";
+import FeaturedCollection from "../components/FeaturedCollection.tsx";
+import ServicesBar from "../components/ServicesBar.tsx";
+import DareToEnter from "../components/DareToEnter.tsx";
+---
+<BaseLayout title="MKY — New Collection" fullWidth={true}>
+  <!-- Dare to Enter Splash Screen (home page only, once per session) -->
+  <DareToEnter client:load />
+  <!-- Intro Video Section - First (looping, never ends) -->
+  <section class="max-w-none px-0 py-0">
+    <IntroVideo client:load />
+  </section>
+  
+  <!-- Explore Section -->
+  <section class="py-16 px-4 md:px-10 lg:px-16">
+    <h2 class="text-2xl md:text-4xl tracking-tight mb-12 text-center" style="color: var(--brand-bg-exact); font-family: 'Playfair Display', serif;">
+      Explore a Selection of MKY's Creations
+    </h2>
+    <Reveal client:load>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+        <a href="/men/blazers" class="block text-center group relative overflow-hidden rounded-lg md:rounded-xl">
+          <div class="aspect-square overflow-hidden">
+            <img 
+              src="/images/explore-men-blazers.png" 
+              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+              alt="Men's Blazers" 
+            />
+          </div>
+          <div class="absolute bottom-0 left-0 right-0 p-4 md:p-6">
+            <div class="inline-block rounded-md bg-black/35 backdrop-blur-sm px-3 py-2 text-white">
+              <div class="text-lg md:text-xl tracking-wider" style="font-family: 'Playfair Display', serif;">Men's Blazers</div>
+            </div>
+          </div>
+        </a>
+        <a
+          href="/women/blazers"
+          class="block text-center group relative overflow-hidden rounded-lg md:rounded-xl"
+          data-coming-soon
+        >
+          <div class="aspect-square overflow-hidden">
+            <img 
+              src="/images/explore-women-blazers.png" 
+              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+              alt="Women's Blazers" 
+            />
+          </div>
+          <div class="absolute bottom-0 left-0 right-0 p-4 md:p-6">
+            <div class="inline-block rounded-md bg-black/35 backdrop-blur-sm px-3 py-2 text-white">
+              <div class="text-lg md:text-xl tracking-wider" style="font-family: 'Playfair Display', serif;">Women's Blazers</div>
+            </div>
+          </div>
+        </a>
+        <a href="/men/trousers" class="block text-center group relative overflow-hidden rounded-lg md:rounded-xl">
+          <div class="aspect-square overflow-hidden">
+            <img 
+              src="/images/explore-men-trousers.jpeg" 
+              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+              alt="Men's Trousers" 
+            />
+          </div>
+          <div class="absolute bottom-0 left-0 right-0 p-4 md:p-6">
+            <div class="inline-block rounded-md bg-black/35 backdrop-blur-sm px-3 py-2 text-white">
+              <div class="text-lg md:text-xl tracking-wider" style="font-family: 'Playfair Display', serif;">Men's Trousers</div>
+            </div>
+          </div>
+        </a>
+        <a
+          href="/women/trousers"
+          class="block text-center group relative overflow-hidden rounded-lg md:rounded-xl"
+          data-coming-soon
+        >
+          <div class="aspect-square overflow-hidden">
+            <img 
+              src="/images/explore-women-trousers.png" 
+              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+              alt="Women's Trousers" 
+            />
+          </div>
+          <div class="absolute bottom-0 left-0 right-0 p-4 md:p-6">
+            <div class="inline-block rounded-md bg-black/35 backdrop-blur-sm px-3 py-2 text-white">
+              <div class="text-lg md:text-xl tracking-wider" style="font-family: 'Playfair Display', serif;">Women's Trousers</div>
+            </div>
+          </div>
+        </a>
+      </div>
+    </Reveal>
+  </section>
+
+  <!-- Full-width Editorial Section (moved below Explore) -->
+  <section class="-mx-4 md:-mx-6 my-16">
+    <div class="relative w-screen overflow-hidden" style="margin-left: calc(-50vw + 50%); height: 80vh; min-height: 850px;">
+      <picture class="absolute inset-0 w-full h-full">
+        <!-- Mobile image (<= 767px) -->
+        <source media="(max-width: 767px)" srcset="/images/crafted-mobile.png" />
+        <!-- Default / Desktop image -->
+        <img 
+          src="/images/crafted.png" 
+          class="w-full h-full object-cover object-top" 
+          alt="Craftsmanship" 
+        />
+      </picture>
+      <div class="absolute inset-0 bg-black/30" />
+      <div class="relative h-full flex items-center justify-center text-center px-6">
+        <div>
+          <h2 class="text-white text-4xl md:text-6xl tracking-tight mb-4" style="font-family: 'Playfair Display', serif;">
+            MKY - The Lifestyle
+          </h2>
+          <p class="text-white/90 text-lg md:text-xl max-w-2xl mx-auto tracking-wide" style="font-family: 'Inter', sans-serif; font-weight: 300;">
+            Every piece reflects our commitment to timeless elegance and exceptional quality
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Collections -->
+
+  <!-- Tailored Excellence — Custom Grid (mirrors Explore layout) -->
+  <section class="py-16 px-4 md:px-10 lg:px-16">
+    <h2 class="text-2xl md:text-4xl tracking-tight mb-12 text-center" style="color: var(--brand-bg-exact); font-family: 'Playfair Display', serif;">
+      Tailored Excellence
+    </h2>
+    <Reveal client:load>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+        <a href="/men/blazers" class="block text-center group relative overflow-hidden rounded-lg md:rounded-xl">
+          <div class="aspect-square overflow-hidden">
+            <img 
+              src="/images/tailored-excellence-1.jpeg" 
+              class="w-full h-full object-cover object-center transform scale-[1.04] transition-transform duration-700 md:group-hover:scale-110" 
+              alt="Men's Blazers" 
+            />
+          </div>
+        </a>
+        <a href="/men/trousers" class="block text-center group relative overflow-hidden rounded-lg md:rounded-xl">
+          <div class="aspect-square overflow-hidden">
+            <img 
+              src="/images/tailored-excellence-2.jpeg" 
+              class="w-full h-full object-cover object-center transform scale-[1.04] transition-transform duration-700 md:group-hover:scale-110" 
+              alt="Men's Trousers" 
+            />
+          </div>
+        </a>
+        <a href="/women/blazers" class="block text-center group relative overflow-hidden rounded-lg md:rounded-xl">
+          <div class="aspect-square overflow-hidden">
+            <img 
+              src="/images/tailored-excellence-3.jpeg" 
+              class="w-full h-full object-cover object-center transform scale-[1.04] transition-transform duration-700 md:group-hover:scale-110" 
+              alt="Women's Blazers" 
+            />
+          </div>
+        </a>
+        <a href="/women/trousers" class="block text-center group relative overflow-hidden rounded-lg md:rounded-xl">
+          <div class="aspect-square overflow-hidden">
+            <img 
+              src="/images/tailored-excellence-4.jpeg" 
+              class="w-full h-full object-cover object-center transform scale-[1.04] transition-transform duration-700 md:group-hover:scale-110" 
+              alt="Women's Trousers" 
+            />
+          </div>
+        </a>
+      </div>
+    </Reveal>
+  </section>
+
+  <!-- Logo Section - Full width, slim -->
+  <section class="max-w-none px-0 py-0" style="width: 100vw; margin-left: calc(-50vw + 50%);">
+    <div class="flex items-center justify-center" style={{ 
+      height: '120px',
+      backgroundColor: 'var(--brand-bg-exact)'
+    }}>
+      <img src="/logo.png" alt="MKY" class="w-16 h-16 object-contain" />
+    </div>
+  </section>
+
+  <!-- Full-width Split Section -->
+  <section class="max-w-none px-0 py-0 mt-0 mb-20">
+    <div class="-mx-4 md:-mx-6">
+      <Reveal client:load>
+        <div class="grid md:grid-cols-2 gap-0" style="margin-left: calc(-50vw + 50%); width: 100vw;">
+          <a href="/men" class="block group relative overflow-hidden" style="height: 75vh; min-height: 600px;">
+            <img 
+              src="/images/men-category.jpg" 
+              class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" 
+              alt="Men's Collection" 
+            />
+            <div class="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-500" />
+            <div class="relative h-full flex items-end p-8 md:p-12">
+              <h3 class="text-white text-3xl md:text-5xl tracking-wide" style="font-family: 'Playfair Display', serif;">Men's Collection</h3>
+            </div>
+          </a>
+          <a href="/women" class="block group relative overflow-hidden" style="height: 75vh; min-height: 600px;">
+            <img 
+              src="/images/women-category.jpg" 
+              class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" 
+              alt="Women's Collection" 
+            />
+            <div class="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-500" />
+            <div class="relative h-full flex items-end p-8 md:p-12">
+              <h3 class="text-white text-3xl md:text-5xl tracking-wide" style="font-family: 'Playfair Display', serif;">Women's Collection</h3>
+            </div>
+          </a>
+        </div>
+      </Reveal>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <ServicesBar client:load />
+
+  <div
+    id="coming-soon-modal"
+    class="fixed inset-0 z-[120] hidden"
+    aria-hidden="true"
+  >
+    <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" data-close-modal></div>
+    <div class="relative z-[130] flex min-h-full items-center justify-center p-4">
+      <div class="w-full max-w-md rounded-3xl bg-white p-8 shadow-2xl">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <p class="text-sm uppercase tracking-[0.4em] text-neutral-500" style="font-family: 'Inter', sans-serif;">MKY Update</p>
+            <h3 class="mt-3 text-3xl tracking-tight text-neutral-900" style="font-family: 'Playfair Display', serif;">Coming Soon</h3>
+            <p class="mt-2 text-sm text-neutral-600" style="font-family: 'Inter', sans-serif; font-weight: 300;">
+              We're perfecting this collection. Leave your email and we'll let you know the moment it arrives.
+            </p>
+          </div>
+          <button
+            type="button"
+            class="shrink-0 rounded-full p-2 text-neutral-400 transition hover:bg-neutral-100 hover:text-neutral-700"
+            aria-label="Close coming soon modal"
+            data-close-modal
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="h-5 w-5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M18 6L6 18" />
+            </svg>
+          </button>
+        </div>
+
+        <form id="coming-soon-form" class="mt-8 space-y-4" novalidate>
+          <label class="block text-sm font-medium text-neutral-700" style="font-family: 'Inter', sans-serif;">
+            Email address
+            <input
+              id="coming-soon-email"
+              type="email"
+              inputmode="email"
+              autocomplete="email"
+              placeholder="you@example.com"
+              required
+              class="mt-2 w-full rounded-2xl border border-neutral-200 bg-neutral-50 px-4 py-3 text-base text-neutral-900 outline-none transition focus:border-neutral-800 focus:bg-white"
+              style="font-family: 'Inter', sans-serif;"
+            />
+          </label>
+          <button
+            type="submit"
+            class="w-full rounded-2xl bg-neutral-900 px-5 py-3 text-sm uppercase tracking-[0.35em] text-white transition hover:bg-neutral-700"
+            style="font-family: 'Inter', sans-serif;"
+          >
+            Notify Me
+          </button>
+          <p
+            data-feedback
+            class="hidden text-sm text-emerald-600"
+            style="font-family: 'Inter', sans-serif;"
+          >
+            Thank you! We'll keep you updated as soon as the collection launches.
+          </p>
+        </form>
+        <p class="mt-6 text-xs text-neutral-400" style="font-family: 'Inter', sans-serif;">
+          This signup is a preview experience. No data is stored.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const comingSoonModal = document.getElementById('coming-soon-modal');
+    const comingSoonForm = document.getElementById('coming-soon-form');
+    const comingSoonEmail = document.getElementById('coming-soon-email');
+    const feedback = comingSoonForm?.querySelector('[data-feedback]');
+    let previouslyFocusedElement = null;
+
+    const toggleScroll = (shouldLock) => {
+      if (shouldLock) {
+        document.body.dataset.prevOverflow = document.body.style.overflow;
+        document.body.style.overflow = 'hidden';
+      } else {
+        document.body.style.overflow = document.body.dataset.prevOverflow || '';
+        delete document.body.dataset.prevOverflow;
+      }
+    };
+
+    const openComingSoonModal = () => {
+      if (!comingSoonModal) return;
+      previouslyFocusedElement = document.activeElement;
+      comingSoonModal.classList.remove('hidden');
+      comingSoonModal.setAttribute('aria-hidden', 'false');
+      toggleScroll(true);
+      window.setTimeout(() => {
+        comingSoonEmail?.focus();
+      }, 0);
+    };
+
+    const closeComingSoonModal = () => {
+      if (!comingSoonModal) return;
+      comingSoonModal.classList.add('hidden');
+      comingSoonModal.setAttribute('aria-hidden', 'true');
+      toggleScroll(false);
+      if (feedback && !feedback.classList.contains('hidden')) {
+        feedback.classList.add('hidden');
+      }
+      if (comingSoonForm) {
+        comingSoonForm.reset();
+      }
+      if (previouslyFocusedElement && typeof previouslyFocusedElement.focus === 'function') {
+        previouslyFocusedElement.focus();
+      }
+      previouslyFocusedElement = null;
+    };
+
+    document.querySelectorAll('[data-coming-soon]').forEach((anchor) => {
+      anchor.addEventListener('click', (event) => {
+        event.preventDefault();
+        openComingSoonModal();
+      });
+      anchor.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          openComingSoonModal();
+        }
+      });
+    });
+
+    comingSoonModal?.addEventListener('click', (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLElement)) return;
+      const closeTrigger = target.closest('[data-close-modal]');
+      if (closeTrigger || target === comingSoonModal) {
+        closeComingSoonModal();
+      }
+    });
+
+    window.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && comingSoonModal && !comingSoonModal.classList.contains('hidden')) {
+        closeComingSoonModal();
+      }
+    });
+
+    comingSoonForm?.addEventListener('submit', (event) => {
+      event.preventDefault();
+      if (feedback) {
+        feedback.classList.remove('hidden');
+      }
+      comingSoonEmail?.setAttribute('aria-invalid', 'false');
+    });
+  </script>
+</BaseLayout>

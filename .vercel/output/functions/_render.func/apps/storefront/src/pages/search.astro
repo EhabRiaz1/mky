@@ -1,0 +1,18 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SearchClient from "../components/SearchClient.tsx";
+---
+<BaseLayout title="Search — Maison MKY">
+  <h1 class="text-3xl font-semibold mb-6">Search</h1>
+  <SearchClient client:load />
+</BaseLayout>
+
+<style is:global>
+  #main-header { background-color: var(--brand-bg-exact) !important; }
+  #main-header.backdrop-blur-md { background-color: var(--brand-bg-exact) !important; }
+</style>
+
+
+
+
+
