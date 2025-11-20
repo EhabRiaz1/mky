@@ -2,20 +2,194 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Hero from "../components/Hero.tsx";
 import Reveal from "../components/Reveal.tsx";
-// import NewArrivals from "../components/NewArrivals.tsx";
 import IntroVideo from "../components/IntroVideo.tsx";
 import FeaturedCollection from "../components/FeaturedCollection.tsx";
 import ServicesBar from "../components/ServicesBar.tsx";
 import DareToEnter from "../components/DareToEnter.tsx";
 ---
+
 <BaseLayout title="MKY — New Collection" fullWidth={true}>
+  <!-- Premium Support Modal -->
+  <div
+    id="premium-support-modal"
+    class="fixed inset-0 z-[120] hidden"
+    aria-hidden="true"
+  >
+    <div class="absolute inset-0 bg-black/40 backdrop-blur-sm " data-close-modal></div>
+    <div class="relative z-[130] flex min-h-full items-center justify-center p-4">
+      <div class="w-full max-w-2xl rounded-3xl bg-white p-8 shadow-2xl">
+        <div class="flex items-start justify-between gap-4 mb-6">
+          <div>
+            <div class="flex items-center gap-2 mb-3">
+              <div class="inline-flex items-center px-3 py-1 bg-gradient-to-r from-gold to-yellow-200 rounded-full">
+                <svg class="w-4 h-4 mr-1 text-black" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                </svg>
+                <span class="text-xs font-medium text-black tracking-wider">PREMIUM SUPPORT</span>
+              </div>
+            </div>
+            <h3 class="mt-2 text-2xl tracking-tight text-neutral-900" style="font-family: 'Playfair Display', serif;">Premium Customer Support</h3>
+            <p class="mt-2 text-sm text-neutral-600" style="font-family: 'Inter', sans-serif; font-weight: 300;">
+              Our dedicated support team is here to assist you with any inquiries about our collections, orders, or styling advice.
+            </p>
+          </div>
+          <button
+            type="button"
+            class="shrink-0 rounded-full p-2 text-neutral-400 transition hover:bg-neutral-100 hover:text-neutral-700"
+            aria-label="Close premium support modal"
+            data-close-modal
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="h-5 w-5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M18 6L6 18" />
+            </svg>
+          </button>
+        </div>
+
+        <form id="premium-support-form" class="space-y-6" novalidate>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label class="block text-sm font-medium text-neutral-700 mb-2" style="font-family: 'Inter', sans-serif;">
+                First Name
+                <input
+                  type="text"
+                  required
+                  class="mt-1 w-full rounded-2xl border border-neutral-200 bg-neutral-50 px-4 py-3 text-base text-neutral-900 outline-none transition focus:border-neutral-800 focus:bg-white"
+                  style="font-family: 'Inter', sans-serif;"
+                />
+              </label>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-neutral-700 mb-2" style="font-family: 'Inter', sans-serif;">
+                Last Name
+                <input
+                  type="text"
+                  required
+                  class="mt-1 w-full rounded-2xl border border-neutral-200 bg-neutral-50 px-4 py-3 text-base text-neutral-900 outline-none transition focus:border-neutral-800 focus:bg-white"
+                  style="font-family: 'Inter', sans-serif;"
+                />
+              </label>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label class="block text-sm font-medium text-neutral-700 mb-2" style="font-family: 'Inter', sans-serif;">
+                Email Address
+                <input
+                  type="email"
+                  inputmode="email"
+                  autocomplete="email"
+                  required
+                  class="mt-1 w-full rounded-2xl border border-neutral-200 bg-neutral-50 px-4 py-3 text-base text-neutral-900 outline-none transition focus:border-neutral-800 focus:bg-white"
+                  style="font-family: 'Inter', sans-serif;"
+                />
+              </label>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-neutral-700 mb-2" style="font-family: 'Inter', sans-serif;">
+                Phone Number
+                <input
+                  type="tel"
+                  autocomplete="tel"
+                  class="mt-1 w-full rounded-2xl border border-neutral-200 bg-neutral-50 px-4 py-3 text-base text-neutral-900 outline-none transition focus:border-neutral-800 focus:bg-white"
+                  style="font-family: 'Inter', sans-serif;"
+                />
+              </label>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-neutral-700 mb-2" style="font-family: 'Inter', sans-serif;">
+              Support Category
+              <select
+                required
+                class="mt-1 w-full rounded-2xl border border-neutral-200 bg-neutral-50 px-4 py-3 text-base text-neutral-900 outline-none transition focus:border-neutral-800 focus:bg-white"
+                style="font-family: 'Inter', sans-serif;"
+              >
+                <option value="">Select a category</option>
+                <option value="product-inquiry">Product Inquiry</option>
+                <option value="order-support">Order Support</option>
+                <option value="sizing-fit">Sizing & Fit</option>
+                <option value="styling-advice">Styling Advice</option>
+                <option value="customization">Customization Request</option>
+                <option value="returns">Returns & Exchanges</option>
+                <option value="other">Other</option>
+              </select>
+            </label>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-neutral-700 mb-2" style="font-family: 'Inter', sans-serif;">
+              Order Number (if applicable)
+              <input
+                type="text"
+                class="mt-1 w-full rounded-2xl border border-neutral-200 bg-neutral-50 px-4 py-3 text-base text-neutral-900 outline-none transition focus:border-neutral-800 focus:bg-white"
+                style="font-family: 'Inter', sans-serif;"
+              />
+            </label>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-neutral-700 mb-2" style="font-family: 'Inter', sans-serif;">
+              Message
+              <textarea
+                rows="5"
+                required
+                placeholder="Please describe your inquiry in detail..."
+                class="mt-1 w-full rounded-2xl border border-neutral-200 bg-neutral-50 px-4 py-3 text-base text-neutral-900 outline-none transition focus:border-neutral-800 focus:bg-white resize-none"
+                style="font-family: 'Inter', sans-serif;"
+              ></textarea>
+            </label>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <input type="checkbox" id="priority-support" class="rounded border-gray-300" />
+            <label for="priority-support" class="text-sm text-gray-600">Request priority response (additional fee may apply)</label>
+          </div>
+
+          <button
+            type="submit"
+            class="w-full rounded-2xl bg-gradient-to-r from-gold to-yellow-200 px-5 py-3 text-sm uppercase tracking-[0.35em] text-black transition hover:from-yellow-300 hover:to-gold font-medium"
+            style="font-family: 'Inter', sans-serif;"
+          >
+            Submit Support Request
+          </button>
+          <p
+            data-support-feedback
+            class="hidden text-sm text-emerald-600 text-center"
+            style="font-family: 'Inter', sans-serif;"
+          >
+            Thank you! Your support request has been submitted. Our team will respond within 24 hours.
+          </p>
+        </form>
+        <div class="mt-6 pt-6 border-t border-gray-200">
+          <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-500">
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
+              </svg>
+              <span>Response within 24 hours</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+              </svg>
+              <span>Dedicated style consultants</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Dare to Enter Splash Screen (home page only, once per session) -->
   <DareToEnter client:load />
+  
   <!-- Intro Video Section - First (looping, never ends) -->
   <section class="max-w-none px-0 py-0">
     <IntroVideo client:load />
   </section>
-  
+
   <!-- Explore Section -->
   <section class="py-16 px-4 md:px-10 lg:px-16">
     <h2 class="text-2xl md:text-4xl tracking-tight mb-12 text-center" style="color: var(--brand-bg-exact); font-family: 'Playfair Display', serif;">
@@ -118,7 +292,15 @@ import DareToEnter from "../components/DareToEnter.tsx";
     </div>
   </section>
 
-  <!-- Featured Collections -->
+  <!-- Featured Limited Edition Collection -->
+  <FeaturedCollection 
+    client:load
+    title="Limited Edition Releases"
+    subtitle="Final Opportunities"
+    collectionSlug="limited-edition"
+    ctaText="View All Limited Editions"
+    ctaLink="/collections/limited-edition"
+  />
 
   <!-- Tailored Excellence — Custom Grid (mirrors Explore layout) -->
   <section class="py-16 px-4 md:px-10 lg:px-16">
@@ -169,10 +351,10 @@ import DareToEnter from "../components/DareToEnter.tsx";
 
   <!-- Logo Section - Full width, slim -->
   <section class="max-w-none px-0 py-0" style="width: 100vw; margin-left: calc(-50vw + 50%);">
-    <div class="flex items-center justify-center" style={{ 
+    <div class="flex items-center justify-center" style="{{ 
       height: '120px',
       backgroundColor: 'var(--brand-bg-exact)'
-    }}>
+    }}">
       <img src="/logo.png" alt="MKY" class="w-16 h-16 object-contain" />
     </div>
   </section>
@@ -212,8 +394,9 @@ import DareToEnter from "../components/DareToEnter.tsx";
   <!-- Services -->
   <ServicesBar client:load />
 
+  <!-- Exclusive & Limited Edition Access Modal -->
   <div
-    id="coming-soon-modal"
+    id="premium-access-modal"
     class="fixed inset-0 z-[120] hidden"
     aria-hidden="true"
   >
@@ -222,16 +405,29 @@ import DareToEnter from "../components/DareToEnter.tsx";
       <div class="w-full max-w-md rounded-3xl bg-white p-8 shadow-2xl">
         <div class="flex items-start justify-between gap-4">
           <div>
-            <p class="text-sm uppercase tracking-[0.4em] text-neutral-500" style="font-family: 'Inter', sans-serif;">MKY Update</p>
-            <h3 class="mt-3 text-3xl tracking-tight text-neutral-900" style="font-family: 'Playfair Display', serif;">Coming Soon</h3>
+            <div class="flex items-center gap-2 mb-3">
+              <div class="inline-flex items-center px-3 py-1 bg-gradient-to-r from-gold to-yellow-200 rounded-full">
+                <svg class="w-4 h-4 mr-1 text-black" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M5 2a1 1 0 011 1v1h1a1 1 0 010 2H6v1a1 1 0 01-2 0V6H3a1 1 0 010-2h1V3a1 1 0 011-1zm0 10a1 1 0 011 1v1h1a1 1 0 110 2H6v1a1 1 0 11-2 0v-1H3a1 1 0 110-2h1v-1a1 1 0 011-1z" clipRule="evenodd" />
+                </svg>
+                <span class="text-xs font-medium text-black tracking-wider">EXCLUSIVE ACCESS</span>
+              </div>
+              <div class="inline-flex items-center px-3 py-1 bg-red-600 text-white rounded-full">
+                <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clipRule="evenodd" />
+                </svg>
+                <span class="text-xs font-medium tracking-wider">LIMITED EDITION</span>
+              </div>
+            </div>
+            <h3 class="mt-2 text-2xl tracking-tight text-neutral-900" style="font-family: 'Playfair Display', serif;">Priority Access to Premium Collections</h3>
             <p class="mt-2 text-sm text-neutral-600" style="font-family: 'Inter', sans-serif; font-weight: 300;">
-              We're perfecting this collection. Leave your email and we'll let you know the moment it arrives.
+              Be the first to discover our exclusive designer collaborations and limited edition releases. Receive early access and personal styling consultations.
             </p>
           </div>
           <button
             type="button"
             class="shrink-0 rounded-full p-2 text-neutral-400 transition hover:bg-neutral-100 hover:text-neutral-700"
-            aria-label="Close coming soon modal"
+            aria-label="Close premium access modal"
             data-close-modal
           >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="h-5 w-5">
@@ -240,11 +436,11 @@ import DareToEnter from "../components/DareToEnter.tsx";
           </button>
         </div>
 
-        <form id="coming-soon-form" class="mt-8 space-y-4" novalidate>
+        <form id="premium-access-form" class="mt-6 space-y-4" novalidate>
           <label class="block text-sm font-medium text-neutral-700" style="font-family: 'Inter', sans-serif;">
             Email address
             <input
-              id="coming-soon-email"
+              id="premium-access-email"
               type="email"
               inputmode="email"
               autocomplete="email"
@@ -254,33 +450,42 @@ import DareToEnter from "../components/DareToEnter.tsx";
               style="font-family: 'Inter', sans-serif;"
             />
           </label>
+          <div class="flex items-center gap-2">
+            <input type="checkbox" id="exclusive-interest" class="rounded border-gray-300" checked />
+            <label for="exclusive-interest" class="text-sm text-gray-600">Notify me about exclusive collections</label>
+          </div>
+          <div class="flex items-center gap-2">
+            <input type="checkbox" id="limited-interest" class="rounded border-gray-300" checked />
+            <label for="limited-interest" class="text-sm text-gray-600">Notify me about limited edition releases</label>
+          </div>
           <button
             type="submit"
-            class="w-full rounded-2xl bg-neutral-900 px-5 py-3 text-sm uppercase tracking-[0.35em] text-white transition hover:bg-neutral-700"
+            class="w-full rounded-2xl bg-gradient-to-r from-gold to-yellow-200 px-5 py-3 text-sm uppercase tracking-[0.35em] text-black transition hover:from-yellow-300 hover:to-gold font-medium"
             style="font-family: 'Inter', sans-serif;"
           >
-            Notify Me
+            Request Priority Access
           </button>
           <p
-            data-feedback
+            data-premium-feedback
             class="hidden text-sm text-emerald-600"
             style="font-family: 'Inter', sans-serif;"
           >
-            Thank you! We'll keep you updated as soon as the collection launches.
+            Thank you! You've been added to our premium access list. Our style team will contact you shortly.
           </p>
         </form>
-        <p class="mt-6 text-xs text-neutral-400" style="font-family: 'Inter', sans-serif;">
-          This signup is a preview experience. No data is stored.
+        <p class="mt-4 text-xs text-neutral-400" style="font-family: 'Inter', sans-serif;">
+          Priority access includes early ordering, personal styling consultations, and exclusive previews.
         </p>
       </div>
     </div>
   </div>
 
   <script>
-    const comingSoonModal = document.getElementById('coming-soon-modal');
-    const comingSoonForm = document.getElementById('coming-soon-form');
-    const comingSoonEmail = document.getElementById('coming-soon-email');
-    const feedback = comingSoonForm?.querySelector('[data-feedback]');
+    // Premium Support Modal Functionality
+    const premiumSupportModal = document.getElementById('premium-support-modal');
+    const premiumSupportForm = document.getElementById('premium-support-form');
+    const supportFeedback = premiumSupportForm?.querySelector('[data-support-feedback]');
+    
     let previouslyFocusedElement = null;
 
     const toggleScroll = (shouldLock) => {
@@ -292,6 +497,72 @@ import DareToEnter from "../components/DareToEnter.tsx";
         delete document.body.dataset.prevOverflow;
       }
     };
+
+    const openPremiumSupportModal = () => {
+      if (!premiumSupportModal) return;
+      previouslyFocusedElement = document.activeElement;
+      premiumSupportModal.classList.remove('hidden');
+      premiumSupportModal.setAttribute('aria-hidden', 'false');
+      toggleScroll(true);
+      window.setTimeout(() => {
+        const firstInput = premiumSupportForm?.querySelector('input, select, textarea');
+        firstInput?.focus();
+      }, 0);
+    };
+
+    const closePremiumSupportModal = () => {
+      if (!premiumSupportModal) return;
+      premiumSupportModal.classList.add('hidden');
+      premiumSupportModal.setAttribute('aria-hidden', 'true');
+      toggleScroll(false);
+      if (supportFeedback && !supportFeedback.classList.contains('hidden')) {
+        supportFeedback.classList.add('hidden');
+      }
+      if (premiumSupportForm) {
+        premiumSupportForm.reset();
+      }
+      if (previouslyFocusedElement && typeof previouslyFocusedElement.focus === 'function') {
+        previouslyFocusedElement.focus();
+      }
+      previouslyFocusedElement = null;
+    };
+
+    // Add click handler for premium support link in navigation
+    document.querySelectorAll('[data-premium-support]').forEach((link) => {
+      link.addEventListener('click', (event) => {
+        event.preventDefault();
+        openPremiumSupportModal();
+      });
+    });
+
+    premiumSupportModal?.addEventListener('click', (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLElement)) return;
+      const closeTrigger = target.closest('[data-close-modal]');
+      if (closeTrigger || target === premiumSupportModal) {
+        closePremiumSupportModal();
+      }
+    });
+
+    premiumSupportForm?.addEventListener('submit', (event) => {
+      event.preventDefault();
+      if (supportFeedback) {
+        supportFeedback.classList.remove('hidden');
+      }
+      // In a real implementation, you would submit the form data to your backend here
+    });
+
+    // Existing modal code remains unchanged
+    const comingSoonModal = document.getElementById('coming-soon-modal');
+    const comingSoonForm = document.getElementById('coming-soon-form');
+    const comingSoonEmail = document.getElementById('coming-soon-email');
+    const feedback = comingSoonForm?.querySelector('[data-feedback]');
+    
+    // Premium Access Modal
+    const premiumAccessModal = document.getElementById('premium-access-modal');
+    const premiumAccessForm = document.getElementById('premium-access-form');
+    const premiumAccessEmail = document.getElementById('premium-access-email');
+    const premiumFeedback = premiumAccessForm?.querySelector('[data-premium-feedback]');
 
     const openComingSoonModal = () => {
       if (!comingSoonModal) return;
@@ -321,6 +592,59 @@ import DareToEnter from "../components/DareToEnter.tsx";
       previouslyFocusedElement = null;
     };
 
+    const openPremiumAccessModal = () => {
+      if (!premiumAccessModal) return;
+      previouslyFocusedElement = document.activeElement;
+      premiumAccessModal.classList.remove('hidden');
+      premiumAccessModal.setAttribute('aria-hidden', 'false');
+      toggleScroll(true);
+      window.setTimeout(() => {
+        premiumAccessEmail?.focus();
+      }, 0);
+    };
+
+    const closePremiumAccessModal = () => {
+      if (!premiumAccessModal) return;
+      premiumAccessModal.classList.add('hidden');
+      premiumAccessModal.setAttribute('aria-hidden', 'true');
+      toggleScroll(false);
+      if (premiumFeedback && !premiumFeedback.classList.contains('hidden')) {
+        premiumFeedback.classList.add('hidden');
+      }
+      if (premiumAccessForm) {
+        premiumAccessForm.reset();
+      }
+      if (previouslyFocusedElement && typeof previouslyFocusedElement.focus === 'function') {
+        previouslyFocusedElement.focus();
+      }
+      previouslyFocusedElement = null;
+    };
+
+    // Add click handlers for premium collection items
+    document.querySelectorAll('a[href="/collections/exclusive"], a[href="/collections/limited-edition"]').forEach((anchor) => {
+      anchor.addEventListener('click', (event) => {
+        event.preventDefault();
+        openPremiumAccessModal();
+      });
+    });
+
+    premiumAccessModal?.addEventListener('click', (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLElement)) return;
+      const closeTrigger = target.closest('[data-close-modal]');
+      if (closeTrigger || target === premiumAccessModal) {
+        closePremiumAccessModal();
+      }
+    });
+
+    premiumAccessForm?.addEventListener('submit', (event) => {
+      event.preventDefault();
+      if (premiumFeedback) {
+        premiumFeedback.classList.remove('hidden');
+      }
+      premiumAccessEmail?.setAttribute('aria-invalid', 'false');
+    });
+
     document.querySelectorAll('[data-coming-soon]').forEach((anchor) => {
       anchor.addEventListener('click', (event) => {
         event.preventDefault();
@@ -344,8 +668,16 @@ import DareToEnter from "../components/DareToEnter.tsx";
     });
 
     window.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && comingSoonModal && !comingSoonModal.classList.contains('hidden')) {
-        closeComingSoonModal();
+      if (event.key === 'Escape') {
+        if (comingSoonModal && !comingSoonModal.classList.contains('hidden')) {
+          closeComingSoonModal();
+        }
+        if (premiumAccessModal && !premiumAccessModal.classList.contains('hidden')) {
+          closePremiumAccessModal();
+        }
+        if (premiumSupportModal && !premiumSupportModal.classList.contains('hidden')) {
+          closePremiumSupportModal();
+        }
       }
     });
 

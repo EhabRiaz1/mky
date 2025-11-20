@@ -1,0 +1,14 @@
+---
+// src/pages/shipping.astro
+import Layout from '../Layouts/BaseLayout.astro';
+import Shipping from './Shipping.tsx';
+
+const {
+  title = 'Shipping & Delivery - MKY',
+  description = 'Complimentary worldwide delivery with the MKY standard of excellence. Track your order and learn about our shipping options.'
+} = Astro.props;
+---
+
+<Layout title={title} description={description}>
+  <Shipping client:load />
+</Layout>

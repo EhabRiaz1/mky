@@ -12,25 +12,25 @@ let backText = 'Back to shop';
 
 if (referrer.includes('blazers')) {
   backLink = referrer;
-  backText = 'Back to blazers';
+  backText = 'Back to Blazers';
 } else if (referrer.includes('trousers')) {
   backLink = referrer;
-  backText = 'Back to trousers';
+  backText = 'Back to Trousers';
 } else if (referrer.includes('men')) {
   backLink = referrer;
-  backText = 'Back to men\'s collection';
+  backText = 'Back to Men\'s Collection';
 } else if (referrer.includes('women')) {
   backLink = referrer;
-  backText = 'Back to women\'s collection';
+  backText = 'Back to Women\'s Collection';
 }
 console.log('*** [Product.astro] Parsed searchParams:', Astro.url.searchParams);
 console.log('*** [Product.astro] Passing to ProductDetail:', { handle, id });
 ---
 <BaseLayout title="Product — Maison MKY" fullWidth={true}>
   <div class="p-0 m-0 relative">
-    <a href={backLink} class="absolute top-[80px] left-6 z-10 px-4 py-2 bg-[rgba(38,19,21,0.05)] hover:bg-[rgba(38,19,21,0.1)] rounded-full text-[rgb(38,19,21)] text-sm font-medium transition-all duration-300 flex items-center">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+    <a href={backLink} class="fixed top-24 left-6 z-10 px-6 py-2 text-[rgb(38,19,21)] text-xs font-light tracking-widest uppercase hover:opacity-60 transition-all duration-300 flex items-center gap-2">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
       </svg>
       {backText}
     </a>

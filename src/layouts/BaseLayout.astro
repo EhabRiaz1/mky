@@ -3,12 +3,14 @@ import '../styles/globals.css';
 import '../styles/colors.css';
 import LoadingScreen from '../components/LoadingScreen';
 import AuthDrawerIsland from '../react/AuthDrawerIsland';
+
 const {
   title = 'MKY - The Lifestyle',
   description = 'Luxury Fashion House',
   stickyHeader = false,
   fullWidth = false,
 } = Astro.props;
+
 const isHome = Astro.url.pathname === '/';
 const useStickyHeader = !isHome && stickyHeader;
 const stickyBackground = 'rgba(38, 19, 21, 0.98)';
@@ -22,7 +24,20 @@ const headerEffectClasses = applyStickyColor
   : '';
 const headerTextClasses = applyStickyColor ? 'text-[var(--brand-ink-exact)]' : '';
 const shouldOffsetForHeader = !isHome && !useStickyHeader;
+
+// Get initial currency from cookie or default to GBP
+const getInitialCurrency = () => {
+  if (typeof document !== 'undefined') {
+    const cookies = document.cookie.split(';');
+    const currencyCookie = cookies.find(cookie => cookie.trim().startsWith('mky_currency='));
+    if (currencyCookie) {
+      return currencyCookie.split('=')[1];
+    }
+  }
+  return 'GBP';
+};
 ---
+
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -32,18 +47,18 @@ const shouldOffsetForHeader = !isHome && !useStickyHeader;
     <link rel="preload" href="/logo.png" as="image" type="image/png" />
     <title>{title}</title>
   </head>
-  <body class="min-h-screen text-neutral-900" style={{ backgroundColor: 'var(--brand-ink-exact)' }}>
+  <body class="min-h-screen text-neutral-900 overflow-x-hidden" style={{ backgroundColor: 'var(--brand-ink-exact)' }}>
     <LoadingScreen client:load />
-    <div class="page-content">
+    <div class="page-content overflow-x-hidden">
     <header
       id="main-header"
-      class={`${headerPositionClasses} ${headerEffectClasses} ${headerTextClasses} z-40 transition-all duration-300`}
+      class={`${headerPositionClasses} ${headerEffectClasses} ${headerTextClasses} z-40 transition-all duration-300 overflow-x-hidden`}
       style={{ backgroundColor: headerBackground }}
     >
-      <div class="max-w-7xl mx-auto px-6 h-16 md:h-20 flex items-center justify-between transition-all duration-300">
+      <div class="max-w-7xl mx-auto px-6 h-16 md:h-20 flex items-center justify-between transition-all duration-300 overflow-x-hidden">
         <!-- Left: Menu + Search (Desktop) -->
         <div class="hidden md:flex items-center gap-8">
-          <button id="desktop-menu-button" type="button" onclick="(function(){var d=document.getElementById('desktop-drawer');var o=document.getElementById('desktop-overlay');if(!d||!o)return;d.classList.remove('-translate-x-full');d.classList.add('translate-x-0');o.classList.remove('opacity-0','pointer-events-none');o.classList.add('opacity-100');document.body.style.overflow='hidden';})()" class="group inline-flex items-center gap-2 text-base tracking-wider transition-opacity hover:opacity-70" style={{ color: 'var(--brand-ink-exact)', fontFamily: 'Inter, sans-serif', textTransform: 'uppercase', fontSize: '0.875rem', letterSpacing: '0.1em' }} aria-label="Menu">
+          <button id="desktop-menu-button" type="button" class="group inline-flex items-center gap-2 text-base tracking-wider transition-opacity hover:opacity-70" style={{ color: 'var(--brand-ink-exact)', fontFamily: 'Inter, sans-serif', textTransform: 'uppercase', fontSize: '0.875rem', letterSpacing: '0.1em' }} aria-label="Menu">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M4 7h16M4 12h16M4 17h16" />
             </svg>
@@ -66,7 +81,7 @@ const shouldOffsetForHeader = !isHome && !useStickyHeader;
         </div>
         
         <!-- Mobile menu button -->
-        <button id="mobile-menu-button" type="button" onclick="(function(){var d=document.getElementById('mobile-drawer');var o=document.getElementById('mobile-overlay');if(!d||!o)return;d.classList.remove('translate-x-full');d.classList.add('translate-x-0');o.classList.remove('opacity-0','pointer-events-none');o.classList.add('opacity-100');document.body.style.overflow='hidden';})()" class="md:hidden text-[#F3E7DF] z-50" aria-label="Toggle menu">
+        <button id="mobile-menu-button" type="button" class="md:hidden text-[#F3E7DF] z-50" aria-label="Toggle menu">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
           </svg>
@@ -75,30 +90,27 @@ const shouldOffsetForHeader = !isHome && !useStickyHeader;
         <!-- Right: Utility Nav (Desktop) -->
         <nav class="hidden md:flex items-center gap-8 text-sm">
           <form action="/" method="get" class="inline">
-            <select name="currency" class="border-none bg-transparent text-sm tracking-wider" 
-                    style={{ color: 'var(--brand-ink-exact)', fontFamily: 'Inter, sans-serif', textTransform: 'uppercase', fontSize: '0.875rem', letterSpacing: '0.1em' }}
-                    onChange="document.cookie='mky_currency='+this.value+'; Path=/; Max-Age=31536000'; location.reload()">
+            <select name="currency" id="currency-selector" class="border-none bg-transparent text-sm tracking-wider" 
+                    style={{ color: 'var(--brand-ink-exact)', fontFamily: 'Inter, sans-serif', textTransform: 'uppercase', fontSize: '0.875rem', letterSpacing: '0.1em' }}>
               <option value="GBP">GBP</option>
               <option value="EUR">EUR</option>
             </select>
           </form>
-          <a href="/cart" class="group tracking-wider transition-opacity hover:opacity-70" style={{ color: 'var(--brand-ink-exact)', fontFamily: 'Inter, sans-serif', textTransform: 'uppercase', fontSize: '0.875rem', letterSpacing: '0.1em' }}>
+          
+          <a href="/checkout" class="group tracking-wider transition-opacity hover:opacity-70" style={{ color: 'var(--brand-ink-exact)', fontFamily: 'Inter, sans-serif', textTransform: 'uppercase', fontSize: '0.875rem', letterSpacing: '0.1em' }}>
             <span class="relative inline-block group-hover:font-semibold">Cart
               <span class="block h-[1.5px] bg-current origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 mt-0.5"></span>
             </span>
           </a>
         </nav>
-
-        
       </div>
     </header>
 
-    <!-- Drawers and overlays mounted outside header to avoid stacking/context issues -->
     <!-- Desktop mega menu drawer (slides in from left) -->
-    <div id="desktop-drawer" class="hidden md:block fixed inset-y-0 left-0 z-[1000] w-96 bg-[rgba(243,231,223,0.98)] backdrop-blur-lg shadow-2xl transition-transform duration-300 ease-in-out transform -translate-x-full">
-      <div class="h-full flex flex-col px-10 py-12 overflow-y-auto">
+    <div id="desktop-drawer" class="hidden md:block fixed inset-y-0 left-0 z-[1000] w-96 bg-[rgba(243,231,223,0.98)] backdrop-blur-lg shadow-2xl transition-transform duration-300 ease-in-out transform -translate-x-full overflow-x-hidden">
+      <div class="h-full flex flex-col px-10 py-12 overflow-y-auto overflow-x-hidden">
         <!-- Close button -->
-        <button id="close-desktop-drawer" type="button" onclick="(function(){var d=document.getElementById('desktop-drawer');var o=document.getElementById('desktop-overlay');if(!d||!o)return;d.classList.remove('translate-x-0');d.classList.add('-translate-x-full');o.classList.remove('opacity-100');o.classList.add('opacity-0','pointer-events-none');document.body.style.overflow='';})()" class="absolute top-8 right-8 transition-opacity hover:opacity-70" style={{ color: 'var(--brand-bg-exact)' }} aria-label="Close menu">
+        <button id="close-desktop-drawer" type="button" class="absolute top-8 right-8 transition-opacity hover:opacity-70" style={{ color: 'var(--brand-bg-exact)' }} aria-label="Close menu">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" />
           </svg>
@@ -108,27 +120,37 @@ const shouldOffsetForHeader = !isHome && !useStickyHeader;
         <nav class="mt-16 flex flex-col gap-6">
           <!-- Men Dropdown -->
           <div class="border-b border-[rgba(38,19,21,0.1)] pb-6">
-            <button type="button" aria-expanded="false" onclick="(function(btn){var id=btn.getAttribute('data-target');var s=document.getElementById(id);var c=btn.querySelector('.drawer-chevron');if(!s)return;var hidden=s.classList.contains('hidden');if(hidden){s.classList.remove('hidden');if(c){c.style.transform='rotate(180deg)';}btn.setAttribute('aria-expanded','true');}else{s.classList.add('hidden');if(c){c.style.transform='rotate(0deg)';}btn.setAttribute('aria-expanded','false');}})(this)" class="drawer-toggle group w-full flex items-center justify-between py-2 text-left" data-target="men-submenu">
-              <span class="relative inline-block text-xl tracking-wide group-hover:font-semibold" style={{ color: 'var(--brand-bg-exact)', fontFamily: 'Playfair Display, serif' }}>Men
+            <button
+              type="button"
+              aria-expanded="false"
+              class="drawer-toggle group w-full flex items-center justify-between py-2 text-left"
+              data-target="desktop-men-submenu"
+            >
+              <span class="relative inline-block text-xl tracking-wide group-hover:font-semibold" style={{ color: 'var(--brand-bg-exact)', fontFamily: 'Playfair Display, serif' }}>
+                Men
                 <span class="block h-[2px] bg-current origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 mt-0.5"></span>
               </span>
-              <svg class="drawer-chevron h-5 w-5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg class="drawer-chevron h-5 w-5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" style={{ color: 'var(--brand-bg-exact)' }}>
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7" />
               </svg>
             </button>
-            <div id="men-submenu" class="drawer-submenu hidden mt-3 ml-4 flex flex-col gap-3">
+
+            <div id="desktop-men-submenu" class="drawer-submenu hidden mt-3 ml-4 flex flex-col gap-3">
               <a href="/men/blazers" class="group text-base transition-opacity hover:opacity-70" style={{ color: 'rgba(38,19,21,0.7)', fontFamily: 'Inter, sans-serif' }}>
-                <span class="relative inline-block group-hover:font-medium">Blazers
+                <span class="relative inline-block group-hover:font-medium">
+                  Blazers
                   <span class="block h-[1.5px] bg-current origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 mt-0.5"></span>
                 </span>
               </a>
               <a href="/men/trousers" class="group text-base transition-opacity hover:opacity-70" style={{ color: 'rgba(38,19,21,0.7)', fontFamily: 'Inter, sans-serif' }}>
-                <span class="relative inline-block group-hover:font-medium">Trousers
+                <span class="relative inline-block group-hover:font-medium">
+                  Trousers
                   <span class="block h-[1.5px] bg-current origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 mt-0.5"></span>
                 </span>
               </a>
               <a href="/men" class="group text-base transition-opacity hover:opacity-70" style={{ color: 'rgba(38,19,21,0.7)', fontFamily: 'Inter, sans-serif' }}>
-                <span class="relative inline-block group-hover:font-medium">View All Men's
+                <span class="relative inline-block group-hover:font-medium">
+                  View All Men's
                   <span class="block h-[1.5px] bg-current origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 mt-0.5"></span>
                 </span>
               </a>
@@ -137,15 +159,15 @@ const shouldOffsetForHeader = !isHome && !useStickyHeader;
           
           <!-- Women Dropdown -->
           <div class="border-b border-[rgba(38,19,21,0.1)] pb-6">
-            <button type="button" aria-expanded="false" onclick="(function(btn){var id=btn.getAttribute('data-target');var s=document.getElementById(id);var c=btn.querySelector('.drawer-chevron');if(!s)return;var hidden=s.classList.contains('hidden');if(hidden){s.classList.remove('hidden');if(c){c.style.transform='rotate(180deg)';}btn.setAttribute('aria-expanded','true');}else{s.classList.add('hidden');if(c){c.style.transform='rotate(0deg)';}btn.setAttribute('aria-expanded','false');}})(this)" class="drawer-toggle group w-full flex items-center justify-between py-2 text-left" data-target="women-submenu">
+            <button type="button" aria-expanded="false" class="drawer-toggle group w-full flex items-center justify-between py-2 text-left" data-target="desktop-women-submenu">
               <span class="relative inline-block text-xl tracking-wide group-hover:font-semibold" style={{ color: 'var(--brand-bg-exact)', fontFamily: 'Playfair Display, serif' }}>Women
                 <span class="block h-[2px] bg-current origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 mt-0.5"></span>
               </span>
-              <svg class="drawer-chevron h-5 w-5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg class="drawer-chevron h-5 w-5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" style={{ color: 'var(--brand-bg-exact)' }}>
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7" />
               </svg>
             </button>
-            <div id="women-submenu" class="drawer-submenu hidden mt-3 ml-4 flex flex-col gap-3">
+            <div id="desktop-women-submenu" class="drawer-submenu hidden mt-3 ml-4 flex flex-col gap-3">
               <a href="/women/blazers" class="group text-base transition-opacity hover:opacity-70" style={{ color: 'rgba(38,19,21,0.7)', fontFamily: 'Inter, sans-serif' }}>
                 <span class="relative inline-block group-hover:font-medium">Blazers
                   <span class="block h-[1.5px] bg-current origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 mt-0.5"></span>
@@ -175,6 +197,7 @@ const shouldOffsetForHeader = !isHome && !useStickyHeader;
               <span class="block h-[2px] bg-current origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 mt-0.5"></span>
             </span>
           </a>
+          
           <a href="/sustainability" class="group py-3 text-xl tracking-wide transition-opacity hover:opacity-70 border-b border-[rgba(38,19,21,0.1)]" style={{ color: 'var(--brand-bg-exact)', fontFamily: 'Playfair Display, serif' }}>
             <span class="relative inline-block group-hover:font-semibold">Sustainability
               <span class="block h-[2px] bg-current origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 mt-0.5"></span>
@@ -193,57 +216,104 @@ const shouldOffsetForHeader = !isHome && !useStickyHeader;
     </div>
 
     <!-- Mobile drawer menu (slides in from right) -->
-    <div id="mobile-drawer" class="md:hidden fixed inset-y-0 right-0 z-[1000] w-[85vw] max-w-md bg-[rgba(38,19,21,0.98)] backdrop-blur-lg shadow-lg transition-transform duration-300 ease-in-out transform translate-x-full">
-      <div class="h-full flex flex-col justify-between px-8 py-10 overflow-y-auto">
+    <div id="mobile-drawer" class="md:hidden fixed inset-y-0 right-0 z-[1000] w-[85vw] max-w-md bg-[rgba(38,19,21,0.98)] backdrop-blur-lg shadow-lg transition-transform duration-300 ease-in-out transform translate-x-full overflow-x-hidden">
+      <div class="h-full flex flex-col justify-between px-8 py-10 overflow-y-auto overflow-x-hidden">
         <!-- Close button -->
-        <button id="close-drawer-button" type="button" onclick="(function(){var d=document.getElementById('mobile-drawer');var o=document.getElementById('mobile-overlay');if(!d||!o)return;d.classList.remove('translate-x-0');d.classList.add('translate-x-full');o.classList.remove('opacity-100');o.classList.add('opacity-0','pointer-events-none');document.body.style.overflow='';})()" class="absolute top-6 right-6 text-[var(--brand-ink-exact)]" aria-label="Close menu">
+        <button id="close-drawer-button" type="button" class="absolute top-6 right-6 text-[var(--brand-ink-exact)]" aria-label="Close menu">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
         
-        <!-- Main menu -->
-        <div class="mt-16">
-          <nav class="flex flex-col gap-6">
-            <!-- Men Dropdown -->
-            <div class="border-b border-[rgba(243,231,223,0.1)] pb-6">
-              <button type="button" aria-expanded="false" onclick="(function(btn){var id=btn.getAttribute('data-target');var s=document.getElementById(id);var c=btn.querySelector('.drawer-chevron');if(!s)return;var hidden=s.classList.contains('hidden');if(hidden){s.classList.remove('hidden');if(c){c.style.transform='rotate(180deg)';}btn.setAttribute('aria-expanded','true');}else{s.classList.add('hidden');if(c){c.style.transform='rotate(0deg)';}btn.setAttribute('aria-expanded','false');}})(this)" class="drawer-toggle w-full flex items-center justify-between py-2 text-left" data-target="mobile-men-submenu">
-                <span class="text-2xl tracking-wide text-[var(--brand-ink-exact)]" style={{ fontFamily: 'Playfair Display, serif' }}>Men</span>
-                <svg class="drawer-chevron h-5 w-5 text-[var(--brand-ink-exact)] transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-              <div id="mobile-men-submenu" class="drawer-submenu hidden mt-4 ml-4 flex flex-col gap-3">
-                <a href="/men/blazers" class="text-base hover:opacity-70 transition-opacity" style={{ color: 'rgba(243,231,223,0.8)', fontFamily: 'Inter, sans-serif' }}>Blazers</a>
-                <a href="/men/trousers" class="text-base hover:opacity-70 transition-opacity" style={{ color: 'rgba(243,231,223,0.8)', fontFamily: 'Inter, sans-serif' }}>Trousers</a>
-                <a href="/men" class="text-base hover:opacity-70 transition-opacity" style={{ color: 'rgba(243,231,223,0.8)', fontFamily: 'Inter, sans-serif' }}>View All Men's</a>
-              </div>
+        <!-- Mobile Navigation -->
+        <nav class="flex-1">
+          <!-- Men Dropdown -->
+          <div class="border-b border-[rgba(243,231,223,0.1)] pb-6">
+            <button 
+              type="button" 
+              aria-expanded="false" 
+              class="drawer-toggle group w-full flex items-center justify-between py-2 text-left" 
+              data-target="mobile-men-submenu"
+            >
+              <span class="relative inline-block text-xl tracking-wide group-hover:font-semibold" style={{ color: 'var(--brand-ink-exact)', fontFamily: 'Playfair Display, serif' }}>
+                Men
+                <span class="block h-[2px] bg-current origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 mt-0.5"></span>
+              </span>
+              <svg class="drawer-chevron h-5 w-5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" style={{ color: 'var(--brand-ink-exact)' }}>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+
+            <div id="mobile-men-submenu" class="drawer-submenu hidden mt-3 ml-4 flex flex-col gap-3">
+              <a href="/men/blazers" class="group text-base transition-opacity hover:opacity-70" style={{ color: 'rgba(243,231,223,0.7)', fontFamily: 'Inter, sans-serif' }}>
+                <span class="relative inline-block group-hover:font-medium">
+                  Blazers
+                  <span class="block h-[1.5px] bg-current origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 mt-0.5"></span>
+                </span>
+              </a>
+              <a href="/men/trousers" class="group text-base transition-opacity hover:opacity-70" style={{ color: 'rgba(243,231,223,0.7)', fontFamily: 'Inter, sans-serif' }}>
+                <span class="relative inline-block group-hover:font-medium">
+                  Trousers
+                  <span class="block h-[1.5px] bg-current origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 mt-0.5"></span>
+                </span>
+              </a>
+              <a href="/men" class="group text-base transition-opacity hover:opacity-70" style={{ color: 'rgba(243,231,223,0.7)', fontFamily: 'Inter, sans-serif' }}>
+                <span class="relative inline-block group-hover:font-medium">
+                  View All Men's
+                  <span class="block h-[1.5px] bg-current origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 mt-0.5"></span>
+                </span>
+              </a>
             </div>
-            
-            <!-- Women Dropdown -->
-            <div class="border-b border-[rgba(243,231,223,0.1)] pb-6">
-              <button type="button" aria-expanded="false" onclick="(function(btn){var id=btn.getAttribute('data-target');var s=document.getElementById(id);var c=btn.querySelector('.drawer-chevron');if(!s)return;var hidden=s.classList.contains('hidden');if(hidden){s.classList.remove('hidden');if(c){c.style.transform='rotate(180deg)';}btn.setAttribute('aria-expanded','true');}else{s.classList.add('hidden');if(c){c.style.transform='rotate(0deg)';}btn.setAttribute('aria-expanded','false');}})(this)" class="drawer-toggle w-full flex items-center justify-between py-2 text-left" data-target="mobile-women-submenu">
-                <span class="text-2xl tracking-wide text-[var(--brand-ink-exact)]" style={{ fontFamily: 'Playfair Display, serif' }}>Women</span>
-                <svg class="drawer-chevron h-5 w-5 text-[var(--brand-ink-exact)] transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-              <div id="mobile-women-submenu" class="drawer-submenu hidden mt-4 ml-4 flex flex-col gap-3">
-                <a href="/women/blazers" class="text-base hover:opacity-70 transition-opacity" style={{ color: 'rgba(243,231,223,0.8)', fontFamily: 'Inter, sans-serif' }}>Blazers</a>
-                <a href="/women/trousers" class="text-base hover:opacity-70 transition-opacity" style={{ color: 'rgba(243,231,223,0.8)', fontFamily: 'Inter, sans-serif' }}>Trousers</a>
-                <a href="/women" class="text-base hover:opacity-70 transition-opacity" style={{ color: 'rgba(243,231,223,0.8)', fontFamily: 'Inter, sans-serif' }}>View All Women's</a>
-              </div>
+          </div>
+
+          <!-- Women Dropdown -->
+          <div class="border-b border-[rgba(243,231,223,0.1)] pb-6">
+            <button 
+              type="button" 
+              aria-expanded="false" 
+              class="drawer-toggle group w-full flex items-center justify-between py-2 text-left" 
+              data-target="mobile-women-submenu"
+            >
+              <span class="relative inline-block text-xl tracking-wide group-hover:font-semibold" style={{ color: 'var(--brand-ink-exact)', fontFamily: 'Playfair Display, serif' }}>
+                Women
+                <span class="block h-[2px] bg-current origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 mt-0.5"></span>
+              </span>
+              <svg class="drawer-chevron h-5 w-5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" style={{ color: 'var(--brand-ink-exact)' }}>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+
+            <div id="mobile-women-submenu" class="drawer-submenu hidden mt-3 ml-4 flex flex-col gap-3">
+              <a href="/women/blazers" class="group text-base transition-opacity hover:opacity-70" style={{ color: 'rgba(243,231,223,0.7)', fontFamily: 'Inter, sans-serif' }}>
+                <span class="relative inline-block group-hover:font-medium">
+                  Blazers
+                  <span class="block h-[1.5px] bg-current origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 mt-0.5"></span>
+                </span>
+              </a>
+              <a href="/women/trousers" class="group text-base transition-opacity hover:opacity-70" style={{ color: 'rgba(243,231,223,0.7)', fontFamily: 'Inter, sans-serif' }}>
+                <span class="relative inline-block group-hover:font-medium">
+                  Trousers
+                  <span class="block h-[1.5px] bg-current origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 mt-0.5"></span>
+                </span>
+              </a>
+              <a href="/women" class="group text-base transition-opacity hover:opacity-70" style={{ color: 'rgba(243,231,223,0.7)', fontFamily: 'Inter, sans-serif' }}>
+                <span class="relative inline-block group-hover:font-medium">
+                  View All Women's
+                  <span class="block h-[1.5px] bg-current origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 mt-0.5"></span>
+                </span>
+              </a>
             </div>
+          </div>
             
-            <!-- Single Links -->
-            <a href="/products" class="py-3 text-2xl tracking-wide text-[var(--brand-ink-exact)] hover:opacity-80 transition-opacity border-b border-[rgba(243,231,223,0.1)]" style={{ fontFamily: 'Playfair Display, serif' }}>Explore the Collection</a>
-            <a href="/products" class="py-3 text-2xl tracking-wide text-[var(--brand-ink-exact)] hover:opacity-80 transition-opacity border-b border-[rgba(243,231,223,0.1)]" style={{ fontFamily: 'Playfair Display, serif' }}>New Arrivals</a>
-            <a href="/sustainability" class="py-3 text-2xl tracking-wide text-[var(--brand-ink-exact)] hover:opacity-80 transition-opacity border-b border-[rgba(243,231,223,0.1)]" style={{ fontFamily: 'Playfair Display, serif' }}>Sustainability</a>
-            <a href="/our-story" class="py-3 text-2xl tracking-wide text-[var(--brand-ink-exact)] hover:opacity-80 transition-opacity border-b border-[rgba(243,231,223,0.1)]" style={{ fontFamily: 'Playfair Display, serif' }}>Our Story</a>
-            <a href="/search" class="py-3 text-2xl tracking-wide text-[var(--brand-ink-exact)] hover:opacity-80 transition-opacity border-b border-[rgba(243,231,223,0.1)]" style={{ fontFamily: 'Playfair Display, serif' }}>Search</a>
-            <a href="/cart" class="py-3 text-2xl tracking-wide text-[var(--brand-ink-exact)] hover:opacity-80 transition-opacity border-b border-[rgba(243,231,223,0.1)]" style={{ fontFamily: 'Playfair Display, serif' }}>Cart</a>
-          </nav>
-        </div>
+          <!-- Single Links -->
+          <a href="/products" class="block py-3 text-2xl tracking-wide text-[var(--brand-ink-exact)] hover:opacity-80 transition-opacity border-b border-[rgba(243,231,223,0.1)]" style={{ fontFamily: 'Playfair Display, serif' }}>Explore the Collection</a>
+          <a href="/products" class="block py-3 text-2xl tracking-wide text-[var(--brand-ink-exact)] hover:opacity-80 transition-opacity border-b border-[rgba(243,231,223,0.1)]" style={{ fontFamily: 'Playfair Display, serif' }}>New Arrivals</a>
+          <a href="/sustainability" class="block py-3 text-2xl tracking-wide text-[var(--brand-ink-exact)] hover:opacity-80 transition-opacity border-b border-[rgba(243,231,223,0.1)]" style={{ fontFamily: 'Playfair Display, serif' }}>Sustainability</a>
+          <a href="/our-story" class="block py-3 text-2xl tracking-wide text-[var(--brand-ink-exact)] hover:opacity-80 transition-opacity border-b border-[rgba(243,231,223,0.1)]" style={{ fontFamily: 'Playfair Display, serif' }}>Our Story</a>
+          <a href="/search" class="block py-3 text-2xl tracking-wide text-[var(--brand-ink-exact)] hover:opacity-80 transition-opacity border-b border-[rgba(243,231,223,0.1)]" style={{ fontFamily: 'Playfair Display, serif' }}>Search</a>
+          <a href="/checkout" class="block py-3 text-2xl tracking-wide text-[var(--brand-ink-exact)] hover:opacity-80 transition-opacity border-b border-[rgba(243,231,223,0.1)]" style={{ fontFamily: 'Playfair Display, serif' }}>Cart</a>
+        </nav>
+        
         <div class="mt-auto">
           <AuthDrawerIsland variant="mobile" client:load />
           
@@ -251,8 +321,7 @@ const shouldOffsetForHeader = !isHome && !useStickyHeader;
           <div class="pb-8 border-t border-[rgba(243,231,223,0.1)] pt-6">
             <div class="text-[var(--brand-ink-exact)] mb-3 text-sm tracking-wider uppercase" style={{ fontFamily: 'Inter, sans-serif' }}>Currency</div>
             <form action="/" method="get">
-              <select name="currency" class="w-full border-none bg-transparent text-base text-[var(--brand-ink-exact)]" style={{ fontFamily: 'Inter, sans-serif' }}
-                      onChange="document.cookie='mky_currency='+this.value+'; Path=/; Max-Age=31536000'; location.reload()">
+              <select name="currency" id="mobile-currency-selector" class="w-full border-none bg-transparent text-base text-[var(--brand-ink-exact)]" style={{ fontFamily: 'Inter, sans-serif' }}>
                 <option value="GBP">GBP</option>
                 <option value="EUR">EUR</option>
               </select>
@@ -263,17 +332,19 @@ const shouldOffsetForHeader = !isHome && !useStickyHeader;
     </div>
 
     <!-- Overlay backdrop for drawers -->
-    <div id="mobile-overlay" onclick="(function(){var d=document.getElementById('mobile-drawer');var o=document.getElementById('mobile-overlay');if(!d||!o)return;d.classList.remove('translate-x-0');d.classList.add('translate-x-full');o.classList.remove('opacity-100');o.classList.add('opacity-0','pointer-events-none');document.body.style.overflow='';})()" class="md:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-[900] opacity-0 pointer-events-none transition-opacity duration-300"></div>
-    <div id="desktop-overlay" onclick="(function(){var d=document.getElementById('desktop-drawer');var o=document.getElementById('desktop-overlay');if(!d||!o)return;d.classList.remove('translate-x-0');d.classList.add('-translate-x-full');o.classList.remove('opacity-100');o.classList.add('opacity-0','pointer-events-none');document.body.style.overflow='';})()" class="hidden md:block fixed inset-0 bg-black/30 backdrop-blur-sm z-[900] opacity-0 pointer-events-none transition-opacity duration-300"></div>
+    <div id="mobile-overlay" class="md:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-[900] opacity-0 pointer-events-none transition-opacity duration-300 overflow-x-hidden"></div>
+    <div id="desktop-overlay" class="hidden md:block fixed inset-0 bg-black/30 backdrop-blur-sm z-[900] opacity-0 pointer-events-none transition-opacity duration-300 overflow-x-hidden"></div>
     
     
     <!-- Add padding to account for fixed header (not on home page) -->
-    {shouldOffsetForHeader && <div class="h-16 md:h-20"></div>}
-    <main class={`${fullWidth ? 'max-w-none px-0 py-0' : 'max-w-[1920px] mx-auto px-4 md:px-6 py-6 md:py-8'}`}>
+    {shouldOffsetForHeader && <div class="h-16 md:h-20 overflow-x-hidden"></div>}
+    <main class={`${fullWidth ? 'max-w-none px-0 py-0 overflow-x-hidden' : 'max-w-[1920px] mx-auto px-4 md:px-6 py-6 md:py-8 overflow-x-hidden'}`}>
       <slot />
     </main>
-    <footer class="border-t border-neutral-700/10 py-16 mt-24" style={{ backgroundColor: 'var(--brand-bg-exact)' }}>
-      <div class="max-w-7xl mx-auto px-6">
+    
+    <!-- FOOTER -->
+    <footer class="border-t border-neutral-700/10 py-16 mt-24 overflow-x-hidden" style={{ backgroundColor: 'var(--brand-bg-exact)' }}>
+      <div class="max-w-7xl mx-auto px-6 overflow-x-hidden">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-10">
           <div>
             <h3 class="font-light tracking-widest mb-4 text-[#F3E7DF]" style={{ color: 'var(--brand-ink-exact)' }}>MKY - The Lifestyle</h3>
@@ -289,9 +360,10 @@ const shouldOffsetForHeader = !isHome && !useStickyHeader;
           <div>
             <h4 class="font-medium mb-4 text-sm text-[#F3E7DF]" style={{ color: 'var(--brand-ink-exact)' }}>CUSTOMER CARE</h4>
             <ul class="space-y-2 text-sm text-[#F3E7DF]/70" style={{ color: 'rgba(243, 231, 223, 0.7)' }}>
-              <li><a href="/contact" class="hover:text-[#F3E7DF] transition-colors" style={{ color: 'rgba(243, 231, 223, 0.7)' }}>Contact</a></li>
-              <li><a href="/shipping" class="hover:text-[#F3E7DF] transition-colors" style={{ color: 'rgba(243, 231, 223, 0.7)' }}>Shipping</a></li>
-              <li><a href="/returns" class="hover:text-[#F3E7DF] transition-colors" style={{ color: 'rgba(243, 231, 223, 0.7)' }}>Returns</a></li>
+              <li><a href="/contact" class="hover:text-[#F3E7DF] transition-colors" style={{ color: 'rgba(243, 231, 223, 0.7)' }}>Contact Us</a></li>
+              <li><a href="/Shipping" class="hover:text-[#F3E7DF] transition-colors" style={{ color: 'rgba(243, 231, 223, 0.7)' }}>Shipping</a></li>
+              <li><a href="/return" class="hover:text-[#F3E7DF] transition-colors" style={{ color: 'rgba(243, 231, 223, 0.7)' }}>Returns</a></li>
+              <li><a href="/Faq" class="hover:text-[#F3E7DF] transition-colors" style={{ color: 'rgba(243, 231, 223, 0.7)' }}>FAQ</a></li>
             </ul>
           </div>
           <div>
@@ -309,9 +381,10 @@ const shouldOffsetForHeader = !isHome && !useStickyHeader;
     </footer>
     </div>
 
+    <!-- FIXED JAVASCRIPT -->
     <script>
-      // Mobile drawer menu and desktop drawer menu functionality
-      const initNav = () => {
+      document.addEventListener('DOMContentLoaded', function() {
+        // Initialize navigation
         const mobileMenuButton = document.getElementById('mobile-menu-button');
         const mobileDrawer = document.getElementById('mobile-drawer');
         const mobileCloseButton = document.getElementById('close-drawer-button');
@@ -321,140 +394,170 @@ const shouldOffsetForHeader = !isHome && !useStickyHeader;
         const desktopDrawer = document.getElementById('desktop-drawer');
         const desktopCloseButton = document.getElementById('close-desktop-drawer');
         const desktopOverlay = document.getElementById('desktop-overlay');
-        
-        let mobileMenuOpen = false;
-        let desktopMenuOpen = false;
 
-        // Open mobile drawer
-        const openMobileDrawer = () => {
-          // show drawer
-          mobileDrawer.classList.remove('translate-x-full');
-          mobileDrawer.classList.add('translate-x-0');
-          // show overlay
-          mobileOverlay.classList.remove('opacity-0', 'pointer-events-none');
-          mobileOverlay.classList.add('opacity-100');
-          document.body.style.overflow = 'hidden';
-          
-          mobileMenuOpen = true;
-        };
-        // expose for inline fallback
-        window.mkyOpenMobileDrawer = openMobileDrawer;
-        
-        // Close mobile drawer
-        const closeMobileDrawer = () => {
-          // hide drawer
-          mobileDrawer.classList.remove('translate-x-0');
-          mobileDrawer.classList.add('translate-x-full');
-          // hide overlay
-          mobileOverlay.classList.remove('opacity-100');
-          mobileOverlay.classList.add('opacity-0', 'pointer-events-none');
-          document.body.style.overflow = '';
-          
-          mobileMenuOpen = false;
-        };
-        window.mkyCloseMobileDrawer = closeMobileDrawer;
+        // Currency selector functionality
+        function initializeCurrencySelector() {
+          const getCookie = (name) => {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+            return null;
+          };
 
-        // Open desktop drawer
-        const openDesktopDrawer = () => {
-          if (!desktopDrawer || !desktopOverlay) return;
-          // show drawer
-          desktopDrawer.classList.remove('-translate-x-full');
-          desktopDrawer.classList.add('translate-x-0');
-          // show overlay
-          desktopOverlay.classList.remove('opacity-0', 'pointer-events-none');
-          desktopOverlay.classList.add('opacity-100');
-          document.body.style.overflow = 'hidden';
-          desktopMenuOpen = true;
-        };
-        window.mkyOpenDesktopDrawer = openDesktopDrawer;
-        
-        // Close desktop drawer
-        const closeDesktopDrawer = () => {
-          if (!desktopDrawer || !desktopOverlay) return;
-          // hide drawer
-          desktopDrawer.classList.remove('translate-x-0');
-          desktopDrawer.classList.add('-translate-x-full');
-          // hide overlay
-          desktopOverlay.classList.remove('opacity-100');
-          desktopOverlay.classList.add('opacity-0', 'pointer-events-none');
-          document.body.style.overflow = '';
-          desktopMenuOpen = false;
-        };
-        window.mkyCloseDesktopDrawer = closeDesktopDrawer;
+          const setCookie = (name, value, days = 365) => {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            const expires = `expires=${date.toUTCString()}`;
+            document.cookie = `${name}=${value}; ${expires}; path=/`;
+          };
 
-        // Add event listeners - Mobile (guarded)
-        if (mobileMenuButton && mobileDrawer && mobileOverlay && mobileCloseButton) {
-          mobileMenuButton.addEventListener('click', openMobileDrawer);
-          mobileCloseButton.addEventListener('click', closeMobileDrawer);
-          mobileOverlay.addEventListener('click', closeMobileDrawer);
-          
-          // Close mobile drawer on nav link clicks
-          const mobileLinks = mobileDrawer.querySelectorAll('a');
-          mobileLinks.forEach(link => {
-            link.addEventListener('click', closeMobileDrawer);
-          });
-        }
+          const handleCurrencyChange = (currency) => {
+            setCookie('mky_currency', currency);
+            // Force page reload to apply currency changes
+            window.location.reload();
+          };
 
-        // Add event listeners - Desktop
-        if (desktopMenuButton && desktopCloseButton && desktopOverlay) {
-          desktopMenuButton.addEventListener('click', openDesktopDrawer);
-          desktopCloseButton.addEventListener('click', closeDesktopDrawer);
-          desktopOverlay.addEventListener('click', closeDesktopDrawer);
-          
-          // Close desktop drawer on nav link clicks
-          if (desktopDrawer) {
-            const desktopLinks = desktopDrawer.querySelectorAll('a');
-            desktopLinks.forEach(link => {
-              link.addEventListener('click', closeDesktopDrawer);
+          // Get current currency from cookie
+          const currentCurrency = getCookie('mky_currency') || 'GBP';
+
+          // Initialize desktop currency selector
+          const desktopCurrencySelector = document.getElementById('currency-selector');
+          if (desktopCurrencySelector) {
+            desktopCurrencySelector.value = currentCurrency;
+            desktopCurrencySelector.addEventListener('change', (e) => {
+              handleCurrencyChange(e.target.value);
             });
           }
+
+          // Initialize mobile currency selector
+          const mobileCurrencySelector = document.getElementById('mobile-currency-selector');
+          if (mobileCurrencySelector) {
+            mobileCurrencySelector.value = currentCurrency;
+            mobileCurrencySelector.addEventListener('change', (e) => {
+              handleCurrencyChange(e.target.value);
+            });
+          }
+
+          console.log('Currency initialized:', currentCurrency);
         }
 
-        // Close on window resize
-        window.addEventListener('resize', () => {
-          if (window.innerWidth >= 768 && mobileMenuOpen) {
-            closeMobileDrawer();
+        // Mobile drawer functions
+        function openMobileDrawer() {
+          if (mobileDrawer && mobileOverlay) {
+            mobileDrawer.classList.remove('translate-x-full');
+            mobileDrawer.classList.add('translate-x-0');
+            mobileOverlay.classList.remove('opacity-0', 'pointer-events-none');
+            mobileOverlay.classList.add('opacity-100');
+            document.body.style.overflow = 'hidden';
           }
-          if (window.innerWidth < 768 && desktopMenuOpen) {
+        }
+
+        function closeMobileDrawer() {
+          if (mobileDrawer && mobileOverlay) {
+            mobileDrawer.classList.remove('translate-x-0');
+            mobileDrawer.classList.add('translate-x-full');
+            mobileOverlay.classList.remove('opacity-100');
+            mobileOverlay.classList.add('opacity-0', 'pointer-events-none');
+            document.body.style.overflow = '';
+          }
+        }
+
+        // Desktop drawer functions
+        function openDesktopDrawer() {
+          if (desktopDrawer && desktopOverlay) {
+            desktopDrawer.classList.remove('-translate-x-full');
+            desktopDrawer.classList.add('translate-x-0');
+            desktopOverlay.classList.remove('opacity-0', 'pointer-events-none');
+            desktopOverlay.classList.add('opacity-100');
+            document.body.style.overflow = 'hidden';
+          }
+        }
+
+        function closeDesktopDrawer() {
+          if (desktopDrawer && desktopOverlay) {
+            desktopDrawer.classList.remove('translate-x-0');
+            desktopDrawer.classList.add('-translate-x-full');
+            desktopOverlay.classList.remove('opacity-100');
+            desktopOverlay.classList.add('opacity-0', 'pointer-events-none');
+            document.body.style.overflow = '';
+          }
+        }
+
+        // Event listeners
+        if (mobileMenuButton) mobileMenuButton.addEventListener('click', openMobileDrawer);
+        if (mobileCloseButton) mobileCloseButton.addEventListener('click', closeMobileDrawer);
+        if (mobileOverlay) mobileOverlay.addEventListener('click', closeMobileDrawer);
+
+        if (desktopMenuButton) desktopMenuButton.addEventListener('click', openDesktopDrawer);
+        if (desktopCloseButton) desktopCloseButton.addEventListener('click', closeDesktopDrawer);
+        if (desktopOverlay) desktopOverlay.addEventListener('click', closeDesktopDrawer);
+
+        // Close drawers on link clicks
+        const mobileLinks = mobileDrawer ? mobileDrawer.querySelectorAll('a') : [];
+        mobileLinks.forEach(link => {
+          link.addEventListener('click', closeMobileDrawer);
+        });
+
+        const desktopLinks = desktopDrawer ? desktopDrawer.querySelectorAll('a') : [];
+        desktopLinks.forEach(link => {
+          link.addEventListener('click', closeDesktopDrawer);
+        });
+
+        // Accordion functionality
+        document.addEventListener('click', function(event) {
+          const toggle = event.target.closest('.drawer-toggle');
+          if (toggle) {
+            const targetId = toggle.getAttribute('data-target');
+            const submenu = document.getElementById(targetId);
+            const chevron = toggle.querySelector('.drawer-chevron');
+            
+            if (submenu && chevron) {
+              const isHidden = submenu.classList.contains('hidden');
+              if (isHidden) {
+                submenu.classList.remove('hidden');
+                chevron.style.transform = 'rotate(180deg)';
+                toggle.setAttribute('aria-expanded', 'true');
+              } else {
+                submenu.classList.add('hidden');
+                chevron.style.transform = 'rotate(0deg)';
+                toggle.setAttribute('aria-expanded', 'false');
+              }
+            }
+          }
+        });
+
+        // Close on escape key
+        document.addEventListener('keydown', function(event) {
+          if (event.key === 'Escape') {
+            closeMobileDrawer();
             closeDesktopDrawer();
           }
         });
+
+        // Initialize currency selector
+        initializeCurrencySelector();
+
+        // Home Page Sticky Header Logic
+        const header = document.getElementById('main-header');
+        const isHomePage = window.location.pathname === '/';
         
-        // Accordion functionality for drawer menus (global delegation)
-        document.addEventListener('click', (event) => {
-          const t = event.target;
-          if (!t || !(t instanceof Element)) return;
-          const toggle = t.closest('.drawer-toggle');
-          if (!toggle) return;
-          const targetId = toggle.getAttribute('data-target');
-          let submenu = null;
-          if (targetId) submenu = document.getElementById(targetId);
-          if (!submenu) {
-            const nextEl = toggle.nextElementSibling;
-            if (nextEl && nextEl.classList && nextEl.classList.contains('drawer-submenu')) submenu = nextEl;
-          }
-          if (!submenu) return;
-          const chevron = toggle.querySelector('.drawer-chevron');
-          const isHidden = submenu.classList.contains('hidden');
-          if (isHidden) {
-            submenu.classList.remove('hidden');
-            if (chevron) chevron.style.transform = 'rotate(180deg)';
-            toggle.setAttribute('aria-expanded', 'true');
-          } else {
-            submenu.classList.add('hidden');
-            if (chevron) chevron.style.transform = 'rotate(0deg)';
-            toggle.setAttribute('aria-expanded', 'false');
-          }
-        });
-      };
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initNav);
-      } else {
-        initNav();
-      }
+        if (isHomePage && header) {
+          const handleScroll = () => {
+            const threshold = window.innerHeight - 100;
+            if (window.scrollY > threshold) {
+              header.style.backgroundColor = 'rgba(38, 19, 21, 0.98)';
+              header.classList.add('backdrop-blur-md', 'shadow-sm');
+            } else {
+              header.style.backgroundColor = 'transparent';
+              header.classList.remove('backdrop-blur-md', 'shadow-sm');
+            }
+          };
+          
+          window.addEventListener('scroll', handleScroll, { passive: true });
+          // Initial check
+          handleScroll();
+        }
+      });
     </script>
   </body>
 </html>
-
-
-

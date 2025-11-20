@@ -69,18 +69,18 @@ export default function ProductGrid({ gender, collection }: { gender?: 'men' | '
   };
 
   return (
-    <div className="w-full bg-white">
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-0">
+    <div className="w-full bg-transparent">
+      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-6 md:gap-8 lg:gap-12 max-w-4xl mx-auto px-4">
         {products.map((p) => {
           console.log('[ProductGrid] Rendering product:', { id: p.id, handle: p.handle, title: p.title });
           return (
             <a 
               key={p.id} 
               href={`/product?handle=${encodeURIComponent(p.handle)}&id=${encodeURIComponent(p.id)}&from=${encodeURIComponent(window.location.pathname)}`} 
-              className="group relative block border-r border-b border-neutral-100 hover:shadow-lg transition-shadow duration-300"
+              className="group relative block hover:shadow-lg transition-shadow duration-300"
             >
               {/* Product Card */}
-              <div className="relative bg-neutral-50">
+              <div className="relative bg-transparent">
                 {/* Tag */}
                 {p.is_new && (
                   <div className="absolute top-4 left-4 z-10">
@@ -115,7 +115,7 @@ export default function ProductGrid({ gender, collection }: { gender?: 'men' | '
               </div>
 
               {/* Product Info */}
-              <div className="p-4 sm:p-6 bg-white">
+              <div className="p-4 sm:p-6 bg-transparent">
                 <h3 className="text-xs sm:text-sm font-light tracking-wide text-neutral-900 mb-2">
                   {p.title}
                 </h3>

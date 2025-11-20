@@ -10,7 +10,7 @@
   --surface: #FAF8F6;
   --card: #FFFFFF;
   --accent: #A38469;
-  --radius-card: 4px;
+  --radius-card: 0.5rem;
 }
 
 /* Page transition effect */
@@ -37,9 +37,8 @@ h1, h2, h3, h4, h5, h6 {
 /* Luxury styling - minimal, clean */
 .card {
   background: white;
-  border-radius: 0;
-  border: none;
-  box-shadow: none;
+  border-radius: 1rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
   overflow: hidden;
 }
 
@@ -48,7 +47,7 @@ h1, h2, h3, h4, h5, h6 {
   align-items: center;
   justify-content: center;
   padding: 1rem 2rem;
-  border-radius: 0;
+  border-radius: 0.5rem;
   transition: all 200ms ease-out;
   font-size: 0.875rem;
   letter-spacing: 0.05em;

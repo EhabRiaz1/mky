@@ -1,0 +1,14 @@
+---
+// src/pages/faq.astro
+import Layout from '../layouts/BaseLayout.astro';
+import FAQ from './FAQ.tsx';
+
+const {
+  title = 'FAQ - Frequently Asked Questions - MKY',
+  description = 'Find answers to common questions about shipping, returns, products, and more. MKY luxury customer support.'
+} = Astro.props;
+---
+
+<Layout title={title} description={description}>
+  <FAQ client:load />
+</Layout>

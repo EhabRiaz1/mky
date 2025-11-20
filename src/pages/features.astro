@@ -1,0 +1,362 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Reveal from "../components/Reveal.tsx";
+
+// Feature data
+const exclusiveCollections = [
+  {
+    id: 1,
+    title: "Milanese Masterpieces",
+    description: "Limited partnership with Italian ateliers",
+    pieces: "Only 50 Pieces",
+    availability: "Worldwide",
+    image: "/images/exclusive-collection-1.jpg",
+    badge: "EXCLUSIVE",
+    badgeColor: "black"
+  },
+  {
+    id: 2,
+    title: "Parisian Couture",
+    description: "Haute couture inspired collection",
+    pieces: "Only 25 Sets",
+    availability: "Made to Order",
+    image: "/images/exclusive-collection-2.jpg",
+    badge: "EXCLUSIVE",
+    badgeColor: "black"
+  },
+  {
+    id: 3,
+    title: "Artisan Heritage",
+    description: "Handcrafted by master artisans",
+    pieces: "Only 15 Pieces",
+    availability: "By Appointment",
+    image: "/images/exclusive-collection-3.jpg",
+    badge: "EXCLUSIVE",
+    badgeColor: "black"
+  },
+  {
+    id: 4,
+    title: "Bespoke Tailoring",
+    description: "Custom fitted luxury pieces",
+    pieces: "Made to Measure",
+    availability: "Personal Consultation",
+    image: "/images/exclusive-collection-4.jpg",
+    badge: "EXCLUSIVE",
+    badgeColor: "black"
+  }
+];
+
+const limitedCollections = [
+  {
+    id: 1,
+    title: "Heritage Collection",
+    description: "Anniversary limited edition",
+    pieces: "Edition 12/25",
+    availability: "Final Release",
+    image: "/images/limited-edition-1.jpg",
+    badge: "LIMITED",
+    badgeColor: "red-600",
+    stock: { remaining: 12, total: 25, percentage: 48, status: "ALMOST GONE" }
+  },
+  {
+    id: 2,
+    title: "Artisan Series",
+    description: "Handcrafted limited series",
+    pieces: "Edition 18/30",
+    availability: "Selling Fast",
+    image: "/images/limited-edition-2.jpg",
+    badge: "LIMITED",
+    badgeColor: "red-600",
+    stock: { remaining: 18, total: 30, percentage: 60, status: "LOW STOCK" }
+  },
+  {
+    id: 3,
+    title: "Legacy Edition",
+    description: "Commemorative release",
+    pieces: "Edition 8/20",
+    availability: "Almost Gone",
+    image: "/images/limited-edition-3.jpg",
+    badge: "LIMITED",
+    badgeColor: "red-600",
+    stock: { remaining: 8, total: 20, percentage: 40, status: "ALMOST GONE" }
+  },
+  {
+    id: 4,
+    title: "Collector's Set",
+    description: "Premium limited series",
+    pieces: "Edition 22/35",
+    availability: "Available Now",
+    image: "/images/limited-edition-4.jpg",
+    badge: "LIMITED",
+    badgeColor: "red-600",
+    stock: { remaining: 22, total: 35, percentage: 63, status: "SELLING FAST" }
+  }
+];
+---
+
+<BaseLayout title="MKY — Exclusive & Limited Collections" fullWidth={false}>
+  <!-- Hero Section -->
+  <section class="py-20 px-4 md:px-10 lg:px-16 bg-gradient-to-br from-gray-50 to-white">
+    <div class="text-center max-w-4xl mx-auto">
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
+        <div class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-gold to-yellow-200 rounded-full">
+          <svg class="w-5 h-5 mr-2 text-black" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M5 2a1 1 0 011 1v1h1a1 1 0 010 2H6v1a1 1 0 01-2 0V6H3a1 1 0 010-2h1V3a1 1 0 011-1zm0 10a1 1 0 011 1v1h1a1 1 0 110 2H6v1a1 1 0 11-2 0v-1H3a1 1 0 110-2h1v-1a1 1 0 011-1z" clipRule="evenodd" />
+          </svg>
+          <span class="text-lg font-medium text-black tracking-wider">EXCLUSIVE & LIMITED EDITION</span>
+        </div>
+      </div>
+      <h1 class="text-4xl md:text-6xl tracking-tight mb-6" style="color: var(--brand-bg-exact); font-family: 'Playfair Display', serif;">
+        Premium Collections
+      </h1>
+      <p class="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+        Discover our most sought-after collections featuring exclusive designer partnerships and limited edition releases with unprecedented craftsmanship.
+      </p>
+    </div>
+  </section>
+
+  <!-- Exclusive Collections Section -->
+  <section class="py-20 px-4 md:px-10 lg:px-16 bg-white">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl md:text-5xl tracking-tight mb-4" style="color: var(--brand-bg-exact); font-family: 'Playfair Display', serif;">
+        Exclusive Collections
+      </h2>
+      <p class="text-gray-600 max-w-2xl mx-auto text-lg">
+        Handpicked collaborations and bespoke creations available only through MKY.
+      </p>
+    </div>
+
+    <Reveal client:load>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        {exclusiveCollections.map((collection) => (
+          <a 
+            href={`/collections/exclusive/${collection.id}`}
+            class="group block text-center relative overflow-hidden rounded-2xl bg-gray-50 hover:shadow-2xl transition-all duration-300"
+          >
+            <div class="aspect-[4/5] overflow-hidden">
+              <img 
+                src={collection.image} 
+                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
+                alt={collection.title}
+                loading="lazy"
+              />
+              <div class="absolute top-4 left-4 z-10">
+                <div class={`inline-flex items-center px-3 py-1 bg-${collection.badgeColor} text-white text-xs font-medium tracking-wider rounded-full`}>
+                  <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M5 2a1 1 0 011 1v1h1a1 1 0 010 2H6v1a1 1 0 01-2 0V6H3a1 1 0 010-2h1V3a1 1 0 011-1zm0 10a1 1 0 011 1v1h1a1 1 0 110 2H6v1a1 1 0 11-2 0v-1H3a1 1 0 110-2h1v-1a1 1 0 011-1z" clipRule="evenodd" />
+                  </svg>
+                  {collection.badge}
+                </div>
+              </div>
+            </div>
+            <div class="p-6">
+              <h3 class="text-xl font-medium mb-2" style="color: var(--brand-bg-exact); font-family: 'Playfair Display', serif;">
+                {collection.title}
+              </h3>
+              <p class="text-sm text-gray-600 mb-3">{collection.description}</p>
+              <div class="flex items-center justify-between text-sm">
+                <span class="text-gold font-medium">{collection.pieces}</span>
+                <span class="text-gray-500">{collection.availability}</span>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+    </Reveal>
+
+    <div class="text-center mt-12">
+      <a 
+        href="/collections/exclusive"
+        class="inline-flex items-center gap-2 px-8 py-4 border-2 border-current text-sm tracking-widest hover:opacity-70 transition-all duration-300 rounded-full"
+        style="color: var(--brand-bg-exact); font-family: 'Inter', sans-serif; text-transform: uppercase; letter-spacing: 0.15em"
+      >
+        View All Exclusive Collections
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- Limited Edition Collections Section -->
+  <section class="py-20 px-4 md:px-10 lg:px-16 bg-gray-50">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl md:text-5xl tracking-tight mb-4" style="color: var(--brand-bg-exact); font-family: 'Playfair Display', serif;">
+        Limited Edition Releases
+      </h2>
+      <p class="text-gray-600 max-w-2xl mx-auto text-lg">
+        Final opportunities to own these rare pieces before they're gone forever.
+      </p>
+    </div>
+
+    <Reveal client:load>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        {limitedCollections.map((collection) => (
+          <a 
+            href={`/collections/limited-edition/${collection.id}`}
+            class="group block text-center relative overflow-hidden rounded-2xl bg-white hover:shadow-2xl transition-all duration-300"
+          >
+            <div class="aspect-[4/5] overflow-hidden">
+              <img 
+                src={collection.image} 
+                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
+                alt={collection.title}
+                loading="lazy"
+              />
+              <div class="absolute top-4 left-4 z-10">
+                <div class={`inline-flex items-center px-3 py-1 bg-${collection.badgeColor} text-white text-xs font-medium tracking-wider rounded-full`}>
+                  <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clipRule="evenodd" />
+                  </svg>
+                  {collection.badge}
+                </div>
+              </div>
+              
+              <!-- Stock Indicator -->
+              <div class="absolute bottom-4 left-4 right-4 z-10">
+                <div class="bg-white/90 backdrop-blur-sm rounded-full p-3">
+                  <div class="flex items-center justify-between text-xs mb-2">
+                    <span class="font-medium text-gray-700">{collection.stock.remaining}/{collection.stock.total} remaining</span>
+                    <span class={`font-bold ${
+                      collection.stock.status === 'ALMOST GONE' ? 'text-red-600' :
+                      collection.stock.status === 'LOW STOCK' ? 'text-orange-600' :
+                      'text-green-600'
+                    }`}>
+                      {collection.stock.status}
+                    </span>
+                  </div>
+                  <div class="w-full bg-gray-200 rounded-full h-2">
+                    <div 
+                      class={`h-2 rounded-full ${
+                        collection.stock.status === 'ALMOST GONE' ? 'bg-red-600' :
+                        collection.stock.status === 'LOW STOCK' ? 'bg-orange-500' :
+                        'bg-green-500'
+                      }`} 
+                      style={`width: ${collection.stock.percentage}%`}
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="p-6">
+              <h3 class="text-xl font-medium mb-2" style="color: var(--brand-bg-exact); font-family: 'Playfair Display', serif;">
+                {collection.title}
+              </h3>
+              <p class="text-sm text-gray-600 mb-3">{collection.description}</p>
+              <div class="flex items-center justify-between text-sm">
+                <span class="text-red-600 font-medium">{collection.pieces}</span>
+                <span class="text-gray-500">{collection.availability}</span>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+    </Reveal>
+
+    <div class="text-center mt-12">
+      <a 
+        href="/collections/limited-edition"
+        class="inline-flex items-center gap-2 px-8 py-4 border-2 border-current text-sm tracking-widest hover:opacity-70 transition-all duration-300 rounded-full"
+        style="color: var(--brand-bg-exact); font-family: 'Inter', sans-serif; text-transform: uppercase; letter-spacing: 0.15em"
+      >
+        View All Limited Editions
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- Benefits Section -->
+  <section class="py-20 px-4 md:px-10 lg:px-16 bg-white">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-5xl tracking-tight mb-4" style="color: var(--brand-bg-exact); font-family: 'Playfair Display', serif;">
+          Premium Benefits
+        </h2>
+        <p class="text-gray-600 max-w-2xl mx-auto text-lg">
+          Experience the advantages of our exclusive and limited edition collections.
+        </p>
+      </div>
+
+      <Reveal client:load>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="text-center p-8 rounded-2xl bg-gray-50 hover:shadow-lg transition-all duration-300">
+            <div class="w-16 h-16 mx-auto mb-6 rounded-full bg-gold flex items-center justify-center">
+              <svg class="w-8 h-8 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-medium mb-4" style="color: var(--brand-bg-exact); font-family: 'Playfair Display', serif;">
+              Exclusive Access
+            </h3>
+            <p class="text-gray-600">
+              Be among the first to discover new collections with priority access and personal previews.
+            </p>
+          </div>
+
+          <div class="text-center p-8 rounded-2xl bg-gray-50 hover:shadow-lg transition-all duration-300">
+            <div class="w-16 h-16 mx-auto mb-6 rounded-full bg-gold flex items-center justify-center">
+              <svg class="w-8 h-8 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-medium mb-4" style="color: var(--brand-bg-exact); font-family: 'Playfair Display', serif;">
+              Limited Production
+            </h3>
+            <p class="text-gray-600">
+              Own truly unique pieces with strictly limited production runs ensuring rarity and exclusivity.
+            </p>
+          </div>
+
+          <div class="text-center p-8 rounded-2xl bg-gray-50 hover:shadow-lg transition-all duration-300">
+            <div class="w-16 h-16 mx-auto mb-6 rounded-full bg-gold flex items-center justify-center">
+              <svg class="w-8 h-8 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-medium mb-4" style="color: var(--brand-bg-exact); font-family: 'Playfair Display', serif;">
+              Premium Craftsmanship
+            </h3>
+            <p class="text-gray-600">
+              Experience unparalleled quality with pieces crafted by master artisans using the finest materials.
+            </p>
+          </div>
+        </div>
+      </Reveal>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-20 px-4 md:px-10 lg:px-16 bg-gradient-to-r from-gold to-yellow-200">
+    <div class="max-w-4xl mx-auto text-center">
+      <h2 class="text-3xl md:text-5xl tracking-tight mb-6 text-black" style="font-family: 'Playfair Display', serif;">
+        Join the Inner Circle
+      </h2>
+      <p class="text-lg text-black/80 mb-8 max-w-2xl mx-auto">
+        Get exclusive access to new collections, private viewings, and personalized styling consultations.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a 
+          href="/collections/exclusive"
+          class="inline-flex items-center justify-center px-8 py-4 bg-black text-white text-sm tracking-widest hover:bg-gray-800 transition-all duration-300 rounded-full"
+          style="font-family: 'Inter', sans-serif; text-transform: uppercase; letter-spacing: 0.15em"
+        >
+          Explore Exclusive Collections
+        </a>
+        <a 
+          href="/collections/limited-edition"
+          class="inline-flex items-center justify-center px-8 py-4 border-2 border-black text-black text-sm tracking-widest hover:bg-black hover:text-white transition-all duration-300 rounded-full"
+          style="font-family: 'Inter', sans-serif; text-transform: uppercase; letter-spacing: 0.15em"
+        >
+          View Limited Editions
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Add any interactive functionality here if needed
+    console.log('Features page loaded successfully');
+  </script>
+</BaseLayout>

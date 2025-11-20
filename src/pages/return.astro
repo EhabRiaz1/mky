@@ -1,0 +1,14 @@
+---
+
+import Layout from '../Layouts/BaseLayout.astro';
+import Returns from './return.tsx';
+
+const {
+  title = 'Returns & Exchanges - MKY',
+  description = 'Hassle-free returns within 30 days. Initiate a return, track your return status, or learn about our return policy.'
+} = Astro.props;
+---
+
+<Layout title={title} description={description}>
+  <Returns client:load />
+</Layout>

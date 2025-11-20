@@ -53,30 +53,34 @@ export default function CheckoutClient() {
   }
 
   return (
-    <div className="card p-4">
-      <div className="mb-2 text-neutral-600">Amount</div>
-      <div className="text-xl font-semibold">{formatPrice(amount, currency)}</div>
+    <div className="bg-white rounded-xl shadow-sm p-6">
+      <div className="mb-4 text-gray-700 font-medium">Total Amount</div>
+      <div className="text-2xl font-bold mb-6">{formatPrice(amount, currency)}</div>
       {!clientSecret && (
-        <div className="mt-4 grid gap-3 max-w-md">
+        <div className="space-y-4">
           <input
             type="email"
             placeholder="Email (for order confirmation)"
-            className="border p-2 rounded"
+            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-colors"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
-          <button className="btn btn-primary" disabled={placing || amount <= 0} onClick={confirmOrder}>
+          <button 
+            className="w-full bg-black text-white py-3 rounded-lg font-medium hover:bg-gray-800 disabled:opacity-50 transition-colors" 
+            disabled={placing || amount <= 0} 
+            onClick={confirmOrder}
+          >
             {placing ? 'Confirming…' : 'Confirm Order'}
           </button>
         </div>
       )}
-      <div className="mt-4 text-neutral-600">Stripe Elements form will render on clientSecret.</div>
+      <div className="mt-6 text-sm text-gray-600">Stripe Elements form will render on clientSecret.</div>
       {clientSecret ? (
-        <div className="mt-4 text-sm text-neutral-700">
+        <div className="mt-4 p-4 bg-gray-50 rounded-lg text-sm text-gray-700">
           Payment intent created. Integrate Elements CardElement here for order {orderId?.slice(0,8)}.
         </div>
       ) : (
-        <div className="mt-4 text-sm text-neutral-700">Add items to cart and confirm to begin payment.</div>
+        <div className="mt-4 text-sm text-gray-600">Add items to cart and confirm to begin payment.</div>
       )}
     </div>
   );

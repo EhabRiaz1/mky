@@ -11,7 +11,7 @@ const menCategories = [
 ];
 ---
 <BaseLayout title="Men Blazers — Maison MKY" fullWidth={true}>
-  <div class="min-h-screen bg-white">
+  <div class="min-h-screen bg-transparent">
     {/* Top Bar with Category & Filters */}
     <CatalogTopBar client:load categoryTitle="Blazers" />
     
@@ -25,22 +25,50 @@ const menCategories = [
       alt="Men's Blazers Collection"
     />
     
-    {/* Product Grid - Edge to Edge */}
-    <div class="w-full">
-      <ProductGrid client:load gender="men" collection="blazers" />
+    {/* ---------- PRODUCT GRID: CENTERED (Option A - Non-invasive) ---------- */}
+    <div class="w-full flex justify-center product-grid-wrapper mt-8 md:mt-12">
+      <div class="w-full max-w-[1400px]">
+        <!--
+          If ProductGrid accepts a class prop, you can replace the above wrapper
+          with a direct class on ProductGrid like:
+          <ProductGrid client:load gender="men" collection="blazers" class="mx-auto max-w-[1400px]" />
+        -->
+        <ProductGrid client:load gender="men" collection="blazers" />
+      </div>
     </div>
+    {/* --------------------------------------------------------------------- */}
   </div>
 </BaseLayout>
 
 <style is:global>
   #main-header { background-color: var(--brand-bg-exact) !important; }
   #main-header.backdrop-blur-md { background-color: var(--brand-bg-exact) !important; }
-  
+
   /* Remove default container padding for edge-to-edge */
   main {
     padding: 0 !important;
   }
+
+  /*
+    Strong centering override: targets ProductGrid's root element even if the component
+    doesn't accept a class. This constrains the immediate child of .product-grid-wrapper.
+  */
+  .product-grid-wrapper > * {
+    max-width: 1400px;  /* change to 1200 / 1600 if you prefer */
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /*
+    Sometimes ProductGrid's internal grid uses width:100% on children.
+    If you still see full-width cards, this rule will center the inner grid container if present.
+  */
+  .product-grid-wrapper > * > * {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Debug helpers (uncomment during testing) */
+  /* .product-grid-wrapper { outline: 1px dashed rgba(0,0,0,0.06); } */
+  /* .product-grid-wrapper > * { outline: 1px solid rgba(0,128,255,0.06); } */
 </style>
-
-
-
