@@ -4,12 +4,15 @@ import '../styles/colors.css';
 import LoadingScreen from '../components/LoadingScreen';
 import AuthDrawerIsland from '../react/AuthDrawerIsland';
 
-const {
-  title = 'MKY - The Lifestyle',
-  description = 'Luxury Fashion House',
-  stickyHeader = false,
-  fullWidth = false,
-} = Astro.props;
+    const {
+      title = 'MKY - Italian & British Menswear',
+      description = 'Discover the finest Italian and British menswear. Luxury blazers, trousers, and tailored excellence for the modern gentleman.',
+      stickyHeader = false,
+      fullWidth = false,
+    } = Astro.props;
+    
+    // Optimized logo for social media (smaller size for WhatsApp/link previews)
+    const socialImageURL = new URL('/logo-social.png', Astro.url);
 
 const isHome = Astro.url.pathname === '/';
 const useStickyHeader = !isHome && stickyHeader;
@@ -43,7 +46,26 @@ const getInitialCurrency = () => {
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={description} />
+    
+    <!-- Favicons -->
     <link rel="icon" type="image/png" href="/logo.png" />
+    <link rel="apple-touch-icon" href="/logo.png" />
+    <link rel="shortcut icon" type="image/png" href="/logo.png" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.url} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={socialImageURL} />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={Astro.url} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={socialImageURL} />
+
     <link rel="preload" href="/logo.png" as="image" type="image/png" />
     <title>{title}</title>
   </head>
