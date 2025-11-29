@@ -27,7 +27,6 @@ export default function ProductDetail({ handle, id }: { handle: string; id?: str
   const [selectedSize, setSelectedSize] = useState<string>('');
   const [sizeGuideOpen, setSizeGuideOpen] = useState(false);
   const [currentSizeCategory, setCurrentSizeCategory] = useState('bebe');
-  const [activeMeasurement, setActiveMeasurement] = useState('');
   const [currency, setCurrency] = useState('GBP'); // Add currency state
   const [expandedDropdown, setExpandedDropdown] = useState<string | null>(null);
 
@@ -35,6 +34,21 @@ export default function ProductDetail({ handle, id }: { handle: string; id?: str
     '46': 'Bébé',
     '48': 'Garçon',
     '50': 'Homme'
+  };
+
+  const categoryDisplayNames: Record<string, string> = {
+    bebe: 'Bébé',
+    garcon: 'Garçon',
+    homme: 'Homme'
+  };
+
+  const measurementLabels: Record<string, string> = {
+    jacket: 'Jacket Length',
+    arm: 'Arm Length',
+    shoulder: 'Shoulder',
+    chest: 'Chest',
+    waist: 'Waist',
+    abdominal: 'Abdominal'
   };
 
   const sizesData = {
@@ -224,14 +238,6 @@ export default function ProductDetail({ handle, id }: { handle: string; id?: str
     if (variantId) {
       setVariant({ ...variant, id: variantId });
     }
-  };
-
-  const handleMeasurementHover = (measurement: string) => {
-    setActiveMeasurement(measurement);
-  };
-
-  const handleMeasurementLeave = () => {
-    setActiveMeasurement('');
   };
 
   const handleSizeCategorySelect = (sizeCategory: string) => {
@@ -490,220 +496,65 @@ export default function ProductDetail({ handle, id }: { handle: string; id?: str
       {sizeGuideOpen && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
           <div 
-            className="absolute inset-0 bg-black/50 transition-opacity" 
+            className="absolute inset-0 bg-black/50 transition-opacity backdrop-blur-sm" 
             onClick={() => setSizeGuideOpen(false)} 
           />
           
-          <div className="relative bg-gradient-to-br from-gray-900 to-black text-white rounded-2xl w-full max-w-6xl max-h-[90vh] overflow-y-auto">
+          <div className="relative bg-white/95 backdrop-blur-md rounded-2xl w-full max-w-2xl shadow-2xl overflow-hidden animate-fadeIn">
             <div className="p-8">
-              <h1 className="text-3xl lg:text-4xl text-center mb-4 font-light tracking-widest uppercase">Size Guide</h1>
-              <p className="text-center text-gray-400 mb-12 text-lg">Select a size and hover over measurements to see location</p>
-
-              <div className="flex justify-center gap-4 mb-12 flex-wrap">
-                {Object.keys(sizesData).map((size) => (
-                  <button
-                    key={size}
-                    onClick={() => handleSizeCategorySelect(size)}
-                    className={`px-6 py-3 border-2 rounded-full transition-all text-lg capitalize ${
-                      currentSizeCategory === size
-                        ? 'bg-white text-black border-white'
-                        : 'border-gray-500 text-gray-300 hover:border-gray-300 hover:text-white'
-                    }`}
-                  >
-                    {size}
-                  </button>
-                ))}
+              <div className="flex justify-between items-center mb-8">
+                <h2 className="text-2xl font-light tracking-wide uppercase">Size Guide</h2>
+                <button 
+                  onClick={() => setSizeGuideOpen(false)}
+                  className="p-2 hover:bg-gray-100/50 rounded-full transition-colors"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
               </div>
 
-              <div className="flex flex-col lg:flex-row gap-12 items-start justify-center">
-                <div className="flex-1 max-w-2xl">
-                  <svg viewBox="0 0 300 400" className="w-full h-auto">
-                    <path d="M 95 85 L 45 105 L 35 160 L 38 195 L 80 200 L 85 130 Z" 
-                          fill="rgba(255,255,255,0.12)" 
-                          stroke="rgba(255,255,255,0.4)" 
-                          strokeWidth="1.5"/>
-                    
-                    <path d="M 205 85 L 255 105 L 265 160 L 262 195 L 220 200 L 215 130 Z" 
-                          fill="rgba(255,255,255,0.12)" 
-                          stroke="rgba(255,255,255,0.4)" 
-                          strokeWidth="1.5"/>
-                    
-                    <path d="M 95 85 L 85 130 L 80 200 L 75 280 L 80 360 L 100 385 L 145 385 L 145 85 Z" 
-                          fill="rgba(255,255,255,0.15)" 
-                          stroke="rgba(255,255,255,0.5)" 
-                          strokeWidth="2"/>
-                    <path d="M 205 85 L 215 130 L 220 200 L 225 280 L 220 360 L 200 385 L 155 385 L 155 85 Z" 
-                          fill="rgba(255,255,255,0.15)" 
-                          stroke="rgba(255,255,255,0.5)" 
-                          strokeWidth="2"/>
-                    
-                    <path d="M 130 60 L 120 75 L 145 85 L 155 85 L 180 75 L 170 60 Z" 
-                          fill="rgba(255,255,255,0.2)" 
-                          stroke="rgba(255,255,255,0.6)" 
-                          strokeWidth="1.5"/>
-                    
-                    <path d="M 145 85 L 120 75 L 105 120 L 125 135 L 145 140 Z" 
-                          fill="rgba(255,255,255,0.25)" 
-                          stroke="rgba(255,255,255,0.6)" 
-                          strokeWidth="1.5"/>
-                    <path d="M 155 85 L 180 75 L 195 120 L 175 135 L 155 140 Z" 
-                          fill="rgba(255,255,255,0.25)" 
-                          stroke="rgba(255,255,255,0.6)" 
-                          strokeWidth="1.5"/>
-                    
-                    <line x1="150" y1="140" x2="150" y2="340" stroke="rgba(255,255,255,0.3)" strokeWidth="1"/>
-                    
-                    <circle cx="150" cy="160" r="3" fill="rgba(255,255,255,0.4)"/>
-                    <circle cx="150" cy="200" r="3" fill="rgba(255,255,255,0.4)"/>
-                    <circle cx="150" cy="240" r="3" fill="rgba(255,255,255,0.4)"/>
-                    <circle cx="150" cy="280" r="3" fill="rgba(255,255,255,0.4)"/>
-                    
-                    <path d="M 100 220 L 130 220 L 130 255 L 100 255" 
-                          fill="none" 
-                          stroke="rgba(255,255,255,0.3)" 
-                          strokeWidth="1.5"/>
-                    <path d="M 170 220 L 200 220 L 200 255 L 170 255" 
-                          fill="none" 
-                          stroke="rgba(255,255,255,0.3)" 
-                          strokeWidth="1.5"/>
-
-                    <line 
-                      className={`transition-opacity duration-300 ${activeMeasurement === 'jacket' ? 'opacity-100' : 'opacity-0'}`}
-                      x1="240" y1="50" x2="240" y2="380"
-                      stroke="#00d4ff" 
-                      strokeWidth="2" 
-                      strokeDasharray="5,5"
-                    />
-                    <circle 
-                      className={`transition-opacity duration-300 ${activeMeasurement === 'jacket' ? 'opacity-100' : 'opacity-0'}`}
-                      cx="240" cy="50" r="4" fill="#00d4ff"
-                    />
-                    <circle 
-                      className={`transition-opacity duration-300 ${activeMeasurement === 'jacket' ? 'opacity-100' : 'opacity-0'}`}
-                      cx="240" cy="380" r="4" fill="#00d4ff"
-                    />
-
-                    <line 
-                      className={`transition-opacity duration-300 ${activeMeasurement === 'arm' ? 'opacity-100' : 'opacity-0'}`}
-                      x1="200" y1="80" x2="30" y2="180"
-                      stroke="#00d4ff" 
-                      strokeWidth="2" 
-                      strokeDasharray="5,5"
-                    />
-                    <circle 
-                      className={`transition-opacity duration-300 ${activeMeasurement === 'arm' ? 'opacity-100' : 'opacity-0'}`}
-                      cx="200" cy="80" r="4" fill="#00d4ff"
-                    />
-                    <circle 
-                      className={`transition-opacity duration-300 ${activeMeasurement === 'arm' ? 'opacity-100' : 'opacity-0'}`}
-                      cx="30" cy="180" r="4" fill="#00d4ff"
-                    />
-
-                    <line 
-                      className={`transition-opacity duration-300 ${activeMeasurement === 'shoulder' ? 'opacity-100' : 'opacity-0'}`}
-                      x1="100" y1="80" x2="200" y2="80"
-                      stroke="#00d4ff" 
-                      strokeWidth="2" 
-                      strokeDasharray="5,5"
-                    />
-                    <circle 
-                      className={`transition-opacity duration-300 ${activeMeasurement === 'shoulder' ? 'opacity-100' : 'opacity-0'}`}
-                      cx="100" cy="80" r="4" fill="#00d4ff"
-                    />
-                    <circle 
-                      className={`transition-opacity duration-300 ${activeMeasurement === 'shoulder' ? 'opacity-100' : 'opacity-0'}`}
-                      cx="200" cy="80" r="4" fill="#00d4ff"
-                    />
-
-                    <line 
-                      className={`transition-opacity duration-300 ${activeMeasurement === 'chest' ? 'opacity-100' : 'opacity-0'}`}
-                      x1="90" y1="120" x2="210" y2="120"
-                      stroke="#00d4ff" 
-                      strokeWidth="2" 
-                      strokeDasharray="5,5"
-                    />
-                    <circle 
-                      className={`transition-opacity duration-300 ${activeMeasurement === 'chest' ? 'opacity-100' : 'opacity-0'}`}
-                      cx="90" cy="120" r="4" fill="#00d4ff"
-                    />
-                    <circle 
-                      className={`transition-opacity duration-300 ${activeMeasurement === 'chest' ? 'opacity-100' : 'opacity-0'}`}
-                      cx="210" cy="120" r="4" fill="#00d4ff"
-                    />
-
-                    <line 
-                      className={`transition-opacity duration-300 ${activeMeasurement === 'waist' ? 'opacity-100' : 'opacity-0'}`}
-                      x1="85" y1="220" x2="215" y2="220"
-                      stroke="#00d4ff" 
-                      strokeWidth="2" 
-                      strokeDasharray="5,5"
-                    />
-                    <circle 
-                      className={`transition-opacity duration-300 ${activeMeasurement === 'waist' ? 'opacity-100' : 'opacity-0'}`}
-                      cx="85" cy="220" r="4" fill="#00d4ff"
-                    />
-                    <circle 
-                      className={`transition-opacity duration-300 ${activeMeasurement === 'waist' ? 'opacity-100' : 'opacity-0'}`}
-                      cx="215" cy="220" r="4" fill="#00d4ff"
-                    />
-
-                    <line 
-                      className={`transition-opacity duration-300 ${activeMeasurement === 'abdominal' ? 'opacity-100' : 'opacity-0'}`}
-                      x1="80" y1="280" x2="220" y2="280"
-                      stroke="#00d4ff" 
-                      strokeWidth="2" 
-                      strokeDasharray="5,5"
-                    />
-                    <circle 
-                      className={`transition-opacity duration-300 ${activeMeasurement === 'abdominal' ? 'opacity-100' : 'opacity-0'}`}
-                      cx="80" cy="280" r="4" fill="#00d4ff"
-                    />
-                    <circle 
-                      className={`transition-opacity duration-300 ${activeMeasurement === 'abdominal' ? 'opacity-100' : 'opacity-0'}`}
-                      cx="220" cy="280" r="4" fill="#00d4ff"
-                    />
-                  </svg>
-                </div>
-
-                <div className="flex-1 max-w-md bg-white/5 backdrop-blur-md rounded-2xl p-8 border border-white/10">
-                  {Object.entries({
-                    jacket: 'Jacket Length',
-                    arm: 'Arm Length', 
-                    shoulder: 'Shoulder',
-                    chest: 'Chest',
-                    waist: 'Waist',
-                    abdominal: 'Abdominal'
-                  }).map(([measurement, label]) => (
-                    <div
-                      key={measurement}
-                      onMouseEnter={() => handleMeasurementHover(measurement)}
-                      onMouseLeave={handleMeasurementLeave}
-                      className={`flex justify-between items-center p-5 mb-3 rounded-xl transition-all cursor-pointer ${
-                        activeMeasurement === measurement
-                          ? 'bg-cyan-500/20 border-2 border-cyan-500/50'
-                          : 'bg-white/5 border-2 border-transparent hover:bg-white/10'
+              <div className="mb-8">
+                <p className="text-sm text-gray-500 mb-4 font-medium">SELECT A CATEGORY</p>
+                <div className="flex flex-wrap gap-3">
+                  {(['bebe', 'garcon', 'homme'] as const).map((cat) => (
+                    <button
+                      key={cat}
+                      onClick={() => setCurrentSizeCategory(cat)}
+                      className={`px-6 py-2.5 rounded-full border transition-all text-sm tracking-wide ${
+                        currentSizeCategory === cat
+                          ? 'bg-black text-white border-black shadow-md'
+                          : 'border-gray-200 hover:border-gray-400 text-gray-700 hover:bg-gray-50/50'
                       }`}
                     >
-                      <span className="text-lg font-light tracking-wide">{label}</span>
-                      <span className="text-xl font-medium text-cyan-400">
-                        {sizesData[currentSizeCategory][measurement]}
-                        <span className="text-sm text-gray-400 ml-1">cm</span>
-                      </span>
-                    </div>
+                      {categoryDisplayNames[cat]}
+                    </button>
                   ))}
                 </div>
               </div>
 
-              <p className="text-center text-gray-500 mt-12">All measurements are in centimeters</p>
-
-              <button 
-                onClick={() => setSizeGuideOpen(false)}
-                className="absolute top-6 right-6 p-3 hover:bg-white/10 rounded-full transition-colors"
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
+              <div className="border rounded-xl overflow-hidden bg-gray-50/30">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b bg-gray-50/50">
+                      <th className="py-3 px-4 text-left font-medium text-gray-500 uppercase text-xs tracking-wider">Measurement</th>
+                      <th className="py-3 px-4 text-right font-medium text-gray-500 uppercase text-xs tracking-wider">Value (cm)</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100 bg-white/50">
+                    {Object.entries(sizesData[currentSizeCategory as keyof typeof sizesData]).map(([key, value]) => (
+                      <tr key={key} className="hover:bg-gray-50/50 transition-colors">
+                        <td className="py-3 px-4 text-gray-900">{measurementLabels[key] || key}</td>
+                        <td className="py-3 px-4 text-right text-gray-600 font-mono">{value}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              
+              <div className="mt-6 text-center">
+                <p className="text-xs text-gray-400">All measurements are in centimeters. Guidelines only.</p>
+              </div>
             </div>
           </div>
         </div>

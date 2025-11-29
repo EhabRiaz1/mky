@@ -1,0 +1,112 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Reveal from '../components/Reveal';
+
+const timelineEvents = [
+  {
+    year: "The Origin",
+    title: "A Heritage of Craft",
+    description: "Born from a desire to bridge the gap between traditional European tailoring and modern luxury needs. MKY was founded on a simple premise: uncompromising quality should be accessible to the discerning gentleman.",
+    image: "/images/men-blazer-page.png"
+  },
+  {
+    year: "The Process",
+    title: "Global Excellence",
+    description: "We established our unique supply chain, sourcing the finest wools from Biella and Huddersfield, while partnering with master tailors in Pakistan who carry generations of craftsmanship in their hands.",
+    image: "/images/tailored-excellence-1.jpeg"
+  },
+  {
+    year: "The Future",
+    title: "Modern Elegance",
+    description: "Today, MKY stands as a testament to the enduring power of quality. We continue to refine our silhouettes, ensuring that every piece is not just a garment, but an investment in personal style.",
+    image: "/images/tailored-excellence-3.jpeg"
+  }
+];
+---
+
+<BaseLayout title="Our Story | MKY" description="The journey of MKY - Bridging heritage craftsmanship with modern luxury.">
+  <div class="pt-24 pb-12 px-4 sm:px-6 lg:px-8 max-w-[1400px] mx-auto">
+    
+    <!-- Hero Section -->
+    <section class="relative mb-32">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div class="order-2 lg:order-1">
+          <Reveal client:load>
+            <span class="text-sm tracking-[0.2em] text-gray-500 uppercase mb-6 block">The Beginning</span>
+            <h1 class="text-5xl md:text-7xl font-light mb-8 leading-tight" style="font-family: 'Playfair Display', serif;">
+              Crafting a<br/>Legacy.
+            </h1>
+            <div class="w-24 h-[1px] bg-black mb-8"></div>
+            <p class="text-lg md:text-xl text-gray-600 leading-relaxed font-light max-w-lg">
+              MKY is more than a label; it is a dialogue between the rich heritage of Italian design and the meticulous artistry of Eastern craftsmanship.
+            </p>
+          </Reveal>
+        </div>
+        <div class="order-1 lg:order-2 relative aspect-[4/5] lg:aspect-square rounded-2xl overflow-hidden bg-gray-100">
+          <img 
+            src="/images/explore-men-blazers.png" 
+            alt="MKY Tailoring" 
+            class="absolute inset-0 w-full h-full object-cover object-top"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- Philosophy Section -->
+    <section class="mb-32 bg-[#1a1a1a] text-white rounded-3xl p-8 md:p-24 relative overflow-hidden">
+      <!-- Decorative background texture/pattern could go here -->
+      <div class="relative z-10 max-w-4xl mx-auto text-center">
+        <Reveal client:load>
+          <h2 class="text-3xl md:text-5xl font-light mb-12 leading-tight" style="font-family: 'Playfair Display', serif;">
+            "We do not simply make clothes. We construct confidence, stitch by stitch."
+          </h2>
+          <p class="text-white/70 text-lg font-light leading-relaxed max-w-2xl mx-auto">
+            Every blazer, every trouser is a culmination of hundreds of hours of expertise. From the selection of the raw fiber to the final press, our process is governed by an obsession with detail that borders on the reverent.
+          </p>
+        </Reveal>
+      </div>
+    </section>
+
+    <!-- Timeline / Journey -->
+    <section class="mb-24">
+      <div class="space-y-24 md:space-y-32">
+        {timelineEvents.map((event, index) => (
+          <Reveal client:load delay={index * 0.1}>
+            <div class={`flex flex-col ${index % 2 === 1 ? 'md:flex-row-reverse' : 'md:flex-row'} gap-12 md:gap-24 items-center`}>
+              <div class="w-full md:w-1/2 aspect-[4/3] relative rounded-2xl overflow-hidden bg-gray-50 group">
+                <img 
+                  src={event.image} 
+                  alt={event.title}
+                  class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-500"></div>
+              </div>
+              <div class="w-full md:w-1/2">
+                <span class="text-6xl md:text-8xl text-gray-100 font-serif font-bold absolute -mt-16 -ml-4 -z-10 select-none">
+                  {index + 1}
+                </span>
+                <span class="text-sm tracking-[0.2em] text-gray-500 uppercase mb-4 block">{event.year}</span>
+                <h3 class="text-3xl md:text-4xl mb-6 font-light" style="font-family: 'Playfair Display', serif;">{event.title}</h3>
+                <p class="text-gray-600 leading-relaxed font-light text-lg">
+                  {event.description}
+                </p>
+              </div>
+            </div>
+          </Reveal>
+        ))}
+      </div>
+    </section>
+
+    <!-- Signature / Founder's Note (Optional) -->
+    <section class="mb-24 max-w-3xl mx-auto text-center px-4 pt-24 border-t border-gray-100">
+      <Reveal client:load>
+        <img src="/logo.png" alt="MKY Signature" class="h-16 mx-auto mb-8 opacity-80" />
+        <p class="text-xl font-serif italic text-gray-800 mb-4">
+          "To wear MKY is to wear a story of excellence."
+        </p>
+      </Reveal>
+    </section>
+
+  </div>
+</BaseLayout>
+

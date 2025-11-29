@@ -1,0 +1,151 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Reveal from '../components/Reveal';
+
+const sustainabilityFeatures = [
+  {
+    title: "Ethical Craftsmanship",
+    description: "Our commitment to ethical production begins in our partner ateliers in Pakistan, where master artisans are compensated fairly and work in safe, respectful environments. We preserve traditional tailoring techniques while embracing modern ethical standards.",
+    image: "/images/tailored-excellence-1.jpeg"
+  },
+  {
+    title: "Premium Natural Fibers",
+    description: "We exclusively source the finest wools from Biella, Italy and heritage mills in Huddersfield, England. Our commitment to 100% natural fibers means our garments are biodegradable, breathable, and free from synthetic micro-plastics.",
+    image: "/images/tailored-excellence-2.jpeg"
+  },
+  {
+    title: "Zero-Waste Philosophy",
+    description: "Through precise pattern cutting and made-to-order options, we minimize textile waste. Off-cuts are repurposed or recycled, ensuring that our premium materials serve a purpose rather than ending up in landfills.",
+    image: "/images/tailored-excellence-3.jpeg"
+  }
+];
+---
+
+<BaseLayout title="Sustainability | MKY" description="Our commitment to ethical craftsmanship and sustainable luxury.">
+  <div class="pt-24 pb-12 px-4 sm:px-6 lg:px-8 max-w-[1400px] mx-auto">
+    
+    <!-- Hero Section -->
+    <section class="relative mb-24 overflow-hidden rounded-3xl">
+      <div class="aspect-[21/9] relative">
+        <img 
+          src="/images/hero.png" 
+          alt="Sustainable Luxury" 
+          class="absolute inset-0 w-full h-full object-cover object-top"
+        />
+        <div class="absolute inset-0 bg-black/40 flex items-center justify-center text-center px-4">
+          <Reveal client:load>
+            <h1 class="text-4xl md:text-6xl lg:text-7xl text-white font-light tracking-wider mb-6 uppercase" style="font-family: 'Playfair Display', serif;">
+              Conscious Luxury
+            </h1>
+            <p class="text-lg md:text-xl text-white/90 max-w-2xl mx-auto font-light tracking-wide">
+              Redefining elegance through responsibility. Creating a legacy that respects both the artisan and the planet.
+            </p>
+          </Reveal>
+        </div>
+      </div>
+    </section>
+
+    <!-- Introduction -->
+    <section class="mb-32 max-w-4xl mx-auto text-center px-4">
+      <Reveal client:load>
+        <span class="text-sm tracking-[0.2em] text-gray-500 uppercase mb-4 block">Our Promise</span>
+        <h2 class="text-3xl md:text-5xl font-light mb-8 leading-tight" style="font-family: 'Playfair Display', serif;">
+          "True luxury lies not just in the fineness of the material, but in the integrity of its creation."
+        </h2>
+        <div class="w-24 h-[1px] bg-black mx-auto mb-8"></div>
+        <p class="text-lg text-gray-600 leading-relaxed font-light">
+          At MKY, we believe that exceptional menswear shouldn't come at a cost to the environment. 
+          Our journey starts with the finest British and Italian fabrics—renowned not just for their hand-feel, 
+          but for their durability and natural origins. By manufacturing in Pakistan, we combine centuries-old 
+          tailoring heritage with modern ethical practices, creating garments that stand the test of time.
+        </p>
+      </Reveal>
+    </section>
+
+    <!-- Features Grid -->
+    <section class="mb-32">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16">
+        {sustainabilityFeatures.map((feature, index) => (
+          <Reveal client:load delay={index * 0.2}>
+            <div class="group cursor-pointer">
+              <div class="aspect-[3/4] overflow-hidden rounded-2xl mb-8 bg-gray-100 relative">
+                <img 
+                  src={feature.image} 
+                  alt={feature.title}
+                  class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-500"></div>
+              </div>
+              <h3 class="text-2xl mb-4 font-light" style="font-family: 'Playfair Display', serif;">{feature.title}</h3>
+              <p class="text-gray-600 leading-relaxed font-light text-sm md:text-base tracking-wide">
+                {feature.description}
+              </p>
+            </div>
+          </Reveal>
+        ))}
+      </div>
+    </section>
+
+    <!-- Materials Detail Section -->
+    <section class="mb-32 bg-[#F9F9F9] rounded-3xl p-8 md:p-20 relative overflow-hidden">
+      <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <Reveal client:load>
+          <div>
+            <span class="text-sm tracking-[0.2em] text-gray-500 uppercase mb-4 block">Materials</span>
+            <h2 class="text-4xl md:text-5xl font-light mb-8" style="font-family: 'Playfair Display', serif;">From Fiber to Fabric</h2>
+            <div class="space-y-8">
+              <div>
+                <h4 class="text-xl mb-2 font-medium">British Wool</h4>
+                <p class="text-gray-600 font-light leading-relaxed">
+                  Sourced from historic mills in Huddersfield, our wool is naturally renewable, biodegradable, and temperature regulating. We prioritize mills that use closed-loop water systems.
+                </p>
+              </div>
+              <div>
+                <h4 class="text-xl mb-2 font-medium">Italian Silk & Cashmere</h4>
+                <p class="text-gray-600 font-light leading-relaxed">
+                  Our partners in Biella adhere to strict environmental standards (REACH compliance), ensuring that the luxurious finish of our silk and cashmere doesn't compromise local ecosystems.
+                </p>
+              </div>
+              <div>
+                <h4 class="text-xl mb-2 font-medium">Corozo Buttons</h4>
+                <p class="text-gray-600 font-light leading-relaxed">
+                  We eschew plastic buttons for Corozo—derived from the nut of the Tagua Palm. Known as "vegetable ivory," it is durable, natural, and supports rainforest conservation.
+                </p>
+              </div>
+            </div>
+          </div>
+        </Reveal>
+        <Reveal client:load delay={0.3}>
+          <div class="relative h-[600px] rounded-2xl overflow-hidden shadow-2xl">
+            <img 
+              src="/images/tailored-excellence-4.jpeg" 
+              alt="Fabric Detail" 
+              class="absolute inset-0 w-full h-full object-cover"
+            />
+            <div class="absolute bottom-8 left-8 bg-white/90 backdrop-blur-md px-6 py-4 rounded-lg max-w-xs">
+              <p class="text-xs tracking-widest uppercase mb-1 text-gray-500">Fabric Source</p>
+              <p class="font-serif text-lg">Biella, Italy</p>
+            </div>
+          </div>
+        </Reveal>
+      </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="text-center mb-12">
+      <Reveal client:load>
+        <h2 class="text-3xl md:text-4xl font-light mb-8" style="font-family: 'Playfair Display', serif;">
+          Join us in making a difference.
+        </h2>
+        <a 
+          href="/products" 
+          class="inline-block bg-black text-white px-10 py-4 rounded-full hover:bg-gray-800 transition-all duration-300 uppercase tracking-widest text-sm"
+        >
+          Shop Consciously
+        </a>
+      </Reveal>
+    </section>
+
+  </div>
+</BaseLayout>
+

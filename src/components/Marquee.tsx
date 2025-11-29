@@ -8,7 +8,7 @@ export default function Marquee({ embedded = false }: MarqueeProps) {
   // Replace "Maison MKY" with the logo image
   const items: Array<{ type: 'text'; value: string } | { type: 'image'; src: string; alt: string }>= [
     { type: 'image', src: '/logo.png', alt: 'Maison MKY' },
-    { type: 'text', value: 'Finest fabrics of Italy' },
+    { type: 'text', value: 'British & Italian Fabrics' },
     { type: 'text', value: 'Cashmere' },
     { type: 'text', value: 'Silk' },
     { type: 'text', value: 'Wool' },

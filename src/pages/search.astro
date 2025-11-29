@@ -2,14 +2,14 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import SearchClient from "../components/SearchClient.tsx";
 ---
-<BaseLayout title="Search — Maison MKY">
-  <h1 class="text-3xl font-semibold mb-6">Search</h1>
-  <SearchClient client:load />
+<BaseLayout title="Search — Maison MKY" stickyHeader={true}>
+  <div class="min-h-[60vh] pt-32 pb-20">
+    <SearchClient client:load />
+  </div>
 </BaseLayout>
 
 <style is:global>
-  #main-header { background-color: var(--brand-bg-exact) !important; }
-  #main-header.backdrop-blur-md { background-color: var(--brand-bg-exact) !important; }
+  /* Optional overrides if needed, but stickyHeader={true} should handle most logic */
 </style>
 
 
